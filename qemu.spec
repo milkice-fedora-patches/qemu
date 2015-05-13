@@ -479,6 +479,10 @@ BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
 %endif
 
+# Work around temporary F20 mock breakage
+BuildRequires: /usr/bin/vi
+
+
 %if 0%{?user:1}
 Requires: %{name}-%{user} = %{epoch}:%{version}-%{release}
 %endif
