@@ -152,7 +152,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.1.3
-Release: 6%{?dist}
+Release: 7%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -221,6 +221,9 @@ Patch0015: 0015-CVE-2015-1779-incrementally-decode-websocket-frames.patch
 Patch0016: 0016-CVE-2015-1779-limit-size-of-HTTP-headers-from-websoc.patch
 # Fix  qemu-img error (bz #1200043)
 Patch0017: 0017-block-Fix-max-nb_sectors-in-bdrv_make_zero.patch
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+Patch0018: 0018-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -776,6 +779,9 @@ CAC emulation development files.
 %patch0016 -p1
 # Fix  qemu-img error (bz #1200043)
 %patch0017 -p1
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+%patch0018 -p1
 
 
 %build
@@ -1556,6 +1562,10 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Wed May 13 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-7
+- CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access (bz
+  #1221152)
+
 * Tue Apr 14 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 2:2.1.3-6
 - Reintroduce upstream patch fixing some qemu-img conversion errors (RHBZ#1200043)
 
