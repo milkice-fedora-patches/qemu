@@ -139,7 +139,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 1.6.2
-Release: 13%{?dist}
+Release: 14%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -385,6 +385,9 @@ Patch0426: 0426-aio-fix-qemu_bh_schedule-bh-ctx-race-condition.patch
 # CVE-2014-8106: cirrus: insufficient blit region checks
 Patch0427: 0427-cirrus-fix-blit-region-check.patch
 Patch0428: 0428-cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf.patch
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+Patch0429: 0429-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 
 BuildRequires: SDL-devel
 BuildRequires: zlib-devel
@@ -1102,6 +1105,9 @@ CAC emulation development files.
 # CVE-2014-8106: cirrus: insufficient blit region checks
 %patch0427 -p1
 %patch0428 -p1
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+%patch0429 -p1
 
 
 %build
@@ -1809,6 +1815,10 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Wed May 13 2015 Cole Robinson <crobinso@redhat.com> - 2:1.6.2-14
+- CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access (bz
+  #1221152)
+
 * Sat Feb 07 2015 Cole Robinson <crobinso@redhat.com> - 2:1.6.2-13
 - Fix qemu_bh_schedule race condition (bz #1165315)
 - CVE-2014-8106: cirrus: insufficient blit region checks
