@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -70,6 +70,10 @@ Source12: bridge.conf
 
 # qemu-kvm back compat wrapper
 Source13: qemu-kvm.sh
+
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+Patch0001: 0001-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -538,7 +542,7 @@ CAC emulation development files.
 
 %prep
 %setup -q -n qemu-%{version}
-%autopatch
+%autopatch -p1
 
 
 %build
@@ -1172,6 +1176,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed May 13 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.0-4
+- CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access (bz
+  #1221152)
+
 * Wed May 06 2015 Cole Robinson <crobinso@redhat.com> 2:2.3.0-3%
 - Fix ksm.service (bz 1218814)
 
