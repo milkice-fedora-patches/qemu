@@ -155,7 +155,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.0.0
-Release: 1%{?dist}.4
+Release: 1%{?dist}.5
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -201,6 +201,9 @@ Source13: qemu-kvm.sh
 # Change gtk quit accelerator to ctrl+shift+q (bz #1062393)
 # Patches queued for 2.1
 Patch0001: 0001-Change-gtk-quit-accelerator-to-ctrl-shift-q-bz-10623.patch
+
+# CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access # (bz #1221152)
+Patch0002: 0002-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 
 # EPEL specific patches
 Patch6661: 0001-pxe-always-use-non-efi-roms.patch
@@ -722,6 +725,9 @@ CAC emulation development files.
 # Change gtk quit accelerator to ctrl+shift+q (bz #1062393)
 # Patches queued for 2.1
 %patch0001 -p1
+
+# CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access # (bz #1221152)
+%patch0002 -p1
 
 # EPEL patches
 %patch6661 -p1
@@ -1507,6 +1513,9 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Mon May 25 2015 Lubomir Rintel <lkundrak@v3.sk> - 2:2.0.0-1.5
+- CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access (bz #1221152)
+
 * Thu Feb 26 2015 Lubomir Rintel <lkundrak@v3.sk> - 2:2.0.0-1.4
 - Avoid using EFI boot ROMs, el7 ipxe does not ship them
 
