@@ -305,6 +305,7 @@ BuildRequires: kernel
 %if %{with_xen}
 BuildRequires: xen-devel
 %endif
+BuildRequires: /usr/bin/vi
 
 %if 0%{?user:1}
 Requires: %{name}-%{user} = %{epoch}:%{version}-%{release}
