@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -74,6 +74,9 @@ Source13: qemu-kvm.sh
 # CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
 # (bz #1221152)
 Patch0001: 0001-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
+# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
+# #1222894)
+Patch0002: 0002-slirp-use-less-predictable-directory-name-in-tmp-for.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1176,6 +1179,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Jun 05 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.0-5
+- CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz #1222894)
+
 * Wed May 13 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.0-4
 - CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access (bz
   #1221152)
