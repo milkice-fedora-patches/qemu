@@ -152,7 +152,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.1.3
-Release: 7%{?dist}
+Release: 8%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -224,6 +224,14 @@ Patch0017: 0017-block-Fix-max-nb_sectors-in-bdrv_make_zero.patch
 # CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
 # (bz #1221152)
 Patch0018: 0018-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
+# User interface freezes when entering space character in Xfig (bz
+# #1151253)
+Patch0019: 0019-qxl-keep-going-if-reaching-guest-bug-on-empty-area.patch
+# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
+# #1222894)
+Patch0020: 0020-slirp-use-less-predictable-directory-name-in-tmp-for.patch
+# Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
+Patch0021: 0021-target-i386-Haswell-noTSX-and-Broadwell-noTSX.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -782,6 +790,14 @@ CAC emulation development files.
 # CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
 # (bz #1221152)
 %patch0018 -p1
+# User interface freezes when entering space character in Xfig (bz
+# #1151253)
+%patch0019 -p1
+# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
+# #1222894)
+%patch0020 -p1
+# Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
+%patch0021 -p1
 
 
 %build
@@ -1562,6 +1578,11 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Fri Jun 05 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-8
+- User interface freezes when entering space character in Xfig (bz #1151253)
+- CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz #1222894)
+- Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
+
 * Wed May 13 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-7
 - CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access (bz
   #1221152)
