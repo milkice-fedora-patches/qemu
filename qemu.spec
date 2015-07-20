@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -77,6 +77,11 @@ Patch0001: 0001-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 # CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
 # #1222894)
 Patch0002: 0002-slirp-use-less-predictable-directory-name-in-tmp-for.patch
+
+# Fix: qemu-img: error while compressing sector <NNN>: Input/output error
+# https://bugzilla.redhat.com/show_bug.cgi?id=1214855
+# Upstream in 2.4.0-rc0
+Patch0003: 0001-qcow2-Handle-EAGAIN-returned-from-update_refcount.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1179,6 +1184,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jul 20 2015 Richard W.M. Jones <rjones@redhat.com> - 2:2.3.0-6
+- Fix: qemu-img: error while compressing sector <NNN>: Input/output error (bz #1214855)
+
 * Fri Jun 05 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.0-5
 - CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz #1222894)
 
