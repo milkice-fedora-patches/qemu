@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -77,11 +77,38 @@ Patch0001: 0001-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
 # CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
 # #1222894)
 Patch0002: 0002-slirp-use-less-predictable-directory-name-in-tmp-for.patch
-
-# Fix: qemu-img: error while compressing sector <NNN>: Input/output error
-# https://bugzilla.redhat.com/show_bug.cgi?id=1214855
-# Upstream in 2.4.0-rc0
-Patch0003: 0001-qcow2-Handle-EAGAIN-returned-from-update_refcount.patch
+# Fix: qemu-img: error while compressing sector <NNN>: Input/output
+# error (bz #1214855)
+Patch0003: 0003-qcow2-Handle-EAGAIN-returned-from-update_refcount.patch
+# Fix crash in qemu_spice_create_display (bz #1163047)
+Patch0004: 0004-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
+# Fix qemu-img map crash for unaligned image (bz #1229394)
+Patch0005: 0005-raw-posix-Fix-.bdrv_co_get_block_status-for-unaligne.patch
+# CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz
+# #1230536)
+Patch0006: 0006-pcnet-force-the-buffer-access-to-be-in-bounds-during.patch
+# CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
+Patch0007: 0007-i8254-fix-out-of-bounds-memory-access-in-pit_ioport_.patch
+# CVE-2015-5158: scsi stack buffer overflow (bz #1246025)
+Patch0008: 0008-scsi-fix-buffer-overflow-in-scsi_req_parse_cdb-CVE-2.patch
+# CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory
+# access (bz #1247141)
+Patch0009: 0009-ide-Check-array-bounds-before-writing-to-io_buffer-C.patch
+Patch0010: 0010-ide-atapi-Fix-START-STOP-UNIT-command-completion.patch
+Patch0011: 0011-ide-Clear-DRQ-after-handling-all-expected-accesses.patch
+# CVE-2015-5166: BlockBackend object use after free issue (bz #1249758)
+Patch0012: 0012-Fix-release_drive-on-unplugged-devices-pci_piix3_xen.patch
+# CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
+Patch0013: 0013-virtio-serial-fix-ANY_LAYOUT.patch
+# CVE-2015-5165: rtl8139 uninitialized heap memory information leakage
+# to guest (bz #1249755)
+Patch0014: 0014-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
+Patch0015: 0015-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
+Patch0016: 0016-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
+Patch0017: 0017-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
+Patch0018: 0018-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
+Patch0019: 0019-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
+Patch0020: 0020-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1184,6 +1211,19 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 11 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.0-7
+- Fix crash in qemu_spice_create_display (bz #1163047)
+- Fix qemu-img map crash for unaligned image (bz #1229394)
+- CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz #1230536)
+- CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
+- CVE-2015-5158: scsi stack buffer overflow (bz #1246025)
+- CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory access (bz
+  #1247141)
+- CVE-2015-5166: BlockBackend object use after free issue (bz #1249758)
+- CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
+- CVE-2015-5165: rtl8139 uninitialized heap memory information leakage to
+  guest (bz #1249755)
+
 * Mon Jul 20 2015 Richard W.M. Jones <rjones@redhat.com> - 2:2.3.0-6
 - Fix: qemu-img: error while compressing sector <NNN>: Input/output error (bz #1214855)
 
