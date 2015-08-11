@@ -17,10 +17,10 @@ Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
  1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
-index 6cbae1d..6b83b3e 100644
+index 63c0085..d4f3351 100644
 --- a/block/qcow2-refcount.c
 +++ b/block/qcow2-refcount.c
-@@ -949,19 +949,21 @@ int64_t qcow2_alloc_bytes(BlockDriverState *bs, int size)
+@@ -954,19 +954,21 @@ int64_t qcow2_alloc_bytes(BlockDriverState *bs, int size)
      }
  
      free_in_cluster = s->cluster_size - offset_into_cluster(s, offset);
