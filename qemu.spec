@@ -152,7 +152,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.1.3
-Release: 8%{?dist}
+Release: 9%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -232,6 +232,30 @@ Patch0019: 0019-qxl-keep-going-if-reaching-guest-bug-on-empty-area.patch
 Patch0020: 0020-slirp-use-less-predictable-directory-name-in-tmp-for.patch
 # Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
 Patch0021: 0021-target-i386-Haswell-noTSX-and-Broadwell-noTSX.patch
+# Fix crash in qemu_spice_create_display (bz #1163047)
+Patch0022: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
+# CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz
+# #1230536)
+Patch0023: 0023-pcnet-fix-Negative-array-index-read.patch
+Patch0024: 0024-pcnet-force-the-buffer-access-to-be-in-bounds-during.patch
+# CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
+Patch0025: 0025-i8254-fix-out-of-bounds-memory-access-in-pit_ioport_.patch
+# CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory
+# access (bz #1247141)
+Patch0026: 0026-ide-Check-array-bounds-before-writing-to-io_buffer-C.patch
+Patch0027: 0027-ide-atapi-Fix-START-STOP-UNIT-command-completion.patch
+Patch0028: 0028-ide-Clear-DRQ-after-handling-all-expected-accesses.patch
+# CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
+Patch0029: 0029-virtio-serial-fix-ANY_LAYOUT.patch
+# CVE-2015-5165: rtl8139 uninitialized heap memory information leakage
+# to guest (bz #1249755)
+Patch0030: 0030-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
+Patch0031: 0031-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
+Patch0032: 0032-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
+Patch0033: 0033-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
+Patch0034: 0034-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
+Patch0035: 0035-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
+Patch0036: 0036-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -798,6 +822,30 @@ CAC emulation development files.
 %patch0020 -p1
 # Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
 %patch0021 -p1
+# Fix crash in qemu_spice_create_display (bz #1163047)
+%patch0022 -p1
+# CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz
+# #1230536)
+%patch0023 -p1
+%patch0024 -p1
+# CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
+%patch0025 -p1
+# CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory
+# access (bz #1247141)
+%patch0026 -p1
+%patch0027 -p1
+%patch0028 -p1
+# CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
+%patch0029 -p1
+# CVE-2015-5165: rtl8139 uninitialized heap memory information leakage
+# to guest (bz #1249755)
+%patch0030 -p1
+%patch0031 -p1
+%patch0032 -p1
+%patch0033 -p1
+%patch0034 -p1
+%patch0035 -p1
+%patch0036 -p1
 
 
 %build
@@ -1578,6 +1626,16 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Tue Aug 11 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-9
+- Fix crash in qemu_spice_create_display (bz #1163047)
+- CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz #1230536)
+- CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
+- CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory access (bz
+  #1247141)
+- CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
+- CVE-2015-5165: rtl8139 uninitialized heap memory information leakage to
+  guest (bz #1249755)
+
 * Fri Jun 05 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-8
 - User interface freezes when entering space character in Xfig (bz #1151253)
 - CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz #1222894)
