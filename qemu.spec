@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -84,6 +84,9 @@ Patch0003: 0003-raw-posix-Fix-.bdrv_co_get_block_status-for-unaligne.patch
 Patch0004: 0004-pcnet-force-the-buffer-access-to-be-in-bounds-during.patch
 # CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
 Patch0005: 0005-virtio-serial-fix-ANY_LAYOUT.patch
+# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
+# (bz #1255899)
+Patch0006: 0006-vnc-fix-memory-corruption-CVE-2015-5225.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1186,6 +1189,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Aug 31 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-2
+- CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface (bz
+  #1255899)
+
 * Tue Aug 11 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-1
 - Rebased to version 2.3.1
 
