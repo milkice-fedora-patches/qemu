@@ -152,7 +152,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.1.3
-Release: 9%{?dist}
+Release: 10%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -256,6 +256,10 @@ Patch0033: 0033-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
 Patch0034: 0034-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
 Patch0035: 0035-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
 Patch0036: 0036-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
+
+# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
+# (bz #1255899)
+Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -846,6 +850,10 @@ CAC emulation development files.
 %patch0034 -p1
 %patch0035 -p1
 %patch0036 -p1
+
+# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
+# (bz #1255899)
+%patch0101 -p1
 
 
 %build
@@ -1626,6 +1634,10 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Mon Aug 31 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-10
+- CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface (bz
+  #1255899)
+
 * Tue Aug 11 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-9
 - Fix crash in qemu_spice_create_display (bz #1163047)
 - CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz #1230536)
