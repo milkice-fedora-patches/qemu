@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -89,6 +89,10 @@ Patch0005: 0005-virtio-serial-fix-ANY_LAYOUT.patch
 Patch0006: 0006-vnc-fix-memory-corruption-CVE-2015-5225.patch
 # Fix typo causing qemu-img to link against entire world (rhbz #1260996)
 Patch0007: 0007-fix-quorum-libs.patch
+
+# Fix emulation of various instructions, required by libm in F22 ppc64 guests.
+Patch0008: 0001-target-ppc-fix-vcipher-vcipherlast-vncipherlast-and-.patch
+Patch0009: 0002-target-ppc-fix-xscmpodp-and-xscmpudp-decoding.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1191,6 +1195,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sun Sep 20 2015 Richard W.M. Jones <rjones@redhat.com> - 2:2.3.1-4
+- Fix emulation of various instructions, required by libm in F22 ppc64 guests.
+
 * Tue Sep  8 2015 Daniel P. Berrange <berrange@redhat.com> - 2:2.3.1-3
 - Fix typo causing qemu-img to link against entire world (bz #1260996)
 
