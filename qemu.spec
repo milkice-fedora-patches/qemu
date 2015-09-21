@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -87,12 +87,21 @@ Patch0005: 0005-virtio-serial-fix-ANY_LAYOUT.patch
 # CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
 # (bz #1255899)
 Patch0006: 0006-vnc-fix-memory-corruption-CVE-2015-5225.patch
-# Fix typo causing qemu-img to link against entire world (rhbz #1260996)
-Patch0007: 0007-fix-quorum-libs.patch
-
-# Fix emulation of various instructions, required by libm in F22 ppc64 guests.
-Patch0008: 0001-target-ppc-fix-vcipher-vcipherlast-vncipherlast-and-.patch
-Patch0009: 0002-target-ppc-fix-xscmpodp-and-xscmpudp-decoding.patch
+# Fix typo causing qemu-img to link against entire world (bz #1260996)
+Patch0007: 0007-Fix-typo-causing-qemu-img-to-link-against-entire-wor.patch
+# CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
+Patch0008: 0008-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
+# CVE-2015-6855: ide: divide by zero issue (bz #1261793)
+Patch0009: 0009-ide-fix-ATAPI-command-permissions.patch
+# CVE-2015-5278: Infinite loop in ne2000_receive() (bz #1263284)
+Patch0010: 0010-net-avoid-infinite-loop-when-receiving-packets-CVE-2.patch
+# CVE-2015-5279: Heap overflow vulnerability in ne2000_receive() (bz
+# #1263287)
+Patch0011: 0011-net-add-checks-to-validate-ring-buffer-pointers-CVE-.patch
+# Make block copy more stable (bz #1264416)
+Patch0012: 0012-block-mirror-limit-qiov-to-IOV_MAX-elements.patch
+# Fix hang at start of live merge for large images (bz #1262901)
+Patch0013: 0013-block-mirror-Sleep-periodically-during-bitmap-scanni.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1195,6 +1204,15 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Sep 21 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-5
+- Fix typo causing qemu-img to link against entire world (bz #1260996)
+- CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
+- CVE-2015-6855: ide: divide by zero issue (bz #1261793)
+- CVE-2015-5278: Infinite loop in ne2000_receive() (bz #1263284)
+- CVE-2015-5279: Heap overflow vulnerability in ne2000_receive() (bz #1263287)
+- Make block copy more stable (bz #1264416)
+- Fix hang at start of live merge for large images (bz #1262901)
+
 * Sun Sep 20 2015 Richard W.M. Jones <rjones@redhat.com> - 2:2.3.1-4
 - Fix emulation of various instructions, required by libm in F22 ppc64 guests.
 

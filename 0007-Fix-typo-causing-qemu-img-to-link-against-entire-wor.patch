@@ -1,0 +1,30 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Tue, 8 Sep 2015 12:43:59 -0400
+Subject: [PATCH] Fix typo causing qemu-img to link against entire world (rhbz
+ #1260996)
+
+This is a minimal fix that's not upstream in this form. Upstream was
+accidentally fixed with:
+
+commit 488981a4af396551a3178d032cc2b41d9553ada2
+Author: Daniel P. Berrange <berrange@redhat.com>
+Date:   Wed Jul 1 18:10:35 2015 +0100
+
+    block: convert quorum blockdrv to use crypto APIs
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 6969f6f..adbe117 100755
+--- a/configure
++++ b/configure
+@@ -2323,7 +2323,7 @@ quorum_tls_libs=`$pkg_config --libs gnutls 2> /dev/null`
+ if compile_prog "$quorum_tls_cflags" "$quorum_tls_libs" ; then
+   qcow_tls=yes
+   libs_softmmu="$quorum_tls_libs $libs_softmmu"
+-  libs_tools="$quorum_tls_libs $libs_softmmu"
++  libs_tools="$quorum_tls_libs $libs_tools"
+   QEMU_CFLAGS="$QEMU_CFLAGS $quorum_tls_cflags"
+   quorum="yes"
+ else
