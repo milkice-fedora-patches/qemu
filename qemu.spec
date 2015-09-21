@@ -152,7 +152,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.1.3
-Release: 10%{?dist}
+Release: 11%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -260,6 +260,19 @@ Patch0036: 0036-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
 # CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
 # (bz #1255899)
 Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
+# CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
+Patch0102: 0102-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
+# CVE-2015-6855: ide: divide by zero issue (bz #1261793)
+Patch0103: 0103-ide-fix-ATAPI-command-permissions.patch
+# CVE-2015-5278: Infinite loop in ne2000_receive() (bz #1263284)
+Patch0104: 0104-net-avoid-infinite-loop-when-receiving-packets-CVE-2.patch
+# CVE-2015-5279: Heap overflow vulnerability in ne2000_receive() (bz
+# #1263287)
+Patch0105: 0105-net-add-checks-to-validate-ring-buffer-pointers-CVE-.patch
+# Make block copy more stable (bz #1264416)
+Patch0106: 0106-block-mirror-limit-qiov-to-IOV_MAX-elements.patch
+# Fix hang at start of live merge for large images (bz #1262901)
+Patch0107: 0107-block-mirror-Sleep-periodically-during-bitmap-scanni.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -854,6 +867,19 @@ CAC emulation development files.
 # CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
 # (bz #1255899)
 %patch0101 -p1
+# CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
+%patch0102 -p1
+# CVE-2015-6855: ide: divide by zero issue (bz #1261793)
+%patch0103 -p1
+# CVE-2015-5278: Infinite loop in ne2000_receive() (bz #1263284)
+%patch0104 -p1
+# CVE-2015-5279: Heap overflow vulnerability in ne2000_receive() (bz
+# #1263287)
+%patch0105 -p1
+# Make block copy more stable (bz #1264416)
+%patch0106 -p1
+# Fix hang at start of live merge for large images (bz #1262901)
+%patch0107 -p1
 
 
 %build
@@ -1634,6 +1660,14 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Mon Sep 21 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-11
+- CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
+- CVE-2015-6855: ide: divide by zero issue (bz #1261793)
+- CVE-2015-5278: Infinite loop in ne2000_receive() (bz #1263284)
+- CVE-2015-5279: Heap overflow vulnerability in ne2000_receive() (bz #1263287)
+- Make block copy more stable (bz #1264416)
+- Fix hang at start of live merge for large images (bz #1262901)
+
 * Mon Aug 31 2015 Cole Robinson <crobinso@redhat.com> - 2:2.1.3-10
 - CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface (bz
   #1255899)
