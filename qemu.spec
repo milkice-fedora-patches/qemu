@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -102,6 +102,10 @@ Patch0011: 0011-net-add-checks-to-validate-ring-buffer-pointers-CVE-.patch
 Patch0012: 0012-block-mirror-limit-qiov-to-IOV_MAX-elements.patch
 # Fix hang at start of live merge for large images (bz #1262901)
 Patch0013: 0013-block-mirror-Sleep-periodically-during-bitmap-scanni.patch
+# Fix emulation of various instructions, required by libm in F22 ppc64
+# guests
+Patch0014: 0014-target-ppc-fix-vcipher-vcipherlast-vncipherlast-and-.patch
+Patch0015: 0015-target-ppc-fix-xscmpodp-and-xscmpudp-decoding.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1204,6 +1208,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Sep 22 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-6
+- Fix emulation of various instructions, required by libm in F22 ppc64 guests
+- Re-add patches accidentally dropped in last build
+
 * Mon Sep 21 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-5
 - Fix typo causing qemu-img to link against entire world (bz #1260996)
 - CVE-2015-6815: net: e1000: infinite loop issue (bz #1260225)
