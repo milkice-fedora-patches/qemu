@@ -1,0 +1,52 @@
+From: Peter Krempa <pkrempa@redhat.com>
+Date: Fri, 15 May 2015 11:31:43 +0200
+Subject: [PATCH] util: socket: Add missing localaddr and localport option for
+ DGRAM socket
+
+The 'socket_optslist' structure does not contain the 'localaddr' and
+'localport' options that are parsed in case you are creating a
+'connect' type UDP character device.
+
+I've noticed it happening after commit f43e47dbf6de24db20ec9b588bb6cc762
+made qemu abort() after seeing the invalid option.
+
+A minimal reproducer for the case is:
+$ qemu-system-x86_64 -chardev udp,id=charrng0,host=127.0.0.1,port=1234,localaddr=,localport=1234
+qemu-system-x86_64: -chardev udp,id=charrng0,host=127.0.0.1,port=1234,localaddr=,localport=1234: Invalid parameter 'localaddr'
+Aborted (core dumped)
+
+Prior to the commit mentioned above the error would be printed but the
+value for localaddr and localport was simply ignored. I did not go
+through the code to find out when it was broken.
+
+Add the two fields so that the options can again be parsed correctly and
+qemu doesn't abort().
+
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1220252
+
+Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit b8981dc9aae25fa79e5f35609e63f50f078a572d)
+---
+ util/qemu-sockets.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
+index 87c9bc6..72066be 100644
+--- a/util/qemu-sockets.c
++++ b/util/qemu-sockets.c
+@@ -45,6 +45,12 @@ QemuOptsList socket_optslist = {
+             .name = "port",
+             .type = QEMU_OPT_STRING,
+         },{
++            .name = "localaddr",
++            .type = QEMU_OPT_STRING,
++        },{
++            .name = "localport",
++            .type = QEMU_OPT_STRING,
++        },{
+             .name = "to",
+             .type = QEMU_OPT_NUMBER,
+         },{

@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 6%{?dist}
+Release: 7%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -106,6 +106,14 @@ Patch0013: 0013-block-mirror-Sleep-periodically-during-bitmap-scanni.patch
 # guests
 Patch0014: 0014-target-ppc-fix-vcipher-vcipherlast-vncipherlast-and-.patch
 Patch0015: 0015-target-ppc-fix-xscmpodp-and-xscmpudp-decoding.patch
+# CVE-2015-7295: virtio-net possible remote DoS (bz #1264393)
+Patch0016: 0016-virtio-introduce-virtqueue_unmap_sg.patch
+Patch0017: 0017-virtio-introduce-virtqueue_discard.patch
+Patch0018: 0018-virtio-net-correctly-drop-truncated-packets.patch
+# drive-mirror: Fix coroutine reentrance (bz #1266936)
+Patch0019: 0019-mirror-Fix-coroutine-reentrance.patch
+# Fix udp socket 'localaddr' (bz #1268708)
+Patch0020: 0020-util-socket-Add-missing-localaddr-and-localport-opti.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1208,6 +1216,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Oct 08 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-7
+- CVE-2015-7295: virtio-net possible remote DoS (bz #1264393)
+- drive-mirror: Fix coroutine reentrance (bz #1266936)
+- Fix udp socket 'localaddr' (bz #1268708)
+
 * Tue Sep 22 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-6
 - Fix emulation of various instructions, required by libm in F22 ppc64 guests
 - Re-add patches accidentally dropped in last build
