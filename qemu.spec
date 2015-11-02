@@ -155,7 +155,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.0.0
-Release: 1%{?dist}.5
+Release: 1%{?dist}.6
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -199,11 +199,20 @@ Source12: bridge.conf
 Source13: qemu-kvm.sh
 
 # Change gtk quit accelerator to ctrl+shift+q (bz #1062393)
-# Patches queued for 2.1
 Patch0001: 0001-Change-gtk-quit-accelerator-to-ctrl-shift-q-bz-10623.patch
 
 # CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access # (bz #1221152)
 Patch0002: 0002-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
+
+# CVE-2015-5154: ide: Check array bounds before writing to io_buffer (bz #1247143)
+Patch0003: 0001-ide-Check-array-bounds-before-writing-to-io_buffer-C.patch
+
+# CVE-2015-3214: i8254: fix out-of-bounds memory access in pit_ioport_read() (bz #1243729)
+Patch0004: 0002-i8254-fix-out-of-bounds-memory-access-in-pit_ioport_.patch
+
+# CVE-2015-5154: pcnet: force the buffer access to be in bounds during tx (bz #1230538)
+Patch0005: 0003-pcnet-fix-Negative-array-index-read.patch
+Patch0006: 0004-pcnet-force-the-buffer-access-to-be-in-bounds-during.patch
 
 # EPEL specific patches
 Patch6661: 0001-pxe-always-use-non-efi-roms.patch
@@ -729,6 +738,16 @@ CAC emulation development files.
 
 # CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access # (bz #1221152)
 %patch0002 -p1
+
+# CVE-2015-5154: ide: Check array bounds before writing to io_buffer (bz #1247143)
+%patch0003 -p1
+
+# CVE-2015-3214: i8254: fix out-of-bounds memory access in pit_ioport_read() (bz #1243729)
+%patch0004 -p1
+
+# CVE-2015-5154: pcnet: force the buffer access to be in bounds during tx (bz #1230538)
+%patch0005 -p1
+%patch0006 -p1
 
 # EPEL patches
 %patch6661 -p1
@@ -1514,6 +1533,11 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Mon Nov 02 2015 Lubomir Rintel <lkundrak@v3.sk> - 2:2.0.0-1.6
+- CVE-2015-5154: ide: Check array bounds before writing to io_buffer (bz #1247143)
+- CVE-2015-3214: i8254: fix out-of-bounds memory access in pit_ioport_read() (bz #1243729)
+- CVE-2015-5154: pcnet: force the buffer access to be in bounds during tx (bz #1230538)
+
 * Mon May 25 2015 Lubomir Rintel <lkundrak@v3.sk> - 2:2.0.0-1.5
 - CVE-2015-3456: fdc: out-of-bounds fifo buffer memory access (bz #1221152)
 
