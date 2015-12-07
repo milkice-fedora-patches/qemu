@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -114,6 +114,16 @@ Patch0018: 0018-virtio-net-correctly-drop-truncated-packets.patch
 Patch0019: 0019-mirror-Fix-coroutine-reentrance.patch
 # Fix udp socket 'localaddr' (bz #1268708)
 Patch0020: 0020-util-socket-Add-missing-localaddr-and-localport-opti.patch
+# Fix abort in abort in bdrv_error_action (bz #1277482)
+Patch0021: 0021-atomics-add-explicit-compiler-fence-in-__atomic-memo.patch
+# Fix SSE4 emulation with accel=tcg (bz #1270703)
+Patch0022: 0022-target-i386-fix-pcmpxstrx-equal-ordered-strstr-mode.patch
+# CVE-2015-8345: Fix infinite loop in eepro100 (bz #1285214)
+Patch0023: 0023-eepro100-Prevent-two-endless-loops.patch
+# CVE-2015-7504: Fix heap overflow in pcnet (bz #1286543)
+Patch0024: 0024-net-pcnet-add-check-to-validate-receive-data-size-CV.patch
+# CVE-2015-7512: Fix buffer overflow in pcnet (bz #1286549)
+Patch0025: 0025-pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1216,6 +1226,13 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Dec 07 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-8
+- Fix abort in abort in bdrv_error_action (bz #1277482)
+- Fix SSE4 emulation with accel=tcg (bz #1270703)
+- CVE-2015-8345: Fix infinite loop in eepro100 (bz #1285214)
+- CVE-2015-7504: Fix heap overflow in pcnet (bz #1286543)
+- CVE-2015-7512: Fix buffer overflow in pcnet (bz #1286549)
+
 * Thu Oct 08 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-7
 - CVE-2015-7295: virtio-net possible remote DoS (bz #1264393)
 - drive-mirror: Fix coroutine reentrance (bz #1266936)
