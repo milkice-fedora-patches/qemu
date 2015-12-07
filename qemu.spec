@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -67,6 +67,15 @@ Source12: bridge.conf
 
 # qemu-kvm back compat wrapper
 Source13: qemu-kvm.sh
+
+# Fix SSE4 emulation with accel=tcg (bz #1270703)
+Patch0001: 0001-target-i386-fix-pcmpxstrx-equal-ordered-strstr-mode.patch
+# CVE-2015-8345: Fix infinite loop in eepro100 (bz #1285214)
+Patch0002: 0002-eepro100-Prevent-two-endless-loops.patch
+# CVE-2015-7504: Fix heap overflow in pcnet (bz #1286543)
+Patch0003: 0003-net-pcnet-add-check-to-validate-receive-data-size-CV.patch
+# CVE-2015-7512: Fix buffer overflow in pcnet (bz #1286549)
+Patch0004: 0004-pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1199,6 +1208,12 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Dec 07 2015 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-2
+- Fix SSE4 emulation with accel=tcg (bz #1270703)
+- CVE-2015-8345: Fix infinite loop in eepro100 (bz #1285214)
+- CVE-2015-7504: Fix heap overflow in pcnet (bz #1286543)
+- CVE-2015-7512: Fix buffer overflow in pcnet (bz #1286549)
+
 * Wed Nov 04 2015 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-1
 - Rebased to version 2.4.1
 
