@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 8%{?dist}
+Release: 9%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -124,6 +124,8 @@ Patch0023: 0023-eepro100-Prevent-two-endless-loops.patch
 Patch0024: 0024-net-pcnet-add-check-to-validate-receive-data-size-CV.patch
 # CVE-2015-7512: Fix buffer overflow in pcnet (bz #1286549)
 Patch0025: 0025-pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
+# vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
+Patch0026: 0026-ui-vnc-avoid-floating-point-exception.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1226,6 +1228,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Dec 08 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-9
+- vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
+
 * Mon Dec 07 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-8
 - Fix abort in abort in bdrv_error_action (bz #1277482)
 - Fix SSE4 emulation with accel=tcg (bz #1270703)
