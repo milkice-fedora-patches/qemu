@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -67,6 +67,9 @@ Source12: bridge.conf
 
 # qemu-kvm back compat wrapper
 Source13: qemu-kvm.sh
+
+# For modprobe.d
+Source20: kvm.conf
 
 # Fix SSE4 emulation with accel=tcg (bz #1270703)
 Patch0001: 0001-target-i386-fix-pcmpxstrx-equal-ordered-strstr-mode.patch
@@ -675,6 +678,8 @@ install -D -p -m 0644 %{_sourcedir}/ksmtuned.service %{buildroot}%{_unitdir}
 install -D -p -m 0755 %{_sourcedir}/ksmtuned %{buildroot}%{_sbindir}/ksmtuned
 install -D -p -m 0644 %{_sourcedir}/ksmtuned.conf %{buildroot}%{_sysconfdir}/ksmtuned.conf
 
+install -D -p -m 0644 %{_sourcedir}/kvm.conf %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
+
 # Install qemu-guest-agent service and udev rules
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
@@ -927,7 +932,8 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/virtfs-proxy-helper.1*
 %{_bindir}/virtfs-proxy-helper
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
-%config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
+%config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
+%config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %dir %{_sysconfdir}/qemu
 %config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 
@@ -1210,6 +1216,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Dec 23 2015 Paolo Bonzini <pbonzini@redhat.com> - 2:2.4.1-4
+- add /etc/modprobe.d/kvm.conf
+
 * Tue Dec 08 2015 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-3
 - vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
 
