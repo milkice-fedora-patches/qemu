@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 9%{?dist}
+Release: 10%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -71,11 +71,10 @@ Source12: bridge.conf
 # qemu-kvm back compat wrapper
 Source13: qemu-kvm.sh
 
-# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
-# #1222894)
+# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz #1222894)
 Patch0001: 0001-slirp-use-less-predictable-directory-name-in-tmp-for.patch
-# Fix: qemu-img: error while compressing sector <NNN>: Input/output
-# error (bz #1214855)
+# Fix: qemu-img: error while compressing sector <NNN>: Input/output error
+# (bz #1214855)
 Patch0002: 0002-qcow2-Handle-EAGAIN-returned-from-update_refcount.patch
 # Fix qemu-img map crash for unaligned image (bz #1229394)
 Patch0003: 0003-raw-posix-Fix-.bdrv_co_get_block_status-for-unaligne.patch
@@ -84,8 +83,8 @@ Patch0003: 0003-raw-posix-Fix-.bdrv_co_get_block_status-for-unaligne.patch
 Patch0004: 0004-pcnet-force-the-buffer-access-to-be-in-bounds-during.patch
 # CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
 Patch0005: 0005-virtio-serial-fix-ANY_LAYOUT.patch
-# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
-# (bz #1255899)
+# CVE-2015-5225: heap memory corruption in vnc_refresh_server_surface (bz
+# #1255899)
 Patch0006: 0006-vnc-fix-memory-corruption-CVE-2015-5225.patch
 # Fix typo causing qemu-img to link against entire world (bz #1260996)
 Patch0007: 0007-Fix-typo-causing-qemu-img-to-link-against-entire-wor.patch
@@ -126,6 +125,17 @@ Patch0024: 0024-net-pcnet-add-check-to-validate-receive-data-size-CV.patch
 Patch0025: 0025-pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
 # vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
 Patch0026: 0026-ui-vnc-avoid-floating-point-exception.patch
+# CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
+Patch0027: 0027-msix-implement-pba-write-but-read-only.patch
+# CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
+Patch0028: 0028-ehci-make-idt-processing-more-robust.patch
+# CVE-2015-8666: Heap-based buffer overrun during VM migration (bz #1294027)
+Patch0029: 0029-acpi-fix-buffer-overrun-on-migration.patch
+# CVE-2015-8744: vmxnet3: fix crash with short packets (bz #1295440)
+Patch0030: 0030-net-vmxnet3-Refine-l2-header-validation.patch
+# CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz
+# #1295442)
+Patch0031: 0031-vmxnet3-Support-reading-IMR-registers-on-bar0.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1228,6 +1238,14 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sat Jan 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-10
+- CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
+- CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
+- CVE-2015-8666: Heap-based buffer overrun during VM migration (bz #1294027)
+- CVE-2015-8744: vmxnet3: fix crash with short packets (bz #1295440)
+- CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz
+  #1295442)
+
 * Tue Dec 08 2015 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-9
 - vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
 
