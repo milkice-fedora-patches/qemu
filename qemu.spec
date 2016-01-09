@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -81,6 +81,16 @@ Patch0003: 0003-net-pcnet-add-check-to-validate-receive-data-size-CV.patch
 Patch0004: 0004-pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
 # vnc: avoid floating point exceptions (bz #1289541, bz #1289542)
 Patch0005: 0005-ui-vnc-avoid-floating-point-exception.patch
+# CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
+Patch0006: 0006-msix-implement-pba-write-but-read-only.patch
+# CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
+Patch0007: 0007-ehci-make-idt-processing-more-robust.patch
+# CVE-2015-8666: Heap-based buffer overrun during VM migration (bz #1294027)
+Patch0008: 0008-acpi-fix-buffer-overrun-on-migration.patch
+# CVE-2015-8744: vmxnet3: fix crash with short packets (bz #1295440)
+Patch0009: 0009-net-vmxnet3-Refine-l2-header-validation.patch
+# CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz #1295442)
+Patch0010: 0010-vmxnet3-Support-reading-IMR-registers-on-bar0.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1216,6 +1226,13 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sat Jan 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-5
+- CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
+- CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
+- CVE-2015-8666: Heap-based buffer overrun during VM migration (bz #1294027)
+- CVE-2015-8744: vmxnet3: fix crash with short packets (bz #1295440)
+- CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz #1295442)
+
 * Wed Dec 23 2015 Paolo Bonzini <pbonzini@redhat.com> - 2:2.4.1-4
 - add /etc/modprobe.d/kvm.conf
 
