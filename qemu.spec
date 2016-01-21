@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -89,8 +89,22 @@ Patch0007: 0007-ehci-make-idt-processing-more-robust.patch
 Patch0008: 0008-acpi-fix-buffer-overrun-on-migration.patch
 # CVE-2015-8744: vmxnet3: fix crash with short packets (bz #1295440)
 Patch0009: 0009-net-vmxnet3-Refine-l2-header-validation.patch
-# CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz #1295442)
+# CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz
+# #1295442)
 Patch0010: 0010-vmxnet3-Support-reading-IMR-registers-on-bar0.patch
+# CVE-2015-8567: net: vmxnet3: host memory leakage (bz #1289818)
+Patch0011: 0011-net-vmxnet3-avoid-memory-leakage-in-activate_device.patch
+# CVE-2016-1922: i386: avoid null pointer dereference (bz #1292766)
+Patch0012: 0012-i386-avoid-null-pointer-dereference.patch
+# CVE-2015-8613: buffer overflow in megasas_ctrl_get_info (bz #1284008)
+Patch0013: 0013-scsi-initialise-info-object-with-appropriate-size.patch
+# CVE-2015-8701: Buffer overflow in tx_consume in rocker.c (bz #1293720)
+Patch0014: 0014-net-rocker-fix-an-incorrect-array-bounds-check.patch
+# CVE-2015-8743: ne2000: OOB memory access in ioport r/w functions (bz
+# #1294787)
+Patch0015: 0015-net-ne2000-fix-bounds-check-in-ioport-operations.patch
+# CVE-2016-1568: Use-after-free vulnerability in ahci (bz #1297023)
+Patch0016: 0016-ide-ahci-reset-ncq-object-to-unused-on-error.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1226,6 +1240,18 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jan 20 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-6
+- CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz
+  #1295442)
+- CVE-2015-8567: net: vmxnet3: host memory leakage (bz #1289818)
+- CVE-2016-1922: i386: avoid null pointer dereference (bz #1292766)
+- CVE-2015-8613: buffer overflow in megasas_ctrl_get_info (bz #1284008)
+- CVE-2015-8701: Buffer overflow in tx_consume in rocker.c (bz #1293720)
+- CVE-2015-8743: ne2000: OOB memory access in ioport r/w functions (bz
+  #1294787)
+- CVE-2016-1568: Use-after-free vulnerability in ahci (bz #1297023)
+- Fix modules.d/kvm.conf example syntax (bz #1298823)
+
 * Sat Jan 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-5
 - CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
 - CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
