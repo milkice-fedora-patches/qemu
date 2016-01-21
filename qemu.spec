@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 10%{?dist}
+Release: 11%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -136,6 +136,15 @@ Patch0030: 0030-net-vmxnet3-Refine-l2-header-validation.patch
 # CVE-2015-8745: vmxnet3: don't assert reading registers in bar0 (bz
 # #1295442)
 Patch0031: 0031-vmxnet3-Support-reading-IMR-registers-on-bar0.patch
+# CVE-2015-8567: net: vmxnet3: host memory leakage (bz #1289818)
+Patch0032: 0032-net-vmxnet3-avoid-memory-leakage-in-activate_device.patch
+# CVE-2016-1922: i386: avoid null pointer dereference (bz #1292766)
+Patch0033: 0033-i386-avoid-null-pointer-dereference.patch
+# CVE-2015-8613: buffer overflow in megasas_ctrl_get_info (bz #1284008)
+Patch0034: 0034-scsi-initialise-info-object-with-appropriate-size.patch
+# CVE-2015-8743: ne2000: OOB memory access in ioport r/w functions (bz
+# #1294787)
+Patch0035: 0035-net-ne2000-fix-bounds-check-in-ioport-operations.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1238,6 +1247,13 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jan 20 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-11
+- CVE-2015-8567: net: vmxnet3: host memory leakage (bz #1289818)
+- CVE-2016-1922: i386: avoid null pointer dereference (bz #1292766)
+- CVE-2015-8613: buffer overflow in megasas_ctrl_get_info (bz #1284008)
+- CVE-2015-8743: ne2000: OOB memory access in ioport r/w functions (bz
+  #1294787)
+
 * Sat Jan 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-10
 - CVE-2015-7549: pci: null pointer dereference issue (bz #1291138)
 - CVE-2015-8558: DoS by infinite loop in ehci_advance_state (bz #1291309)
