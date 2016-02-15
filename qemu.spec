@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 11%{?dist}
+Release: 12%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -145,6 +145,26 @@ Patch0034: 0034-scsi-initialise-info-object-with-appropriate-size.patch
 # CVE-2015-8743: ne2000: OOB memory access in ioport r/w functions (bz
 # #1294787)
 Patch0035: 0035-net-ne2000-fix-bounds-check-in-ioport-operations.patch
+# CVE-2015-8619: Fix sendkey out of bounds (bz #1292757)
+Patch0036: 0036-hmp-fix-sendkey-out-of-bounds-write-CVE-2015-8619.patch
+# CVE-2016-1981: infinite loop in e1000 (bz #1299995)
+Patch0037: 0037-e1000-eliminate-infinite-loops-on-out-of-bounds-tran.patch
+# Fix Out-of-bounds read in usb-ehci (bz #1300234, bz #1299455)
+Patch0038: 0038-usb-check-page-select-value-while-processing-iTD.patch
+# CVE-2016-2197: ahci: null pointer dereference (bz #1302952)
+Patch0039: 0039-ahci-Do-not-unmap-NULL-addresses.patch
+# Fix gdbstub for VSX registers for ppc64 (bz #1304377)
+Patch0040: 0040-target-ppc-rename-and-export-maybe_bswap_register.patch
+Patch0041: 0041-target-ppc-gdbstub-fix-float-registers-for-little-en.patch
+Patch0042: 0042-target-ppc-gdbstub-introduce-avr_need_swap.patch
+Patch0043: 0043-target-ppc-gdbstub-fix-altivec-registers-for-little-.patch
+Patch0044: 0044-target-ppc-gdbstub-fix-spe-registers-for-little-endi.patch
+Patch0045: 0045-target-ppc-gdbstub-Add-VSX-support.patch
+Patch0046: 0046-target-ppc-kvm-fix-floating-point-registers-sync-on-.patch
+
+# Fix qemu-img vmdk images to work with VMware (bz #1299185)
+Patch0101: 0101-vmdk-Create-streamOptimized-as-version-3.patch
+Patch0102: 0102-vmdk-Fix-converting-to-streamOptimized.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1247,6 +1267,14 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Feb 15 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-12
+- CVE-2015-8619: Fix sendkey out of bounds (bz #1292757)
+- CVE-2016-1981: infinite loop in e1000 (bz #1299995)
+- Fix Out-of-bounds read in usb-ehci (bz #1300234, bz #1299455)
+- CVE-2016-2197: ahci: null pointer dereference (bz #1302952)
+- Fix gdbstub for VSX registers for ppc64 (bz #1304377)
+- Fix qemu-img vmdk images to work with VMware (bz #1299185)
+
 * Wed Jan 20 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-11
 - CVE-2015-8567: net: vmxnet3: host memory leakage (bz #1289818)
 - CVE-2016-1922: i386: avoid null pointer dereference (bz #1292766)
