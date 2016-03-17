@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -125,6 +125,15 @@ Patch0027: 0027-target-ppc-kvm-fix-floating-point-registers-sync-on-.patch
 # Fix qemu-img vmdk images to work with VMware (bz #1299185)
 Patch0101: 0101-vmdk-Create-streamOptimized-as-version-3.patch
 Patch0102: 0102-vmdk-Fix-converting-to-streamOptimized.patch
+# CVE-2016-2538: Integer overflow in usb module (bz #1305815)
+Patch0103: 0103-usb-check-RNDIS-message-length.patch
+Patch0104: 0104-usb-check-RNDIS-buffer-offsets-length.patch
+# CVE-2016-2841: ne2000: infinite loop (bz #1304047)
+Patch0105: 0105-net-ne2000-check-ring-buffer-control-registers.patch
+# CVE-2016-2857: net: out of bounds read (bz #1309564)
+Patch0106: 0106-net-check-packet-payload-length.patch
+# CVE-2016-2392: usb: null pointer dereference (bz #1307115)
+Patch0107: 0107-usb-check-USB-configuration-descriptor-object.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1260,6 +1269,12 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Mar 17 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-8
+- CVE-2016-2538: Integer overflow in usb module (bz #1305815)
+- CVE-2016-2841: ne2000: infinite loop (bz #1304047)
+- CVE-2016-2857: net: out of bounds read (bz #1309564)
+- CVE-2016-2392: usb: null pointer dereference (bz #1307115)
+
 * Mon Feb 15 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-7
 - CVE-2015-8619: Fix sendkey out of bounds (bz #1292757)
 - CVE-2016-1981: infinite loop in e1000 (bz #1299995)
