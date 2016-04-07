@@ -42,7 +42,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.5.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -1214,11 +1214,15 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Mar 17 2016 Cole Robinson <crobinso@redhat.com> - 2:2.5.0-11
+- CVE-2016-2857: net: out of bounds read (bz #1309564)
+- CVE-2016-2392: usb: null pointer dereference (bz #1307115)
+
 * Thu Mar 17 2016 Cole Robinson <crobinso@redhat.com> - 2:2.5.0-10
 - CVE-2016-2538: Integer overflow in usb module (bz #1305815)
 - CVE-2016-2841: ne2000: infinite loop (bz #1304047)
-- CVE-2016-2857: net: out of bounds read (bz #1309564)
-- CVE-2016-2392: usb: null pointer dereference (bz #1307115)
+- CVE-2016-2857 net: out of bounds read (bz #1309564)
+- CVE-2016-2392 usb: null pointer dereference (bz #1307115)
 - Fix external snapshot any more after active committing (bz #1300209)
 
 * Wed Mar  9 2016 Peter Robinson <pbrobinson@fedoraproject.org> 2:2.5.0-9
