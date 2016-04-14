@@ -39,7 +39,7 @@
 %endif
 
 # Release candidate version tracking
-%global rcver rc1
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
 %endif
@@ -60,7 +60,6 @@ Source1: qemu.binfmt
 
 # Creates /dev/kvm
 Source3: 80-kvm.rules
-
 # KSM control scripts
 Source4: ksm.service
 Source5: ksm.sysconfig
@@ -68,16 +67,19 @@ Source6: ksmctl.c
 Source7: ksmtuned.service
 Source8: ksmtuned
 Source9: ksmtuned.conf
-
+# guest agent service
 Source10: qemu-guest-agent.service
+# guest agent udev rules
 Source11: 99-qemu-guest-agent.rules
+# /etc/qemu/bridge.conf
 Source12: bridge.conf
-
-# qemu-kvm back compat wrapper
+# qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
-
-# For modprobe.d
+# /etc/modprobe.d/kvm.conf
 Source20: kvm.conf
+# /etc/sysctl.d/50-kvm-s390x.conf
+Source21: 50-kvm-s390x.conf
+
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -175,6 +177,8 @@ BuildRequires: libtasn1-devel
 BuildRequires: libcacard-devel >= 2.5.0
 # virgl 3d support
 BuildRequires: virglrenderer-devel
+# Needed explicitly for qemu 2.6 GL support
+BuildRequires: mesa-libgbm-devel
 
 
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
@@ -652,6 +656,12 @@ install -D -p -m 0644 %{_sourcedir}/kvm.conf %{buildroot}%{_sysconfdir}/modprobe
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
 
+%ifarch s390x
+install -d %{buildroot}%{_sysconfdir}/sysctl.d
+install -m 0644 %{_sourcedir}/50-kvm-s390.conf %{buildroot}%{_sysconfdir}/sysctl.d
+%endif
+
+
 # Install kvm specific bits
 %if %{have_kvm}
 mkdir -p %{buildroot}%{_bindir}/
@@ -834,6 +844,10 @@ if test -f "$hostqemu"; then qemu-sanity-check --qemu=$hostqemu ||: ; fi
 # a neverending source of trouble, so we just force it with chmod. For
 # more info see: https://bugzilla.redhat.com/show_bug.cgi?id=950436
 chmod --quiet 666 /dev/kvm || :
+
+%ifarch s390x
+%sysctl_apply 50-kvm-s390x.conf
+%endif
 %endif
 
 
@@ -1099,6 +1113,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/s390-ccw.img
 %ifarch s390x
 %{?kvm_files:}
+%{_sysconfdir}/sysctl.d/50-kvm-s390x.conf
 %endif
 
 
@@ -1173,6 +1188,12 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Apr 14 2016 Cole Robinson <crobinso@redhat.com> 2:2.6.0-0.1.rc2
+- Rebased to version 2.6.0-rc2
+- Fix GL deps (bz 1325966)
+- Ship sysctl file to fix s390x kvm (bz 1290589)
+- Fix FTBFS on s390 (bz 1326247)
+
 * Thu Apr 07 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.0-0.1.rc1
 - Rebased to version 2.6.0-rc1
 
