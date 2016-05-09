@@ -1,0 +1,47 @@
+From: Igor Mammedov <imammedo@redhat.com>
+Date: Fri, 8 Apr 2016 13:23:14 +0200
+Subject: [PATCH] tpm: acpi: remove IRQ from TPM's CRS to make Windows not see
+ conflict
+
+IRQ 5 used by TPM conflicts with PNP0C0F IRQs,
+as result Windows fails driver initialization with reason
+  'device cannot find enough free resources'
+But if TPM._CRS.IRQ entry is commented out, Windows
+seems to initialize driver without errors as it doesn't
+notice possible conflict and it seems to work
+probably due to a link with IRQ 5 being unused/disabled.
+
+So temporary comment out TPM._CRS.IRQ to 'fix'
+regression in TPM, with intent to fix it correctly
+later i.e.:
+  1. pick unused IRQ as default one for TPM
+  2. fetch IRQ value from device model so that user
+     could override default one if it conflicts with
+     some other device.
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 52e38eb0512585a5fadb431a65997b602d44874b)
+---
+ hw/i386/acpi-build.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 9c406a5..7678bbd 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1338,7 +1338,12 @@ build_ssdt(GArray *table_data, GArray *linker,
+                     crs = aml_resource_template();
+                     aml_append(crs, aml_memory32_fixed(TPM_TIS_ADDR_BASE,
+                                TPM_TIS_ADDR_SIZE, AML_READ_WRITE));
+-                    aml_append(crs, aml_irq_no_flags(TPM_TIS_IRQ));
++                    /*
++                        FIXME: TPM_TIS_IRQ=5 conflicts with PNP0C0F irqs,
++                        Rewrite to take IRQ from TPM device model and
++                        fix default IRQ value there to use some unused IRQ
++                     */
++                    /* aml_append(crs, aml_irq_no_flags(TPM_TIS_IRQ)); */
+                     aml_append(dev, aml_name_decl("_CRS", crs));
+                     aml_append(scope, dev);
+                 }

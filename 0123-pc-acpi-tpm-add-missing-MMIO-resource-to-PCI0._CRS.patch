@@ -1,0 +1,41 @@
+From: Igor Mammedov <imammedo@redhat.com>
+Date: Fri, 8 Apr 2016 13:23:13 +0200
+Subject: [PATCH] pc: acpi: tpm: add missing MMIO resource to PCI0._CRS
+
+Windows will fail initialize TMP driver with the reason:
+  'device cannot find enough free resources'
+That happens because parent BUS doesn't describe
+MMIO resources used by TPM child device.
+Fix it by describing it in top-most parent bus scope PCI0.
+
+It was 'regressed' by commit
+  5cb18b3d TPM2 ACPI table support
+with following fixup
+  9e472263 acpi: add missing ssdt
+which did the right thing by moving TPM to BUS
+it belongs to but lacked a proper resource declaration.
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 2b1c2e8e5f1990f0a201a8cbf9d366fca60f4aa8)
+---
+ hw/i386/acpi-build.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 46eddb8..9c406a5 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1005,6 +1005,11 @@ build_ssdt(GArray *table_data, GArray *linker,
+                              0, pci->w64.begin, pci->w64.end - 1, 0,
+                              pci->w64.end - pci->w64.begin));
+     }
++
++    if (misc->tpm_version != TPM_VERSION_UNSPEC) {
++        aml_append(crs, aml_memory32_fixed(TPM_TIS_ADDR_BASE,
++                   TPM_TIS_ADDR_SIZE, AML_READ_WRITE));
++    }
+     aml_append(scope, aml_name_decl("_CRS", crs));
+ 
+     /* reserve GPE0 block resources */

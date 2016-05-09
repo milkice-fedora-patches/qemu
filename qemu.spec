@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 8%{?dist}
+Release: 9%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -70,6 +70,8 @@ Source13: qemu-kvm.sh
 
 # For modprobe.d
 Source20: kvm.conf
+# /etc/sysctl.d/50-kvm-s390x.conf
+Source21: 50-kvm-s390x.conf
 
 # Fix SSE4 emulation with accel=tcg (bz #1270703)
 Patch0001: 0001-target-i386-fix-pcmpxstrx-equal-ordered-strstr-mode.patch
@@ -134,6 +136,34 @@ Patch0105: 0105-net-ne2000-check-ring-buffer-control-registers.patch
 Patch0106: 0106-net-check-packet-payload-length.patch
 # CVE-2016-2392: usb: null pointer dereference (bz #1307115)
 Patch0107: 0107-usb-check-USB-configuration-descriptor-object.patch
+# CVE-2016-3710: incorrect bounds checking in vga (bz #1334345)
+Patch0108: 0108-vga-fix-banked-access-bounds-checking-CVE-2016-3710.patch
+Patch0109: 0109-vga-add-vbe_enabled-helper.patch
+Patch0110: 0110-vga-factor-out-vga-register-setup.patch
+Patch0111: 0111-vga-update-vga-register-setup-on-vbe-changes.patch
+# CVE-2016-3712: out of bounds read in vga (bz #1334342)
+Patch0112: 0112-vga-make-sure-vga-register-setup-for-vbe-stays-intac.patch
+# Fix USB redirection (bz #1330221)
+Patch0113: 0113-ehci-clear-suspend-bit-on-detach.patch
+# CVE-2016-4037: infinite loop in usb ehci (bz #1328080)
+Patch0114: 0114-ehci-apply-limit-to-iTD-sidt-descriptors.patch
+Patch0115: 0115-Revert-ehci-make-idt-processing-more-robust.patch
+# CVE-2016-4001: buffer overflow in stellaris net (bz #1325885)
+Patch0116: 0116-net-stellaris_enet-check-packet-length-against-recei.patch
+# CVE-2016-2858: rng stack corruption (bz #1314677)
+Patch0117: 0117-rng-remove-the-unused-request-cancellation-code.patch
+Patch0118: 0118-rng-move-request-queue-from-RngEgd-to-RngBackend.patch
+Patch0119: 0119-rng-move-request-queue-cleanup-from-RngEgd-to-RngBac.patch
+Patch0120: 0120-rng-add-request-queue-support-to-rng-random.patch
+# CVE-2016-2391: ohci: crash via multiple timers (bz #1308881)
+Patch0121: 0121-ohci-allocate-timer-only-once.patch
+# CVE-2016-2198: ehci: null pointer dereference (bz #1303134)
+Patch0122: 0122-usb-ehci-add-capability-mmio-write-function.patch
+# Fix tpm passthrough (bz #1281413)
+Patch0123: 0123-pc-acpi-tpm-add-missing-MMIO-resource-to-PCI0._CRS.patch
+Patch0124: 0124-tpm-acpi-remove-IRQ-from-TPM-s-CRS-to-make-Windows-n.patch
+# Fix ./configure with ccache
+Patch0125: 0125-configure-disallow-ccache-during-compile-tests.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -737,6 +767,11 @@ install -D -p -m 0644 %{_sourcedir}/kvm.conf %{buildroot}%{_sysconfdir}/modprobe
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
 
+%ifarch s390x
+install -d %{buildroot}%{_sysconfdir}/sysctl.d
+install -m 0644 %{_sourcedir}/50-kvm-s390x.conf %{buildroot}%{_sysconfdir}/sysctl.d
+%endif
+
 # Install kvm specific bits
 %if %{have_kvm}
 mkdir -p %{buildroot}%{_bindir}/
@@ -923,6 +958,10 @@ if test -f "$hostqemu"; then qemu-sanity-check --qemu=$hostqemu ||: ; fi
 # a neverending source of trouble, so we just force it with chmod. For
 # more info see: https://bugzilla.redhat.com/show_bug.cgi?id=950436
 chmod --quiet 666 /dev/kvm || :
+
+%ifarch s390x
+%sysctl_apply 50-kvm-s390x.conf
+%endif
 %endif
 
 
@@ -1171,6 +1210,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/s390-ccw.img
 %ifarch s390x
 %{?kvm_files:}
+%{_sysconfdir}/sysctl.d/50-kvm-s390x.conf
 %endif
 
 
@@ -1269,6 +1309,19 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon May 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-9
+- CVE-2016-3710: incorrect bounds checking in vga (bz #1334345)
+- CVE-2016-3712: out of bounds read in vga (bz #1334342)
+- Fix USB redirection (bz #1330221)
+- CVE-2016-4037: infinite loop in usb ehci (bz #1328080)
+- CVE-2016-4001: buffer overflow in stellaris net (bz #1325885)
+- CVE-2016-2858: rng stack corruption (bz #1314677)
+- CVE-2016-2391: ohci: crash via multiple timers (bz #1308881)
+- CVE-2016-2198: ehci: null pointer dereference (bz #1303134)
+- Fix tpm passthrough (bz #1281413)
+- Fix ./configure with ccache
+- Ship sysctl file to fix s390x kvm (bz #1290589)
+
 * Thu Mar 17 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-8
 - CVE-2016-2538: Integer overflow in usb module (bz #1305815)
 - CVE-2016-2841: ne2000: infinite loop (bz #1304047)
