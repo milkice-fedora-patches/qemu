@@ -1,0 +1,38 @@
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 28 Oct 2015 13:56:40 -0400
+Subject: [PATCH] configure: disallow ccache during compile tests
+
+If the user is using ccache during the configuration step,
+it may interfere with some of the configuration tests,
+particularly the "Is ccache interfering with macro analysis" step,
+which is a bit of a poetic problem.
+
+1) Disallow ccache from reading from the cache during configure,
+   but don't disable it entirely to allow us to see if it causes other
+   problems.
+
+2) Force off CCACHE_CPP2 during the ccache test to get a deterministic
+   answer over whether or not we need to enable that feature later.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-Id: <1446055000-29150-1-git-send-email-jsnow@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 5e4dfd3d4e87e0464d599ecef06aa8fe78420a9b)
+---
+ configure | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/configure b/configure
+index 69a5e2d..b29c923 100755
+--- a/configure
++++ b/configure
+@@ -8,6 +8,9 @@
+ CLICOLOR_FORCE= GREP_OPTIONS=
+ unset CLICOLOR_FORCE GREP_OPTIONS
+ 
++# Don't allow CCACHE, if present, to use cached results of compile tests!
++export CCACHE_RECACHE=yes
++
+ # Temporary directory used for files created while
+ # configure runs. Since it is in the build directory
+ # we can safely blow away any previous version of it

@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 13%{?dist}
+Release: 14%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -176,6 +176,31 @@ Patch0106: 0106-net-check-packet-payload-length.patch
 Patch0107: 0107-usb-check-USB-configuration-descriptor-object.patch
 # spice: fix spice_chr_add_watch() crash (bz #1315049)
 Patch0108: 0108-spice-fix-spice_chr_add_watch-pre-condition.patch
+# CVE-2016-3710: incorrect bounds checking in vga (bz #1334345)
+Patch0109: 0109-vga-fix-banked-access-bounds-checking-CVE-2016-3710.patch
+Patch0110: 0110-vga-add-vbe_enabled-helper.patch
+Patch0111: 0111-vga-factor-out-vga-register-setup.patch
+Patch0112: 0112-vga-update-vga-register-setup-on-vbe-changes.patch
+# CVE-2016-3712: out of bounds read in vga (bz #1334342)
+Patch0113: 0113-vga-make-sure-vga-register-setup-for-vbe-stays-intac.patch
+# Fix USB redirection (bz #1330221)
+Patch0114: 0114-ehci-clear-suspend-bit-on-detach.patch
+# CVE-2016-4037: infinite loop in usb ehci (bz #1328080)
+Patch0115: 0115-ehci-apply-limit-to-iTD-sidt-descriptors.patch
+Patch0116: 0116-Revert-ehci-make-idt-processing-more-robust.patch
+# CVE-2016-4001: buffer overflow in stellaris net (bz #1325885)
+Patch0117: 0117-net-stellaris_enet-check-packet-length-against-recei.patch
+# CVE-2016-2858: rng stack corruption (bz #1314677)
+Patch0118: 0118-rng-remove-the-unused-request-cancellation-code.patch
+Patch0119: 0119-rng-move-request-queue-from-RngEgd-to-RngBackend.patch
+Patch0120: 0120-rng-move-request-queue-cleanup-from-RngEgd-to-RngBac.patch
+Patch0121: 0121-rng-add-request-queue-support-to-rng-random.patch
+# CVE-2016-2391: ohci: crash via multiple timers (bz #1308881)
+Patch0122: 0122-ohci-allocate-timer-only-once.patch
+# CVE-2016-2198: ehci: null pointer dereference (bz #1303134)
+Patch0123: 0123-usb-ehci-add-capability-mmio-write-function.patch
+# Fix ./configure with ccache
+Patch0124: 0124-configure-disallow-ccache-during-compile-tests.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1278,6 +1303,17 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon May 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-14
+- CVE-2016-3710: incorrect bounds checking in vga (bz #1334345)
+- CVE-2016-3712: out of bounds read in vga (bz #1334342)
+- Fix USB redirection (bz #1330221)
+- CVE-2016-4037: infinite loop in usb ehci (bz #1328080)
+- CVE-2016-4001: buffer overflow in stellaris net (bz #1325885)
+- CVE-2016-2858: rng stack corruption (bz #1314677)
+- CVE-2016-2391: ohci: crash via multiple timers (bz #1308881)
+- CVE-2016-2198: ehci: null pointer dereference (bz #1303134)
+- Fix ./configure with ccache
+
 * Thu Mar 17 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-13
 - CVE-2016-2538: Integer overflow in usb module (bz #1305815)
 - CVE-2016-2841: ne2000: infinite loop (bz #1304047)
