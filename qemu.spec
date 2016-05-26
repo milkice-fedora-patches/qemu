@@ -43,7 +43,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.3.1
-Release: 14%{?dist}
+Release: 15%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -201,6 +201,14 @@ Patch0122: 0122-ohci-allocate-timer-only-once.patch
 Patch0123: 0123-usb-ehci-add-capability-mmio-write-function.patch
 # Fix ./configure with ccache
 Patch0124: 0124-configure-disallow-ccache-during-compile-tests.patch
+# CVE-2016-4020: memory leak in kvmvapic.c (bz #1326904)
+Patch0125: 0125-i386-kvmvapic-initialise-imm32-variable.patch
+# CVE-2016-4439: scsi: esb: OOB write #1 (bz #1337503)
+Patch0126: 0126-esp-check-command-buffer-length-before-write-CVE-201.patch
+# CVE-2016-4441: scsi: esb: OOB write #2 (bz #1337506)
+Patch0127: 0127-esp-check-dma-length-before-reading-scsi-command-CVE.patch
+# Fix regression installing windows 7 with qxl/vga (bz #1339267)
+Patch0128: 0128-vga-add-sr_vbe-register-set.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1303,6 +1311,12 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu May 26 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-15
+- CVE-2016-4020: memory leak in kvmvapic.c (bz #1326904)
+- CVE-2016-4439: scsi: esb: OOB write #1 (bz #1337503)
+- CVE-2016-4441: scsi: esb: OOB write #2 (bz #1337506)
+- Fix regression installing windows 7 with qxl/vga (bz #1339267)
+
 * Mon May 09 2016 Cole Robinson <crobinso@redhat.com> - 2:2.3.1-14
 - CVE-2016-3710: incorrect bounds checking in vga (bz #1334345)
 - CVE-2016-3712: out of bounds read in vga (bz #1334342)
