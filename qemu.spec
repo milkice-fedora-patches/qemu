@@ -40,7 +40,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.4.1
-Release: 10%{?dist}
+Release: 11%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -172,6 +172,30 @@ Patch0127: 0127-esp-check-command-buffer-length-before-write-CVE-201.patch
 Patch0128: 0128-esp-check-dma-length-before-reading-scsi-command-CVE.patch
 # Fix regression installing windows 7 with qxl/vga (bz #1339267)
 Patch0129: 0129-vga-add-sr_vbe-register-set.patch
+# CVE-2016-4002: net: buffer overflow in MIPSnet (bz #1326083)
+Patch0130: 0130-net-mipsnet-check-packet-length-against-buffer.patch
+# CVE-2016-4952 scsi: pvscsi: out-of-bounds access issue
+Patch0131: 0131-scsi-pvscsi-check-command-descriptor-ring-buffer-siz.patch
+# CVE-2016-5106: scsi: megasas: out-of-bounds write (bz #1339581)
+Patch0132: 0132-scsi-megasas-use-appropriate-property-buffer-size.patch
+# CVE-2016-5105: scsi: megasas: stack information leakage (bz #1339585)
+Patch0133: 0133-scsi-megasas-initialise-local-configuration-data-buf.patch
+# CVE-2016-5107: scsi: megasas: out-of-bounds read (bz #1339573)
+Patch0134: 0134-scsi-megasas-check-read_queue_head-index-value.patch
+# CVE-2016-4454: display: vmsvga: out-of-bounds read (bz #1340740)
+Patch0135: 0135-vmsvga-move-fifo-sanity-checks-to-vmsvga_fifo_length.patch
+Patch0136: 0136-vmsvga-add-more-fifo-checks.patch
+Patch0137: 0137-vmsvga-shadow-fifo-registers.patch
+# CVE-2016-4453: display: vmsvga: infinite loop (bz #1340744)
+Patch0138: 0138-vmsvga-don-t-process-more-than-1024-fifo-commands-at.patch
+# CVE-2016-5238: scsi: esp: OOB write (bz #1341932)
+Patch0139: 0139-scsi-esp-check-buffer-length-before-reading-scsi-com.patch
+Patch0140: 0140-scsi-esp-respect-FIFO-invariant-after-message-phase.patch
+Patch0141: 0141-scsi-esp-clean-up-handle_ti-esp_do_dma-if-s-do_cmd.patch
+# CVE-2016-5338: scsi: esp: OOB r/w access (bz #1343325)
+Patch0142: 0142-scsi-esp-make-cmdbuf-big-enough-for-maximum-CDB-size.patch
+# CVE-2016-5337: scsi: megasas: information leakage (bz #1343910)
+Patch0143: 0143-scsi-megasas-null-terminate-bios-version-buffer.patch
 
 BuildRequires: SDL2-devel
 BuildRequires: zlib-devel
@@ -1319,6 +1343,19 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jun 22 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-11
+- CVE-2016-4002: net: buffer overflow in MIPSnet (bz #1326083)
+- CVE-2016-4952 scsi: pvscsi: out-of-bounds access issue
+- CVE-2016-5106: scsi: megasas: out-of-bounds write (bz #1339581)
+- CVE-2016-5105: scsi: megasas: stack information leakage (bz #1339585)
+- CVE-2016-5107: scsi: megasas: out-of-bounds read (bz #1339573)
+- CVE-2016-4454: display: vmsvga: out-of-bounds read (bz #1340740)
+- CVE-2016-4453: display: vmsvga: infinite loop (bz #1340744)
+- CVE-2016-5238: scsi: esp: OOB write (bz #1341932)
+- CVE-2016-5338: scsi: esp: OOB r/w access (bz #1343325)
+- CVE-2016-5337: scsi: megasas: information leakage (bz #1343910)
+- Add deps on edk2-ovmf and edk2-aarch64
+
 * Thu May 26 2016 Cole Robinson <crobinso@redhat.com> - 2:2.4.1-10
 - CVE-2016-4020: memory leak in kvmvapic.c (bz #1326904)
 - CVE-2016-4439: scsi: esb: OOB write #1 (bz #1337503)
