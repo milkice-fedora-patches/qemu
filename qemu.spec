@@ -59,8 +59,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.6.0
-Release: 5%{?rcrel}%{?dist}
+Version: 2.6.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -95,54 +95,6 @@ Source21: 50-kvm-s390x.conf
 # Adjust spice gl version check to expect F24 backported version
 # Not for upstream, f24 only
 Patch0001: 0001-spice-F24-spice-has-backported-gl-support.patch
-# Fix gtk UI crash when switching to monitor (bz #1333424)
-Patch0002: 0002-ui-gtk-fix-crash-when-terminal-inner-border-is-NULL.patch
-# Fix sdl2 UI lockup lockup when switching to monitor
-Patch0003: 0003-ui-sdl2-Release-grab-before-opening-console-window.patch
-# Explicitly error if spice GL setup fails
-Patch0004: 0004-ui-spice-Exit-if-gl-on-EGL-init-fails.patch
-# Fix monitor resizing with virgl (bz #1337564)
-Patch0005: 0005-spice-gl-add-use-qemu_spice_gl_monitor_config.patch
-# CVE-2016-4020: memory leak in kvmvapic.c (bz #1326904)
-Patch0006: 0006-i386-kvmvapic-initialise-imm32-variable.patch
-# CVE-2016-4439: scsi: esb: OOB write #1 (bz #1337503)
-Patch0007: 0007-esp-check-command-buffer-length-before-write-CVE-201.patch
-# CVE-2016-4441: scsi: esb: OOB write #2 (bz #1337506)
-Patch0008: 0008-esp-check-dma-length-before-reading-scsi-command-CVE.patch
-# Fix regression installing windows 7 with qxl/vga (bz #1339267)
-Patch0009: 0009-vga-add-sr_vbe-register-set.patch
-# Fix crash with aarch64 gic-version=host and accel=tcg (bz #1339977)
-Patch0010: 0010-hw-arm-virt-Reject-gic-version-host-for-non-KVM.patch
-# CVE-2016-4002: net: buffer overflow in MIPSnet (bz #1326083)
-Patch0011: 0011-net-mipsnet-check-packet-length-against-buffer.patch
-# CVE-2016-4952 scsi: pvscsi: out-of-bounds access issue
-Patch0012: 0012-scsi-pvscsi-check-command-descriptor-ring-buffer-siz.patch
-# CVE-2016-4964: scsi: mptsas infinite loop (bz #1339157)
-Patch0013: 0013-scsi-mptsas-infinite-loop-while-fetching-requests.patch
-# CVE-2016-5106: scsi: megasas: out-of-bounds write (bz #1339581)
-Patch0014: 0014-scsi-megasas-use-appropriate-property-buffer-size.patch
-# CVE-2016-5105: scsi: megasas: stack information leakage (bz #1339585)
-Patch0015: 0015-scsi-megasas-initialise-local-configuration-data-buf.patch
-# CVE-2016-5107: scsi: megasas: out-of-bounds read (bz #1339573)
-Patch0016: 0016-scsi-megasas-check-read_queue_head-index-value.patch
-# CVE-2016-4454: display: vmsvga: out-of-bounds read (bz #1340740)
-Patch0017: 0017-vmsvga-move-fifo-sanity-checks-to-vmsvga_fifo_length.patch
-Patch0018: 0018-vmsvga-add-more-fifo-checks.patch
-Patch0019: 0019-vmsvga-shadow-fifo-registers.patch
-# CVE-2016-4453: display: vmsvga: infinite loop (bz #1340744)
-Patch0020: 0020-vmsvga-don-t-process-more-than-1024-fifo-commands-at.patch
-# CVE-2016-5126: block: iscsi: buffer overflow (bz #1340925)
-Patch0021: 0021-block-iscsi-avoid-potential-overflow-of-acb-task-cdb.patch
-# CVE-2016-5238: scsi: esp: OOB write (bz #1341932)
-Patch0022: 0022-scsi-esp-check-buffer-length-before-reading-scsi-com.patch
-Patch0023: 0023-scsi-esp-respect-FIFO-invariant-after-message-phase.patch
-Patch0024: 0024-scsi-esp-clean-up-handle_ti-esp_do_dma-if-s-do_cmd.patch
-# CVE-2016-5338: scsi: esp: OOB r/w access (bz #1343325)
-Patch0025: 0025-scsi-esp-make-cmdbuf-big-enough-for-maximum-CDB-size.patch
-# CVE-2016-5337: scsi: megasas: information leakage (bz #1343910)
-Patch0026: 0026-scsi-megasas-null-terminate-bios-version-buffer.patch
-# Fix crash with -nodefaults -sdl (bz #1340931)
-Patch0027: 0027-sdl2-skip-init-without-outputs.patch
 
 
 # documentation deps
@@ -1595,6 +1547,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Aug 19 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.1-1
+- Rebase to 2.6.1 stable
+
 * Wed Jul 13 2016 Daniel Berrange <berrange@redhat.com> - 2:2.6.0-5
 - Introduce qemu-user-static sub-RPM
 
