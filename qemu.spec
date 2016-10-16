@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -100,6 +100,28 @@ Source21: 50-kvm-s390x.conf
 # Adjust spice gl version check to expect F24 backported version
 # Not for upstream, f24 only
 Patch0001: 0001-spice-F24-spice-has-backported-gl-support.patch
+# CVE-2016-6351: scsi: esp: OOB write access in esp_do_dma (bz #1360600)
+Patch0002: 0002-scsi-esp-fix-migration.patch
+# CVE-2016-6833: vmxnet3: use-after-free (bz #1368982)
+Patch0003: 0003-net-vmxnet3-check-for-device_active-before-write.patch
+# CVE-2016-6490: virtio: infinite loop in virtqueue_pop (bz #1361428)
+Patch0004: 0004-virtio-check-vring-descriptor-buffer-length.patch
+# CVE-2016-7156: pvscsi: infinite loop when building SG list (bz #1373480)
+Patch0005: 0005-scsi-pvscsi-limit-loop-to-fetch-SG-list.patch
+# CVE-2016-7170: vmware_vga: OOB stack memory access (bz #1374709)
+Patch0006: 0006-vmsvga-correct-bitmap-and-pixmap-size-checks.patch
+# CVE-2016-7161: net: Heap overflow in xlnx.xps-ethernetlite (bz #1379298)
+Patch0007: 0007-hw-net-Fix-a-heap-overflow-in-xlnx.xps-ethernetlite.patch
+# CVE-2016-7466: usb: xhci memory leakage during device unplug (bz #1377838)
+Patch0008: 0008-usb-xhci-fix-memory-leak-in-usb_xhci_exit.patch
+# CVE-2016-7422: virtio: null pointer dereference (bz #1376756)
+Patch0009: 0009-virtio-add-check-for-descriptor-s-mapped-address.patch
+# CVE-2016-7908: net: Infinite loop in mcf_fec_do_tx (bz #1381193)
+Patch0010: 0010-net-mcf-limit-buffer-descriptor-count.patch
+# CVE-2016-8576: usb: xHCI: infinite loop vulnerability (bz #1382322)
+Patch0011: 0011-xhci-limit-the-number-of-link-trbs-we-are-willing-to.patch
+# CVE-2016-7995: usb: hcd-ehci: memory leak (bz #1382669)
+Patch0012: 0012-usb-ehci-fix-memory-leak-in-ehci_process_itd.patch
 
 
 # documentation deps
@@ -1556,6 +1578,20 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sat Oct 15 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-2
+- CVE-2016-6351: scsi: esp: OOB write access in esp_do_dma (bz #1360600)
+- CVE-2016-6833: vmxnet3: use-after-free (bz #1368982)
+- CVE-2016-6490: virtio: infinite loop in virtqueue_pop (bz #1361428)
+- CVE-2016-7156: pvscsi: infinite loop when building SG list (bz #1373480)
+- CVE-2016-7170: vmware_vga: OOB stack memory access (bz #1374709)
+- CVE-2016-7161: net: Heap overflow in xlnx.xps-ethernetlite (bz #1379298)
+- CVE-2016-7466: usb: xhci memory leakage during device unplug (bz #1377838)
+- CVE-2016-7422: virtio: null pointer dereference (bz #1376756)
+- CVE-2016-7908: net: Infinite loop in mcf_fec_do_tx (bz #1381193)
+- CVE-2016-8576: usb: xHCI: infinite loop vulnerability (bz #1382322)
+- CVE-2016-7995: usb: hcd-ehci: memory leak (bz #1382669)
+- Don't depend on edk2 roms where they aren't available (bz #1373576)
+
 * Fri Sep 30 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-1
 - Rebased to version 2.6.2
 
