@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -124,6 +124,8 @@ Patch0010: 0010-net-mcf-limit-buffer-descriptor-count.patch
 Patch0011: 0011-xhci-limit-the-number-of-link-trbs-we-are-willing-to.patch
 # CVE-2016-7995: usb: hcd-ehci: memory leak (bz #1382669)
 Patch0012: 0012-usb-ehci-fix-memory-leak-in-ehci_process_itd.patch
+# Fix flickering display with boxes + wayland VM (bz #1266484)
+Patch0013: 0013-qxl-Only-emit-QXL_INTERRUPT_CLIENT_MONITORS_CONFIG-o.patch
 
 
 # documentation deps
@@ -1586,6 +1588,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Oct 19 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-3
+- Fix flickering display with boxes + wayland VM (bz #1266484)
+- Add ppc64 kvm memlock file (bz #1293024)
+
 * Sat Oct 15 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-2
 - CVE-2016-6351: scsi: esp: OOB write access in esp_do_dma (bz #1360600)
 - CVE-2016-6833: vmxnet3: use-after-free (bz #1368982)
