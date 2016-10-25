@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -891,7 +891,7 @@ install -m 0644 %{_sourcedir}/50-kvm-s390x.conf %{buildroot}%{_sysconfdir}/sysct
 
 %ifarch %{power64}
 install -d %{buildroot}%{_sysconfdir}/security/limits.d
-install -m 0644 %{_sourcedir}/50-kvm-ppc64-memlock.conf %{buildroot}%{_sysconfdir}/security/limits.d
+install -m 0644 %{_sourcedir}/95-kvm-ppc64-memlock.conf %{buildroot}%{_sysconfdir}/security/limits.d
 %endif
 
 
@@ -1037,8 +1037,9 @@ for i in dummy \
   chmod 644 %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-dynamic.conf
 
 %if %{user_static}
-  grep /$i:\$ %{_sourcedir}/qemu.binfmt > %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
-  perl -i -p -e "s/$i/$i-static/" %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
+  grep /$i:\$ %{_sourcedir}/qemu.binfmt | tr -d '\n' > %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
+  echo "F" >> %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
+  perl -i -p -e "s/$i:F/$i-static:F/" %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
   chmod 644 %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
 %endif
 
@@ -1588,6 +1589,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Oct 25 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-4
+- Fix PPC64 build with memlock file (bz #1387601)
+- Fix qemu-user-static binfmt paths (bz #1388250)
+- Use F flag in binfmt for qemu-user-static (bz #1384615)
+
 * Wed Oct 19 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-3
 - Fix flickering display with boxes + wayland VM (bz #1266484)
 - Add ppc64 kvm memlock file (bz #1293024)
