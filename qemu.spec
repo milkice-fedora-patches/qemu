@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -1038,8 +1038,7 @@ for i in dummy \
 
 %if %{user_static}
   grep /$i:\$ %{_sourcedir}/qemu.binfmt | tr -d '\n' > %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
-  echo "F" >> %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
-  perl -i -p -e "s/$i:F/$i-static:F/" %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
+  perl -i -p -e "s|/usr/bin/$i|/usr/bin/$i-static|" %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
   chmod 644 %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i-static.conf
 %endif
 
@@ -1589,6 +1588,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sun Nov 06 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-5
+- Fix qemu-user-static binfmt on f24 (bz 1388250)
+
 * Tue Oct 25 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-4
 - Fix PPC64 build with memlock file (bz #1387601)
 - Fix qemu-user-static binfmt paths (bz #1388250)
