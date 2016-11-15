@@ -1113,6 +1113,9 @@ for i in dummy \
 %ifnarch alpha
     qemu-alpha \
 %endif
+%ifnarch aarch64
+    qemu-aarch64 \
+%endif
 %ifnarch %{arm}
     qemu-arm \
 %endif
