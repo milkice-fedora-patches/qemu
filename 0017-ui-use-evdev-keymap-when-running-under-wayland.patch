@@ -1,0 +1,53 @@
+From: "Daniel P. Berrange" <berrange@redhat.com>
+Date: Thu, 1 Dec 2016 09:41:17 +0000
+Subject: [PATCH] ui: use evdev keymap when running under wayland
+
+Wayland always uses evdev as its input source, so QEMU
+can use the existing evdev keymap data
+
+Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
+---
+ include/ui/gtk.h | 4 ++++
+ ui/gtk.c         | 7 +++++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/include/ui/gtk.h b/include/ui/gtk.h
+index 42ca0fe..b3b5005 100644
+--- a/include/ui/gtk.h
++++ b/include/ui/gtk.h
+@@ -18,6 +18,10 @@
+ #include <X11/XKBlib.h>
+ #endif
+ 
++#ifdef GDK_WINDOWING_WAYLAND
++#include <gdk/gdkwayland.h>
++#endif
++
+ #if defined(CONFIG_OPENGL)
+ #include "ui/egl-helpers.h"
+ #include "ui/egl-context.h"
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 58d20ee..e8cf785 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -90,6 +90,9 @@
+ #ifndef GDK_IS_X11_DISPLAY
+ #define GDK_IS_X11_DISPLAY(dpy) (dpy == dpy)
+ #endif
++#ifndef GDK_IS_WAYLAND_DISPLAY
++#define GDK_IS_WAYLAND_DISPLAY(dpy) (dpy == dpy)
++#endif
+ #ifndef GDK_IS_WIN32_DISPLAY
+ #define GDK_IS_WIN32_DISPLAY(dpy) (dpy == dpy)
+ #endif
+@@ -1034,6 +1037,10 @@ static int gd_map_keycode(GtkDisplayState *s, GdkDisplay *dpy, int gdk_keycode)
+             qemu_keycode = translate_xfree86_keycode(gdk_keycode - 97);
+         }
+ #endif
++#ifdef GDK_WINDOWING_WAYLAND
++    } else if (GDK_IS_WAYLAND_DISPLAY(dpy) && gdk_keycode < 158) {
++        qemu_keycode = translate_evdev_keycode(gdk_keycode - 97);
++#endif
+     } else if (gdk_keycode == 208) { /* Hiragana_Katakana */
+         qemu_keycode = 0x70;
+     } else if (gdk_keycode == 211) { /* backslash */

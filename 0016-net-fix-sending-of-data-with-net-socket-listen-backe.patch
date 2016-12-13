@@ -1,0 +1,72 @@
+From: "Daniel P. Berrange" <berrange@redhat.com>
+Date: Fri, 4 Nov 2016 15:46:33 +0000
+Subject: [PATCH] net: fix sending of data with -net socket, listen backend
+
+The use of -net socket,listen was broken in the following
+commit
+
+  commit 16a3df403b10c4ac347159e39005fd520b2648bb
+  Author: Zhang Chen <zhangchen.fnst@cn.fujitsu.com>
+  Date:   Fri May 13 15:35:19 2016 +0800
+
+    net/net: Add SocketReadState for reuse codes
+
+    This function is from net/socket.c, move it to net.c and net.h.
+    Add SocketReadState to make others reuse net_fill_rstate().
+    suggestion from jason.
+
+This refactored the state out of NetSocketState into a
+separate SocketReadState. This refactoring requires
+that a callback is provided to be triggered upon
+completion of a packet receive from the guest.
+
+The patch only registered this callback in the codepaths
+hit by -net socket,connect, not -net socket,listen. So
+as a result packets sent by the guest in the latter case
+get dropped on the floor.
+
+This bug is hidden because net_fill_rstate() silently
+does nothing if the callback is not set.
+
+This patch adds in the middle callback registration
+and also adds an assert so that QEMU aborts if there
+are any other codepaths hit which are missing the
+callback.
+
+Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
+Reviewed-by: Zhang Chen <zhangchen.fnst@cn.fujitsu.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit e79cd4068063ea2859199002a049010a11202939)
+---
+ net/net.c    | 5 ++---
+ net/socket.c | 1 +
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/net.c b/net/net.c
+index d51cb29..19b4d9e 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1648,9 +1648,8 @@ int net_fill_rstate(SocketReadState *rs, const uint8_t *buf, int size)
+             if (rs->index >= rs->packet_len) {
+                 rs->index = 0;
+                 rs->state = 0;
+-                if (rs->finalize) {
+-                    rs->finalize(rs);
+-                }
++                assert(rs->finalize);
++                rs->finalize(rs);
+             }
+             break;
+         }
+diff --git a/net/socket.c b/net/socket.c
+index 3f98eef..dcae1ae 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -522,6 +522,7 @@ static int net_socket_listen_init(NetClientState *peer,
+     s->fd = -1;
+     s->listen_fd = fd;
+     s->nc.link_down = true;
++    net_socket_rs_init(&s->rs, net_socket_rs_finalize);
+ 
+     qemu_set_fd_handler(s->listen_fd, net_socket_accept, NULL, s);
+     return 0;

@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.0
-Release: 7%{?rcrel}%{?dist}
+Release: 8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -133,6 +133,11 @@ Patch0013: 0013-usb-redir-allocate-buffers-before-waking-up-the-host.patch
 Patch0014: 0014-ppc-kvm-Mark-64kB-page-size-support-as-disabled-if-n.patch
 # Fix flickering display with boxes + wayland VM (bz #1266484)
 Patch0015: 0015-qxl-Only-emit-QXL_INTERRUPT_CLIENT_MONITORS_CONFIG-o.patch
+# Fix sending of data with -net socket (bz #1391497)
+Patch0016: 0016-net-fix-sending-of-data-with-net-socket-listen-backe.patch
+# Fix keyboard issues with -ui gtk + host wayland (bz #1401211)
+# Posted but not yet applied upstream
+Patch0017: 0017-ui-use-evdev-keymap-when-running-under-wayland.patch
 
 # documentation deps
 BuildRequires: texi2html
@@ -1604,6 +1609,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Dec 12 2016 Cole Robinson <crobinso@redhat.com> - 2:2.7.0-8
+- Fix sending of data with -net socket (bz #1391497)
+- Fix keyboard issues with -ui gtk + host wayland (bz #1401211)
+
 * Tue Oct 25 2016 Cole Robinson <crobinso@redhat.com> - 2:2.7.0-7
 - Fix PPC64 build with memlock file (bz #1387601)
 
