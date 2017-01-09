@@ -27,7 +27,7 @@ index 42ca0fe..b3b5005 100644
  #include "ui/egl-helpers.h"
  #include "ui/egl-context.h"
 diff --git a/ui/gtk.c b/ui/gtk.c
-index 58d20ee..e8cf785 100644
+index 21ae4cb..c641e49 100644
 --- a/ui/gtk.c
 +++ b/ui/gtk.c
 @@ -90,6 +90,9 @@

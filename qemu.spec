@@ -67,8 +67,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.7.0
-Release: 8%{?rcrel}%{?dist}
+Version: 2.7.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -102,42 +102,28 @@ Source21: 50-kvm-s390x.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source22: 95-kvm-ppc64-memlock.conf
 
-# CVE-2016-7155: pvscsi: OOB read and infinite loop (bz #1373463)
-Patch0001: 0001-vmw_pvscsi-check-page-count-while-initialising-descr.patch
 # CVE-2016-7156: pvscsi: infinite loop when building SG list (bz #1373480)
-Patch0002: 0002-scsi-pvscsi-limit-loop-to-fetch-SG-list.patch
-# CVE-2016-7156: pvscsi: infinite loop when processing IO requests (bz
-# #1373480)
-Patch0003: 0003-scsi-pvscsi-limit-process-IO-loop-to-ring-size.patch
+Patch0001: 0001-scsi-pvscsi-limit-loop-to-fetch-SG-list.patch
 # CVE-2016-7170: vmware_vga: OOB stack memory access (bz #1374709)
-Patch0004: 0004-vmsvga-correct-bitmap-and-pixmap-size-checks.patch
-# CVE-2016-7157: mptsas: invalid memory access (bz #1373505)
-Patch0005: 0005-scsi-mptconfig-fix-an-assert-expression.patch
-Patch0006: 0006-scsi-mptconfig-fix-misuse-of-MPTSAS_CONFIG_PACK.patch
+Patch0002: 0002-vmsvga-correct-bitmap-and-pixmap-size-checks.patch
 # CVE-2016-7466: usb: xhci memory leakage during device unplug (bz #1377838)
-Patch0007: 0007-usb-xhci-fix-memory-leak-in-usb_xhci_exit.patch
-# CVE-2016-7423: scsi: mptsas: OOB access (bz #1376777)
-Patch0008: 0008-scsi-mptsas-use-g_new0-to-allocate-MPTSASRequest-obj.patch
+Patch0003: 0003-usb-xhci-fix-memory-leak-in-usb_xhci_exit.patch
 # CVE-2016-7422: virtio: null pointer dereference (bz #1376756)
-Patch0009: 0009-virtio-add-check-for-descriptor-s-mapped-address.patch
+Patch0004: 0004-virtio-add-check-for-descriptor-s-mapped-address.patch
 # CVE-2016-7908: net: Infinite loop in mcf_fec_do_tx (bz #1381193)
-Patch0010: 0010-net-mcf-limit-buffer-descriptor-count.patch
+Patch0005: 0005-net-mcf-limit-buffer-descriptor-count.patch
 # CVE-2016-8576: usb: xHCI: infinite loop vulnerability (bz #1382322)
-Patch0011: 0011-xhci-limit-the-number-of-link-trbs-we-are-willing-to.patch
+Patch0006: 0006-xhci-limit-the-number-of-link-trbs-we-are-willing-to.patch
 # CVE-2016-7995: usb: hcd-ehci: memory leak (bz #1382669)
-Patch0012: 0012-usb-ehci-fix-memory-leak-in-ehci_process_itd.patch
+Patch0007: 0007-usb-ehci-fix-memory-leak-in-ehci_process_itd.patch
 # Fix interrupt endpoints not working with network/spice USB redirection on
 # guest with an emulated xhci controller (bz #1382331)
-Patch0013: 0013-usb-redir-allocate-buffers-before-waking-up-the-host.patch
-# Fix nested PPC 'Unknown MMU model' error (bz #1374749)
-Patch0014: 0014-ppc-kvm-Mark-64kB-page-size-support-as-disabled-if-n.patch
+Patch0008: 0008-usb-redir-allocate-buffers-before-waking-up-the-host.patch
 # Fix flickering display with boxes + wayland VM (bz #1266484)
-Patch0015: 0015-qxl-Only-emit-QXL_INTERRUPT_CLIENT_MONITORS_CONFIG-o.patch
-# Fix sending of data with -net socket (bz #1391497)
-Patch0016: 0016-net-fix-sending-of-data-with-net-socket-listen-backe.patch
+Patch0009: 0009-qxl-Only-emit-QXL_INTERRUPT_CLIENT_MONITORS_CONFIG-o.patch
 # Fix keyboard issues with -ui gtk + host wayland (bz #1401211)
 # Posted but not yet applied upstream
-Patch0017: 0017-ui-use-evdev-keymap-when-running-under-wayland.patch
+Patch0010: 0010-ui-use-evdev-keymap-when-running-under-wayland.patch
 
 # documentation deps
 BuildRequires: texi2html
@@ -1609,6 +1595,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jan 09 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-1
+- Update to qemu 2.7.1
+
 * Mon Dec 12 2016 Cole Robinson <crobinso@redhat.com> - 2:2.7.0-8
 - Fix sending of data with -net socket (bz #1391497)
 - Fix keyboard issues with -ui gtk + host wayland (bz #1401211)

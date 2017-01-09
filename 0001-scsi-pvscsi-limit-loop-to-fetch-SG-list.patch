@@ -25,7 +25,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index 4245c15..babac5a 100644
+index 4d94b36..a5ce7de 100644
 --- a/hw/scsi/vmw_pvscsi.c
 +++ b/hw/scsi/vmw_pvscsi.c
 @@ -40,6 +40,8 @@
@@ -37,7 +37,7 @@ index 4245c15..babac5a 100644
  #define PVSCSI_MAX_CMD_DATA_WORDS \
      (sizeof(PVSCSICmdDescSetupRings)/sizeof(uint32_t))
  
-@@ -628,17 +630,16 @@ pvscsi_queue_pending_descriptor(PVSCSIState *s, SCSIDevice **d,
+@@ -631,17 +633,16 @@ pvscsi_queue_pending_descriptor(PVSCSIState *s, SCSIDevice **d,
  static void
  pvscsi_convert_sglist(PVSCSIRequest *r)
  {
