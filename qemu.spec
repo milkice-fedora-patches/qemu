@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -126,6 +126,81 @@ Patch0011: 0011-xhci-limit-the-number-of-link-trbs-we-are-willing-to.patch
 Patch0012: 0012-usb-ehci-fix-memory-leak-in-ehci_process_itd.patch
 # Fix flickering display with boxes + wayland VM (bz #1266484)
 Patch0013: 0013-qxl-Only-emit-QXL_INTERRUPT_CLIENT_MONITORS_CONFIG-o.patch
+# CVE-2016-6836: vmxnet: Information leakage in vmxnet3_complete_packet (bz
+# #1366370)
+Patch0014: 0014-net-vmxnet-initialise-local-tx-descriptor.patch
+# CVE-2016-7909: pcnet: Infinite loop in pcnet_rdra_addr (bz #1381196)
+Patch0015: 0015-net-pcnet-check-rx-tx-descriptor-ring-length.patch
+# CVE-2016-7994: virtio-gpu: memory leak in resource_create_2d (bz #1382667)
+Patch0016: 0016-virtio-gpu-fix-memory-leak-in-virtio_gpu_resource_cr.patch
+# CVE-2016-8577: 9pfs: host memory leakage in v9fs_read (bz #1383286)
+Patch0017: 0017-9pfs-fix-potential-host-memory-leak-in-v9fs_read.patch
+# CVE-2016-8578: 9pfs: potential NULL dereferencein 9pfs routines (bz
+# #1383292)
+Patch0018: 0018-9pfs-allocate-space-for-guest-originated-empty-strin.patch
+# CVE-2016-8668: OOB buffer access in rocker switch emulation (bz #1384898)
+Patch0019: 0019-net-rocker-set-limit-to-DMA-buffer-size.patch
+# CVE-2016-8669: divide by zero error in serial_update_parameters (bz
+# #1384911)
+Patch0020: 0020-char-serial-check-divider-value-against-baud-base.patch
+# CVE-2016-8910: rtl8139: infinite loop while transmit in C+ mode (bz
+# #1388047)
+Patch0021: 0021-net-rtl8139-limit-processing-of-ring-descriptors.patch
+# CVE-2016-8909: intel-hda: infinite loop in dma buffer stream (bz #1388053)
+Patch0022: 0022-audio-intel-hda-check-stream-entry-count-during-tran.patch
+# Infinite loop vulnerability in a9_gtimer_update (bz #1388300)
+Patch0023: 0023-timer-a9gtimer-remove-loop-to-auto-increment-compara.patch
+# CVE-2016-9101: eepro100: memory leakage at device unplug (bz #1389539)
+Patch0024: 0024-net-eepro100-fix-memory-leak-in-device-uninit.patch
+# CVE-2016-9103: 9pfs: information leakage via xattr (bz #1389643)
+Patch0025: 0025-9pfs-fix-information-leak-in-xattr-read.patch
+# CVE-2016-9102: 9pfs: memory leakage when creating extended attribute (bz
+# #1389551)
+Patch0026: 0026-9pfs-fix-memory-leak-in-v9fs_xattrcreate.patch
+# CVE-2016-9104: 9pfs: integer overflow leading to OOB access (bz #1389687)
+Patch0027: 0027-9pfs-add-xattrwalk_fid-field-in-V9fsXattr-struct.patch
+Patch0028: 0028-9pfs-convert-len-copied_len-field-in-V9fsXattr-to-th.patch
+Patch0029: 0029-9pfs-fix-integer-overflow-issue-in-xattr-read-write.patch
+# CVE-2016-9105: 9pfs: memory leakage in v9fs_link (bz #1389704)
+Patch0030: 0030-9pfs-fix-memory-leak-in-v9fs_link.patch
+# CVE-2016-9106: 9pfs: memory leakage in v9fs_write (bz #1389713)
+Patch0031: 0031-9pfs-fix-memory-leak-in-v9fs_write.patch
+# CVE-2016-9381: xen: incautious about shared ring processing (bz #1397385)
+Patch0032: 0032-xen-fix-ioreq-handling.patch
+# CVE-2016-9921: Divide by zero vulnerability in cirrus_do_copy (bz
+# #1399054)
+Patch0033: 0033-display-cirrus-check-vga-bits-per-pixel-bpp-value.patch
+# CVE-2016-9776: infinite loop while receiving data in mcf_fec_receive (bz
+# #1400830)
+Patch0034: 0034-net-mcf-check-receive-buffer-size-register-value.patch
+# CVE-2016-9845: information leakage in virgl_cmd_get_capset_info (bz
+# #1402247)
+Patch0035: 0035-virtio-gpu-fix-information-leak-in-getting-capset-in.patch
+# CVE-2016-9846: virtio-gpu: memory leakage while updating cursor data (bz
+# #1402258)
+Patch0036: 0036-virtio-gpu-fix-memory-leak-in-update_cursor_data_vir.patch
+# CVE-2016-9907: usbredir: memory leakage when destroying redirector (bz
+# #1402266)
+Patch0037: 0037-usbredir-free-vm_change_state_handler-in-usbredir-de.patch
+# CVE-2016-9911: usb: ehci: memory leakage in ehci_init_transfer (bz
+# #1402273)
+Patch0038: 0038-usb-ehci-fix-memory-leak-in-ehci_init_transfer.patch
+# CVE-2016-9913: 9pfs: memory leakage via proxy/handle callbacks (bz
+# #1402277)
+Patch0039: 0039-9pfs-adjust-the-order-of-resource-cleanup-in-device-.patch
+Patch0040: 0040-9pfs-add-cleanup-operation-in-FileOperations.patch
+Patch0041: 0041-9pfs-add-cleanup-operation-for-handle-backend-driver.patch
+Patch0042: 0042-9pfs-add-cleanup-operation-for-proxy-backend-driver.patch
+Patch0043: 0043-9pfs-fix-crash-when-fsdev-is-missing.patch
+# CVE-2016-10028: virtio-gpu-3d: OOB access while reading virgl capabilities
+# (bz #1406368)
+Patch0044: 0044-display-virtio-gpu-3d-check-virgl-capabilities-max_s.patch
+# CVE-2016-9908: virtio-gpu: information leakage in virgl_cmd_get_capset (bz
+# #1402263)
+Patch0045: 0045-virtio-gpu-fix-information-leak-in-capset-get-dispat.patch
+# CVE-2016-9912: virtio-gpu: memory leakage when destroying gpu resource (bz
+# #1402285)
+Patch0046: 0046-virtio-gpu-call-cleanup-mapping-function-in-resource.patch
 
 
 # documentation deps
@@ -1588,6 +1663,50 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jan 16 2017 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-6
+- CVE-2016-6836: vmxnet: Information leakage in vmxnet3_complete_packet (bz
+  #1366370)
+- CVE-2016-7909: pcnet: Infinite loop in pcnet_rdra_addr (bz #1381196)
+- CVE-2016-7994: virtio-gpu: memory leak in resource_create_2d (bz #1382667)
+- CVE-2016-8577: 9pfs: host memory leakage in v9fs_read (bz #1383286)
+- CVE-2016-8578: 9pfs: potential NULL dereferencein 9pfs routines (bz
+  #1383292)
+- CVE-2016-8668: OOB buffer access in rocker switch emulation (bz #1384898)
+- CVE-2016-8669: divide by zero error in serial_update_parameters (bz
+  #1384911)
+- CVE-2016-8910: rtl8139: infinite loop while transmit in C+ mode (bz
+  #1388047)
+- CVE-2016-8909: intel-hda: infinite loop in dma buffer stream (bz #1388053)
+- Infinite loop vulnerability in a9_gtimer_update (bz #1388300)
+- CVE-2016-9101: eepro100: memory leakage at device unplug (bz #1389539)
+- CVE-2016-9103: 9pfs: information leakage via xattr (bz #1389643)
+- CVE-2016-9102: 9pfs: memory leakage when creating extended attribute (bz
+  #1389551)
+- CVE-2016-9104: 9pfs: integer overflow leading to OOB access (bz #1389687)
+- CVE-2016-9105: 9pfs: memory leakage in v9fs_link (bz #1389704)
+- CVE-2016-9106: 9pfs: memory leakage in v9fs_write (bz #1389713)
+- CVE-2016-9381: xen: incautious about shared ring processing (bz #1397385)
+- CVE-2016-9921: Divide by zero vulnerability in cirrus_do_copy (bz
+  #1399054)
+- CVE-2016-9776: infinite loop while receiving data in mcf_fec_receive (bz
+  #1400830)
+- CVE-2016-9845: information leakage in virgl_cmd_get_capset_info (bz
+  #1402247)
+- CVE-2016-9846: virtio-gpu: memory leakage while updating cursor data (bz
+  #1402258)
+- CVE-2016-9907: usbredir: memory leakage when destroying redirector (bz
+  #1402266)
+- CVE-2016-9911: usb: ehci: memory leakage in ehci_init_transfer (bz
+  #1402273)
+- CVE-2016-9913: 9pfs: memory leakage via proxy/handle callbacks (bz
+  #1402277)
+- CVE-2016-10028: virtio-gpu-3d: OOB access while reading virgl capabilities
+  (bz #1406368)
+- CVE-2016-9908: virtio-gpu: information leakage in virgl_cmd_get_capset (bz
+  #1402263)
+- CVE-2016-9912: virtio-gpu: memory leakage when destroying gpu resource (bz
+  #1402285)
+
 * Sun Nov 06 2016 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-5
 - Fix qemu-user-static binfmt on f24 (bz 1388250)
 

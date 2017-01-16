@@ -1,0 +1,70 @@
+From: Li Qiang <liqiang6-s@360.cn>
+Date: Tue, 1 Nov 2016 12:00:40 +0100
+Subject: [PATCH] 9pfs: add xattrwalk_fid field in V9fsXattr struct
+
+Currently, 9pfs sets the 'copied_len' field in V9fsXattr
+to -1 to tag xattr walk fid. As the 'copied_len' is also
+used to account for copied bytes, this may make confusion. This patch
+add a bool 'xattrwalk_fid' to tag the xattr walk fid.
+
+Suggested-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Li Qiang <liqiang6-s@360.cn>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Greg Kurz <groug@kaod.org>
+(cherry picked from commit dd28fbbc2edc0822965d402d927ce646326d6954)
+---
+ hw/9pfs/9p.c | 7 ++++---
+ hw/9pfs/9p.h | 1 +
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 54e5ed4..22690f2 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -308,7 +308,7 @@ static int v9fs_xattr_fid_clunk(V9fsPDU *pdu, V9fsFidState *fidp)
+ {
+     int retval = 0;
+ 
+-    if (fidp->fs.xattr.copied_len == -1) {
++    if (fidp->fs.xattr.xattrwalk_fid) {
+         /* getxattr/listxattr fid */
+         goto free_value;
+     }
+@@ -3166,7 +3166,7 @@ static void v9fs_xattrwalk(void *opaque)
+          */
+         xattr_fidp->fs.xattr.len = size;
+         xattr_fidp->fid_type = P9_FID_XATTR;
+-        xattr_fidp->fs.xattr.copied_len = -1;
++        xattr_fidp->fs.xattr.xattrwalk_fid = true;
+         if (size) {
+             xattr_fidp->fs.xattr.value = g_malloc(size);
+             err = v9fs_co_llistxattr(pdu, &xattr_fidp->path,
+@@ -3199,7 +3199,7 @@ static void v9fs_xattrwalk(void *opaque)
+          */
+         xattr_fidp->fs.xattr.len = size;
+         xattr_fidp->fid_type = P9_FID_XATTR;
+-        xattr_fidp->fs.xattr.copied_len = -1;
++        xattr_fidp->fs.xattr.xattrwalk_fid = true;
+         if (size) {
+             xattr_fidp->fs.xattr.value = g_malloc(size);
+             err = v9fs_co_lgetxattr(pdu, &xattr_fidp->path,
+@@ -3255,6 +3255,7 @@ static void v9fs_xattrcreate(void *opaque)
+     xattr_fidp = file_fidp;
+     xattr_fidp->fid_type = P9_FID_XATTR;
+     xattr_fidp->fs.xattr.copied_len = 0;
++    xattr_fidp->fs.xattr.xattrwalk_fid = false;
+     xattr_fidp->fs.xattr.len = size;
+     xattr_fidp->fs.xattr.flags = flags;
+     v9fs_string_init(&xattr_fidp->fs.xattr.name);
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 589b3a5..5750d67 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -167,6 +167,7 @@ typedef struct V9fsXattr
+     void *value;
+     V9fsString name;
+     int flags;
++    bool xattrwalk_fid;
+ } V9fsXattr;
+ 
+ /*

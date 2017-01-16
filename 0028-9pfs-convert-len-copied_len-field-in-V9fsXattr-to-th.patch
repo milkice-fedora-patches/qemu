@@ -1,0 +1,44 @@
+From: Li Qiang <liqiang6-s@360.cn>
+Date: Tue, 1 Nov 2016 12:00:40 +0100
+Subject: [PATCH] 9pfs: convert 'len/copied_len' field in V9fsXattr to the type
+ of uint64_t
+
+The 'len' in V9fsXattr comes from the 'size' argument in setxattr()
+function in guest. The setxattr() function's declaration is this:
+
+int setxattr(const char *path, const char *name,
+             const void *value, size_t size, int flags);
+
+and 'size' is treated as u64 in linux kernel client code:
+
+int p9_client_xattrcreate(struct p9_fid *fid, const char *name,
+                          u64 attr_size, int flags)
+
+So the 'len' should have an type of 'uint64_t'.
+The 'copied_len' in V9fsXattr is used to account for copied bytes, it
+should also have an type of 'uint64_t'.
+
+Suggested-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Li Qiang <liqiang6-s@360.cn>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Greg Kurz <groug@kaod.org>
+(cherry picked from commit 8495f9ad26d398f01e208a53f1a5152483a16084)
+---
+ hw/9pfs/9p.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 5750d67..4e3bc52 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -162,8 +162,8 @@ typedef struct V9fsConf
+ 
+ typedef struct V9fsXattr
+ {
+-    int64_t copied_len;
+-    int64_t len;
++    uint64_t copied_len;
++    uint64_t len;
+     void *value;
+     V9fsString name;
+     int flags;
