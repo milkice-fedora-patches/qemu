@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.1
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -198,7 +198,6 @@ Patch0041: 0041-virtio-gpu-fix-information-leak-in-capset-get-dispat.patch
 Patch0042: 0042-virtio-gpu-call-cleanup-mapping-function-in-resource.patch
 
 # documentation deps
-BuildRequires: texi2html
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl-podlators
@@ -1667,6 +1666,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Feb 21 2017 Daniel Berrange <berrange@redhat.com> - 2:2.7.1-3
+- Drop texi2html BR, since QEMU switched to using makeinfo back in 2010
+
 * Mon Jan 16 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-2
 - CVE-2016-6836: vmxnet: Information leakage in vmxnet3_complete_packet (bz
   #1366370)
