@@ -1,0 +1,33 @@
+From: Frediano Ziglio <fziglio@redhat.com>
+Date: Mon, 20 Feb 2017 09:50:55 +0000
+Subject: [PATCH] egl-helpers: Support newer MESA versions
+
+According to
+https://www.khronos.org/registry/EGL/extensions/MESA/EGL_MESA_platform_gbm.txt
+if MESA_platform_gbm is supported display should be initialized
+from a GBM handle using eglGetPlatformDisplayEXT.
+
+Signed-off-by: Frediano Ziglio <fziglio@redhat.com>
+Message-id: 20170220095055.4234-1-fziglio@redhat.com
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+(cherry picked from commit 0ea1523fb6703aa0dcd65e66b59e96fec028e60a)
+---
+ ui/egl-helpers.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 79cee05..d8d57c4 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -203,7 +203,11 @@ int qemu_egl_init_dpy(EGLNativeDisplayType dpy, bool gles, bool debug)
+     }
+ 
+     egl_dbg("eglGetDisplay (dpy %p) ...\n", dpy);
++#ifdef EGL_MESA_platform_gbm
++    qemu_egl_display = eglGetPlatformDisplayEXT(EGL_PLATFORM_GBM_MESA, dpy, NULL);
++#else
+     qemu_egl_display = eglGetDisplay(dpy);
++#endif
+     if (qemu_egl_display == EGL_NO_DISPLAY) {
+         error_report("egl: eglGetDisplay failed");
+         return -1;

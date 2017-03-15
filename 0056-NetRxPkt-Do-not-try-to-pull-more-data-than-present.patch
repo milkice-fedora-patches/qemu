@@ -1,0 +1,30 @@
+From: Dmitry Fleytman <dmitry@daynix.com>
+Date: Thu, 16 Feb 2017 14:29:34 +0200
+Subject: [PATCH] NetRxPkt: Do not try to pull more data than present
+
+In case of VLAN stripping, ETH header put into a
+separate buffer, therefore amont of data copied
+from original IOV should be smaller.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Dmitry Fleytman <dmitry@daynix.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit d5e772146d2bbc92e5126c145eddef3b2843d026)
+---
+ hw/net/net_rx_pkt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
+index 7c0beac..d38babe 100644
+--- a/hw/net/net_rx_pkt.c
++++ b/hw/net/net_rx_pkt.c
+@@ -96,7 +96,8 @@ net_rx_pkt_pull_data(struct NetRxPkt *pkt,
+ 
+         pkt->tot_len = iov_size(iov, iovcnt) - ploff + pkt->ehdr_buf_len;
+         pkt->vec_len = iov_copy(pkt->vec + 1, pkt->vec_len_total - 1,
+-                                iov, iovcnt, ploff, pkt->tot_len);
++                                iov, iovcnt, ploff,
++                                pkt->tot_len - pkt->ehdr_buf_len);
+     } else {
+         net_rx_pkt_iovec_realloc(pkt, iovcnt);
+ 

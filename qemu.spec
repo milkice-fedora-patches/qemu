@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.1
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -196,6 +196,53 @@ Patch0041: 0041-virtio-gpu-fix-information-leak-in-capset-get-dispat.patch
 # CVE-2016-9912: virtio-gpu: memory leakage when destroying gpu resource (bz
 # #1402285)
 Patch0042: 0042-virtio-gpu-call-cleanup-mapping-function-in-resource.patch
+# CVE-2016-7907: net: imx: infinite loop (bz #1381182)
+Patch0043: 0043-net-imx-limit-buffer-descriptor-count.patch
+# CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
+Patch0044: 0044-audio-ac97-add-exit-function.patch
+# CVE-2017-5526: audio: memory leakage in es1370 (bz #1414210)
+Patch0045: 0045-audio-es1370-add-exit-function.patch
+# CVE-2016-10155 watchdog: memory leakage in i6300esb (bz #1415200)
+Patch0046: 0046-watchdog-6300esb-add-exit-function.patch
+# CVE-2017-5552: virtio-gpu-3d: memory leakage (bz #1415283)
+Patch0047: 0047-virtio-gpu-3d-fix-memory-leak-in-resource-attach-bac.patch
+# CVE-2017-5578: virtio-gpu: memory leakage (bz #1415797)
+Patch0048: 0048-virtio-gpu-fix-memory-leak-in-resource-attach-backin.patch
+# CVE-2017-5667: sd: sdhci OOB access during multi block transfer (bz
+# #1417560)
+Patch0049: 0049-sd-sdhci-check-data-length-during-dma_memory_read.patch
+# CVE-2017-5856: scsi: megasas: memory leakage (bz #1418344)
+Patch0050: 0050-megasas-fix-guest-triggered-memory-leak.patch
+# CVE-2017-5857: virtio-gpu-3d: host memory leakage in
+# virgl_cmd_resource_unref (bz #1418383)
+Patch0051: 0051-virtio-gpu-fix-resource-leak-in-virgl_cmd_resource_u.patch
+# CVE-2017-5898: usb: integer overflow in emulated_apdu_from_guest (bz
+# #1419700)
+Patch0052: 0052-usb-ccid-check-ccid-apdu-length.patch
+# CVE-2017-5987: sd: infinite loop issue in multi block transfers (bz
+# #1422001)
+Patch0053: 0053-sd-sdhci-check-transfer-mode-register-in-multi-block.patch
+# CVE-2017-6058: vmxnet3: OOB access when doing vlan stripping (bz #1423359)
+Patch0054: 0054-eth-Extend-vlan-stripping-functions.patch
+Patch0055: 0055-NetRxPkt-Fix-memory-corruption-on-VLAN-header-stripp.patch
+Patch0056: 0056-NetRxPkt-Do-not-try-to-pull-more-data-than-present.patch
+Patch0057: 0057-NetRxPkt-Account-buffer-with-ETH-header-in-IOV-lengt.patch
+# CVE-2017-6505: usb: an infinite loop issue in ohci_service_ed_list (bz
+# #1429434)
+Patch0058: 0058-usb-ohci-limit-the-number-of-link-eds.patch
+# CVE-2017-2615: cirrus: oob access while doing bitblt copy backward (bz
+# #1418206)
+Patch0059: 0059-display-cirrus-ignore-source-pitch-value-as-needed-i.patch
+Patch0060: 0060-cirrus-handle-negative-pitch-in-cirrus_invalidate_re.patch
+Patch0061: 0061-cirrus-allow-zero-source-pitch-in-pattern-fill-rops.patch
+Patch0062: 0062-cirrus-fix-blit-address-mask-handling.patch
+Patch0063: 0063-cirrus-fix-oob-access-issue-CVE-2017-2615.patch
+# CVE-2017-2620: cirrus: potential arbitrary code execution (bz #1425419)
+Patch0064: 0064-cirrus-fix-patterncopy-checks.patch
+Patch0065: 0065-Revert-cirrus-allow-zero-source-pitch-in-pattern-fil.patch
+Patch0066: 0066-cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cput.patch
+# Fix spice GL with new mesa/libglvnd (bz #1431905)
+Patch0067: 0067-egl-helpers-Support-newer-MESA-versions.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1666,6 +1713,30 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Mar 15 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-4
+- CVE-2016-7907: net: imx: infinite loop (bz #1381182)
+- CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
+- CVE-2017-5526: audio: memory leakage in es1370 (bz #1414210)
+- CVE-2016-10155 watchdog: memory leakage in i6300esb (bz #1415200)
+- CVE-2017-5552: virtio-gpu-3d: memory leakage (bz #1415283)
+- CVE-2017-5578: virtio-gpu: memory leakage (bz #1415797)
+- CVE-2017-5667: sd: sdhci OOB access during multi block transfer (bz
+  #1417560)
+- CVE-2017-5856: scsi: megasas: memory leakage (bz #1418344)
+- CVE-2017-5857: virtio-gpu-3d: host memory leakage in
+  virgl_cmd_resource_unref (bz #1418383)
+- CVE-2017-5898: usb: integer overflow in emulated_apdu_from_guest (bz
+  #1419700)
+- CVE-2017-5987: sd: infinite loop issue in multi block transfers (bz
+  #1422001)
+- CVE-2017-6058: vmxnet3: OOB access when doing vlan stripping (bz #1423359)
+- CVE-2017-6505: usb: an infinite loop issue in ohci_service_ed_list (bz
+  #1429434)
+- CVE-2017-2615: cirrus: oob access while doing bitblt copy backward (bz
+  #1418206)
+- CVE-2017-2620: cirrus: potential arbitrary code execution (bz #1425419)
+- Fix spice GL with new mesa/libglvnd (bz #1431905)
+
 * Tue Feb 21 2017 Daniel Berrange <berrange@redhat.com> - 2:2.7.1-3
 - Drop texi2html BR, since QEMU switched to using makeinfo back in 2010
 
