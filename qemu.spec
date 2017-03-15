@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -201,10 +201,45 @@ Patch0045: 0045-virtio-gpu-fix-information-leak-in-capset-get-dispat.patch
 # CVE-2016-9912: virtio-gpu: memory leakage when destroying gpu resource (bz
 # #1402285)
 Patch0046: 0046-virtio-gpu-call-cleanup-mapping-function-in-resource.patch
+# CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
+Patch0047: 0047-audio-ac97-add-exit-function.patch
+# CVE-2017-5526: audio: memory leakage in es1370 (bz #1414210)
+Patch0048: 0048-audio-es1370-add-exit-function.patch
+# CVE-2016-10155 watchdog: memory leakage in i6300esb (bz #1415200)
+Patch0049: 0049-watchdog-6300esb-add-exit-function.patch
+# CVE-2017-5552: virtio-gpu-3d: memory leakage (bz #1415283)
+Patch0050: 0050-virtio-gpu-3d-fix-memory-leak-in-resource-attach-bac.patch
+# CVE-2017-5667: sd: sdhci OOB access during multi block transfer (bz
+# #1417560)
+Patch0051: 0051-sd-sdhci-check-data-length-during-dma_memory_read.patch
+# CVE-2017-5857: virtio-gpu-3d: host memory leakage in
+# virgl_cmd_resource_unref (bz #1418383)
+Patch0052: 0052-megasas-fix-guest-triggered-memory-leak.patch
+# CVE-2017-5856: scsi: megasas: memory leakage (bz #1418344)
+Patch0053: 0053-virtio-gpu-fix-resource-leak-in-virgl_cmd_resource_u.patch
+# CVE-2017-5898: usb: integer overflow in emulated_apdu_from_guest (bz
+# #1419700)
+Patch0054: 0054-usb-ccid-check-ccid-apdu-length.patch
+# CVE-2017-5987: sd: infinite loop issue in multi block transfers (bz
+# #1422001)
+Patch0055: 0055-sd-sdhci-check-transfer-mode-register-in-multi-block.patch
+# CVE-2017-6505: usb: an infinite loop issue in ohci_service_ed_list (bz
+# #1429434)
+Patch0056: 0056-usb-ohci-limit-the-number-of-link-eds.patch
+# CVE-2017-2615: cirrus: oob access while doing bitblt copy backward (bz
+# #1418206)
+Patch0057: 0057-display-cirrus-ignore-source-pitch-value-as-needed-i.patch
+Patch0058: 0058-cirrus-handle-negative-pitch-in-cirrus_invalidate_re.patch
+Patch0059: 0059-cirrus-allow-zero-source-pitch-in-pattern-fill-rops.patch
+Patch0060: 0060-cirrus-fix-blit-address-mask-handling.patch
+Patch0061: 0061-cirrus-fix-oob-access-issue-CVE-2017-2615.patch
+# CVE-2017-2620: cirrus: potential arbitrary code execution (bz #1425419)
+Patch0062: 0062-cirrus-fix-patterncopy-checks.patch
+Patch0063: 0063-Revert-cirrus-allow-zero-source-pitch-in-pattern-fil.patch
+Patch0064: 0064-cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cput.patch
 
 
 # documentation deps
-BuildRequires: texi2html
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl-podlators
@@ -1663,6 +1698,26 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Mar 15 2017 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-7
+- CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
+- CVE-2017-5526: audio: memory leakage in es1370 (bz #1414210)
+- CVE-2016-10155 watchdog: memory leakage in i6300esb (bz #1415200)
+- CVE-2017-5552: virtio-gpu-3d: memory leakage (bz #1415283)
+- CVE-2017-5667: sd: sdhci OOB access during multi block transfer (bz
+  #1417560)
+- CVE-2017-5857: virtio-gpu-3d: host memory leakage in
+  virgl_cmd_resource_unref (bz #1418383)
+- CVE-2017-5856: scsi: megasas: memory leakage (bz #1418344)
+- CVE-2017-5898: usb: integer overflow in emulated_apdu_from_guest (bz
+  #1419700)
+- CVE-2017-5987: sd: infinite loop issue in multi block transfers (bz
+  #1422001)
+- CVE-2017-6505: usb: an infinite loop issue in ohci_service_ed_list (bz
+  #1429434)
+- CVE-2017-2615: cirrus: oob access while doing bitblt copy backward (bz
+  #1418206)
+- CVE-2017-2620: cirrus: potential arbitrary code execution (bz #1425419)
+
 * Mon Jan 16 2017 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-6
 - CVE-2016-6836: vmxnet: Information leakage in vmxnet3_complete_packet (bz
   #1366370)
