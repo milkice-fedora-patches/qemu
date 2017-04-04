@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.1
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -243,6 +243,8 @@ Patch0065: 0065-Revert-cirrus-allow-zero-source-pitch-in-pattern-fil.patch
 Patch0066: 0066-cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cput.patch
 # Fix spice GL with new mesa/libglvnd (bz #1431905)
 Patch0067: 0067-egl-helpers-Support-newer-MESA-versions.patch
+# Workaround hangs with recent glib (bz #1435432, gnome.org bz #761102)
+Patch0068: 0068-main-loop-Acquire-main_context-lock-around-os_host_m.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1713,6 +1715,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Apr 4 2017 Paolo Bonzini <pbonzini@redhat.com> - 2:2.7.1-5
+* Workaround hangs with recent glib (bz #1435432, gnome.org bz #761102)
+
 * Wed Mar 15 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-4
 - CVE-2016-7907: net: imx: infinite loop (bz #1381182)
 - CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
