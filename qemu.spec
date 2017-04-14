@@ -65,7 +65,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.6.2
-Release: 7%{?rcrel}%{?dist}
+Release: 8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -237,6 +237,13 @@ Patch0061: 0061-cirrus-fix-oob-access-issue-CVE-2017-2615.patch
 Patch0062: 0062-cirrus-fix-patterncopy-checks.patch
 Patch0063: 0063-Revert-cirrus-allow-zero-source-pitch-in-pattern-fil.patch
 Patch0064: 0064-cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cput.patch
+# Fix xen pv graphical display failure (bz #1350264)
+Patch0065: 0065-vnc-enc-tight-use-thread-local-storage-for-palette.patch
+Patch0066: 0066-vnc-tight-fix-regression-with-libxenstore.patch
+# CVE-2016-8667: dma: divide by zero error in set_next_tick (bz #1384876)
+Patch0067: 0067-dma-rc4030-limit-interval-timer-reload-value.patch
+# CVE-2017-5579: serial: fix memory leak in serial exit (bz #1416161)
+Patch0068: 0068-serial-fix-memory-leak-in-serial-exit.patch
 
 
 # documentation deps
@@ -1698,6 +1705,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Apr 13 2017 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-8
+- Fix xen pv graphical display failure (bz #1350264)
+- CVE-2016-8667: dma: divide by zero error in set_next_tick (bz #1384876)
+- CVE-2017-5579: serial: fix memory leak in serial exit (bz #1416161)
+
 * Wed Mar 15 2017 Cole Robinson <crobinso@redhat.com> - 2:2.6.2-7
 - CVE-2017-5525: audio: memory leakage in ac97 (bz #1414110)
 - CVE-2017-5526: audio: memory leakage in es1370 (bz #1414210)

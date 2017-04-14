@@ -1,0 +1,84 @@
+From: Peter Lieven <pl@kamp.de>
+Date: Fri, 15 Jul 2016 11:45:11 +0200
+Subject: [PATCH] vnc-tight: fix regression with libxenstore
+
+commit 095497ff added thread local storage for the color counting
+palette. Unfortunately, a VncPalette is about 7kB on a x86_64 system.
+This memory is reserved from the stack of every thread and it
+exhausted the stack space of a libxenstore thread.
+
+Fix this by allocating memory only for the VNC encoding thread.
+
+Fixes: 095497ffc66b7f031ff2a17f1e50f5cb105ce588
+Reported-by: Juergen Gross <jgross@suse.com>
+Tested-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Peter Lieven <pl@kamp.de>
+Message-id: 1468575911-20656-1-git-send-email-pl@kamp.de
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+(cherry picked from commit 66668d197fa40747e835e15617eda2f1bc80982f)
+---
+ ui/vnc-enc-tight.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
+index 877c093..49df85e 100644
+--- a/ui/vnc-enc-tight.c
++++ b/ui/vnc-enc-tight.c
+@@ -1458,11 +1458,17 @@ static int send_sub_rect_jpeg(VncState *vs, int x, int y, int w, int h,
+ }
+ #endif
+ 
+-static __thread VncPalette color_count_palette;
++static __thread VncPalette *color_count_palette;
++static __thread Notifier vnc_tight_cleanup_notifier;
++
++static void vnc_tight_cleanup(Notifier *n, void *value)
++{
++    g_free(color_count_palette);
++    color_count_palette = NULL;
++}
+ 
+ static int send_sub_rect(VncState *vs, int x, int y, int w, int h)
+ {
+-    VncPalette *palette = &color_count_palette;
+     uint32_t bg = 0, fg = 0;
+     int colors;
+     int ret = 0;
+@@ -1471,6 +1477,12 @@ static int send_sub_rect(VncState *vs, int x, int y, int w, int h)
+     bool allow_jpeg = true;
+ #endif
+ 
++    if (!color_count_palette) {
++        color_count_palette = g_malloc(sizeof(VncPalette));
++        vnc_tight_cleanup_notifier.notify = vnc_tight_cleanup;
++        qemu_thread_atexit_add(&vnc_tight_cleanup_notifier);
++    }
++
+     vnc_framebuffer_update(vs, x, y, w, h, vs->tight.type);
+ 
+     vnc_tight_start(vs);
+@@ -1491,17 +1503,19 @@ static int send_sub_rect(VncState *vs, int x, int y, int w, int h)
+     }
+ #endif
+ 
+-    colors = tight_fill_palette(vs, x, y, w * h, &bg, &fg, palette);
++    colors = tight_fill_palette(vs, x, y, w * h, &bg, &fg, color_count_palette);
+ 
+ #ifdef CONFIG_VNC_JPEG
+     if (allow_jpeg && vs->tight.quality != (uint8_t)-1) {
+-        ret = send_sub_rect_jpeg(vs, x, y, w, h, bg, fg, colors, palette,
+-                                 force_jpeg);
++        ret = send_sub_rect_jpeg(vs, x, y, w, h, bg, fg, colors,
++                                 color_count_palette, force_jpeg);
+     } else {
+-        ret = send_sub_rect_nojpeg(vs, x, y, w, h, bg, fg, colors, palette);
++        ret = send_sub_rect_nojpeg(vs, x, y, w, h, bg, fg, colors,
++                                   color_count_palette);
+     }
+ #else
+-    ret = send_sub_rect_nojpeg(vs, x, y, w, h, bg, fg, colors, palette);
++    ret = send_sub_rect_nojpeg(vs, x, y, w, h, bg, fg, colors,
++                               color_count_palette);
+ #endif
+ 
+     return ret;
