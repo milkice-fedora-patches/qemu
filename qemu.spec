@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.1
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -243,8 +243,17 @@ Patch0065: 0065-Revert-cirrus-allow-zero-source-pitch-in-pattern-fil.patch
 Patch0066: 0066-cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cput.patch
 # Fix spice GL with new mesa/libglvnd (bz #1431905)
 Patch0067: 0067-egl-helpers-Support-newer-MESA-versions.patch
-# Workaround hangs with recent glib (bz #1435432, gnome.org bz #761102)
-Patch0068: 0068-main-loop-Acquire-main_context-lock-around-os_host_m.patch
+# chardev data is dropped when host side closed (bz #1352977)
+Patch0068: 0068-char-drop-data-written-to-a-disconnected-pty.patch
+# CVE-2016-8667: dma: divide by zero error in set_next_tick (bz #1384876)
+Patch0069: 0069-dma-rc4030-limit-interval-timer-reload-value.patch
+# IPv6 DNS problems in qemu user networking (bz #1401165)
+Patch0070: 0070-slirp-Make-RA-build-more-flexible.patch
+Patch0071: 0071-slirp-Send-RDNSS-in-RA-only-if-host-has-an-IPv6-DNS-.patch
+# Fix crash in qxl memslot_get_virt (bz #1405847)
+Patch0072: 0072-qxl-clear-guest_cursor-on-QXL_CURSOR_HIDE.patch
+# CVE-2017-5579: serial: fix memory leak in serial exit (bz #1416161)
+Patch0073: 0073-serial-fix-memory-leak-in-serial-exit.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1718,6 +1727,15 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Apr 13 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-6
+- chardev data is dropped when host side closed (bz #1352977)
+- CVE-2016-8667: dma: divide by zero error in set_next_tick (bz #1384876)
+- IPv6 DNS problems in qemu user networking (bz #1401165)
+- Fix crash in qxl memslot_get_virt (bz #1405847)
+- CVE-2017-5579: serial: fix memory leak in serial exit (bz #1416161)
+- spec: Pull in ipxe/vgabios links via -common package (bz #1431403)
+- Clean up binfmt.d configuration files (bz #1394859)
+
 * Tue Apr 4 2017 Paolo Bonzini <pbonzini@redhat.com> - 2:2.7.1-5
 * Workaround hangs with recent glib (bz #1435432, gnome.org bz #761102)
 

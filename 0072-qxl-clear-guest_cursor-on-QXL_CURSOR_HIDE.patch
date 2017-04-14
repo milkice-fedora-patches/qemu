@@ -1,0 +1,37 @@
+From: Gerd Hoffmann <kraxel@redhat.com>
+Date: Mon, 6 Mar 2017 09:31:51 +0100
+Subject: [PATCH] qxl: clear guest_cursor on QXL_CURSOR_HIDE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Make sure we don't leave guest_cursor pointing into nowhere.  This might
+lead to (rare) live migration failures, due to target trying to restore
+the cursor from the stale pointer.
+
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1421788
+Reported-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-id: 1488789111-27340-1-git-send-email-kraxel@redhat.com
+(cherry picked from commit dbb5fb8d3519130559b10fa4e1395e4486c633f8)
+---
+ hw/display/qxl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+index 62d0c80..e09ce10 100644
+--- a/hw/display/qxl.c
++++ b/hw/display/qxl.c
+@@ -478,6 +478,11 @@ static int qxl_track_command(PCIQXLDevice *qxl, struct QXLCommandExt *ext)
+             qxl->guest_cursor = ext->cmd.data;
+             qemu_mutex_unlock(&qxl->track_lock);
+         }
++        if (cmd->type == QXL_CURSOR_HIDE) {
++            qemu_mutex_lock(&qxl->track_lock);
++            qxl->guest_cursor = 0;
++            qemu_mutex_unlock(&qxl->track_lock);
++        }
+         break;
+     }
+     }
