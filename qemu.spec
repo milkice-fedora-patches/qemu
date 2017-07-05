@@ -92,7 +92,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.9.0
-Release: 1%{?rcrel}%{?dist}
+Release: 1%{?rcrel}%{?dist}.1
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -126,6 +126,11 @@ Source21: 50-kvm-s390x.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source22: 95-kvm-ppc64-memlock.conf
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1467599#c24
+# workaround an issue between qemu 2.9 and libvirt 3.2 by disabling
+# some qmp commands to force libvirt back on its old code
+# from ehabkost
+Patch0: qemu-2.9.0-libvirt32.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2000,6 +2005,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jul 04 2017 Adam Williamson <awilliam@redhat.com> - 2:2.9.0-1.fc26.1
+- Disable some qmp commands to work around an issue with libvirt 3.2
+
 * Tue Apr 25 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-1
 - Rebase to qemu-2.9.0 GA
 
