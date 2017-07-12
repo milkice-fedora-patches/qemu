@@ -18,7 +18,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/qemu-char.c b/qemu-char.c
-index 90e9627..4ec9ae5 100644
+index 90e96271dd..4ec9ae5b94 100644
 --- a/qemu-char.c
 +++ b/qemu-char.c
 @@ -1328,7 +1328,7 @@ static int pty_chr_write(CharDriverState *chr, const uint8_t *buf, int len)

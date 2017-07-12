@@ -25,7 +25,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index 4d94b36..a5ce7de 100644
+index 4d94b363a9..a5ce7dea8e 100644
 --- a/hw/scsi/vmw_pvscsi.c
 +++ b/hw/scsi/vmw_pvscsi.c
 @@ -40,6 +40,8 @@

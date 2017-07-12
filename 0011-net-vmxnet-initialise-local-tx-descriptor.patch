@@ -17,7 +17,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index 90f6943..92f6af9 100644
+index 90f6943668..92f6af9620 100644
 --- a/hw/net/vmxnet3.c
 +++ b/hw/net/vmxnet3.c
 @@ -531,6 +531,7 @@ static void vmxnet3_complete_packet(VMXNET3State *s, int qidx, uint32_t tx_ridx)

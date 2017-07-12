@@ -19,7 +19,7 @@ Message-id: 1486645341-5010-2-git-send-email-kraxel@redhat.com
  1 file changed, 8 insertions(+), 18 deletions(-)
 
 diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index 6bd13fc..0e47cf8 100644
+index 6bd13fc78f..0e47cf85ad 100644
 --- a/hw/display/cirrus_vga.c
 +++ b/hw/display/cirrus_vga.c
 @@ -272,6 +272,9 @@ static void cirrus_update_memory_access(CirrusVGAState *s);

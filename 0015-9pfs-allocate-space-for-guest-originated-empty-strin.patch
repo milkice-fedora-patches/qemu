@@ -29,7 +29,7 @@ Signed-off-by: Greg Kurz <groug@kaod.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fsdev/9p-iov-marshal.c b/fsdev/9p-iov-marshal.c
-index 663cad5..1d16f8d 100644
+index 663cad5429..1d16f8df4b 100644
 --- a/fsdev/9p-iov-marshal.c
 +++ b/fsdev/9p-iov-marshal.c
 @@ -125,7 +125,7 @@ ssize_t v9fs_iov_vunmarshal(struct iovec *out_sg, int out_num, size_t offset,
@@ -42,7 +42,7 @@ index 663cad5..1d16f8d 100644
                  } else {
                      v9fs_string_free(str);
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 1a9ec7e..2b161ed 100644
+index 1a9ec7ede9..2b161ed6c0 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
 @@ -3162,7 +3162,7 @@ static void v9fs_xattrwalk(void *opaque)

@@ -21,7 +21,7 @@ Signed-off-by: Yongbok Kim <yongbok.kim@imgtec.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/dma/rc4030.c b/hw/dma/rc4030.c
-index 2f2576f..c1b4997 100644
+index 2f2576fafb..c1b4997c73 100644
 --- a/hw/dma/rc4030.c
 +++ b/hw/dma/rc4030.c
 @@ -460,7 +460,7 @@ static void rc4030_write(void *opaque, hwaddr addr, uint64_t data,

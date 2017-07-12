@@ -17,7 +17,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
-index 1c415ab..6b42c10 100644
+index 1c415ab3b1..6b42c10d96 100644
 --- a/hw/net/imx_fec.c
 +++ b/hw/net/imx_fec.c
 @@ -55,6 +55,8 @@

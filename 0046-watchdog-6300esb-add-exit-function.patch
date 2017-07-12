@@ -15,7 +15,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 9 insertions(+)
 
 diff --git a/hw/watchdog/wdt_i6300esb.c b/hw/watchdog/wdt_i6300esb.c
-index a83d951..49b3cd1 100644
+index a83d951213..49b3cd188a 100644
 --- a/hw/watchdog/wdt_i6300esb.c
 +++ b/hw/watchdog/wdt_i6300esb.c
 @@ -428,6 +428,14 @@ static void i6300esb_realize(PCIDevice *dev, Error **errp)

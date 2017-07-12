@@ -18,7 +18,7 @@ Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index bdb092e..379910d 100644
+index bdb092ee9d..379910db2d 100644
 --- a/hw/display/cirrus_vga.c
 +++ b/hw/display/cirrus_vga.c
 @@ -294,7 +294,7 @@ static bool blit_region_is_unsafe(struct CirrusVGAState *s,

@@ -15,7 +15,7 @@ Message-id: 1485338996-17095-1-git-send-email-kraxel@redhat.com
  1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index 98f089e..7db6409 100644
+index 98f089e4e9..7db6409dc5 100644
 --- a/hw/display/cirrus_vga.c
 +++ b/hw/display/cirrus_vga.c
 @@ -309,7 +309,7 @@ static bool blit_is_unsafe(struct CirrusVGAState *s, bool dst_only,

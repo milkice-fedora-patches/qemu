@@ -17,7 +17,7 @@ Signed-off-by: Stefano Stabellini <sstabellini@kernel.org>
  1 file changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/xen-hvm.c b/xen-hvm.c
-index 2f348ed..097007d 100644
+index 2f348edf86..097007d3ed 100644
 --- a/xen-hvm.c
 +++ b/xen-hvm.c
 @@ -810,6 +810,10 @@ static void cpu_ioreq_pio(ioreq_t *req)

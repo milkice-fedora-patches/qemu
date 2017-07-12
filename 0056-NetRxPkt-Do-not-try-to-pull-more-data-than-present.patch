@@ -15,7 +15,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
-index 7c0beac..d38babe 100644
+index 7c0beace9e..d38babec88 100644
 --- a/hw/net/net_rx_pkt.c
 +++ b/hw/net/net_rx_pkt.c
 @@ -96,7 +96,8 @@ net_rx_pkt_pull_data(struct NetRxPkt *pkt,

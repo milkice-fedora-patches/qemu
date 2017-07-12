@@ -23,7 +23,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
-index 1019b50..7c0beac 100644
+index 1019b50c18..7c0beace9e 100644
 --- a/hw/net/net_rx_pkt.c
 +++ b/hw/net/net_rx_pkt.c
 @@ -23,13 +23,13 @@

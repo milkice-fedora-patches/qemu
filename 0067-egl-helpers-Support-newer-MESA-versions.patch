@@ -16,7 +16,7 @@ Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
  1 file changed, 4 insertions(+)
 
 diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 79cee05..d8d57c4 100644
+index 79cee0503a..d8d57c4bbe 100644
 --- a/ui/egl-helpers.c
 +++ b/ui/egl-helpers.c
 @@ -203,7 +203,11 @@ int qemu_egl_init_dpy(EGLNativeDisplayType dpy, bool gles, bool debug)

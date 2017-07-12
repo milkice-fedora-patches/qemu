@@ -20,7 +20,7 @@ Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
  1 file changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/slirp/ip6_icmp.c b/slirp/ip6_icmp.c
-index 3f74389..4c71f4c 100644
+index 3f7438996f..4c71f4c2fc 100644
 --- a/slirp/ip6_icmp.c
 +++ b/slirp/ip6_icmp.c
 @@ -144,6 +144,9 @@ void ndp_send_ra(Slirp *slirp)

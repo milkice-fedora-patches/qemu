@@ -16,7 +16,7 @@ Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
  1 file changed, 1 insertion(+)
 
 diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index b093db7..f4ece9a 100644
+index b093db729c..f4ece9abed 100644
 --- a/hw/usb/hcd-ehci.c
 +++ b/hw/usb/hcd-ehci.c
 @@ -1426,6 +1426,7 @@ static int ehci_process_itd(EHCIState *ehci,

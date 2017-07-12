@@ -15,7 +15,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 10 insertions(+)
 
 diff --git a/hw/char/serial.c b/hw/char/serial.c
-index eec72b7..455119f 100644
+index eec72b7b9e..455119f3d7 100644
 --- a/hw/char/serial.c
 +++ b/hw/char/serial.c
 @@ -904,6 +904,16 @@ void serial_realize_core(SerialState *s, Error **errp)

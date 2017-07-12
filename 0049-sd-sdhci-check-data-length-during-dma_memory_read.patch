@@ -20,7 +20,7 @@ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 01fbf22..5bd5ab6 100644
+index 01fbf228be..5bd5ab6319 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
 @@ -536,7 +536,7 @@ static void sdhci_sdma_transfer_multi_blocks(SDHCIState *s)

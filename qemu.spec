@@ -68,7 +68,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.7.1
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -254,6 +254,41 @@ Patch0071: 0071-slirp-Send-RDNSS-in-RA-only-if-host-has-an-IPv6-DNS-.patch
 Patch0072: 0072-qxl-clear-guest_cursor-on-QXL_CURSOR_HIDE.patch
 # CVE-2017-5579: serial: fix memory leak in serial exit (bz #1416161)
 Patch0073: 0073-serial-fix-memory-leak-in-serial-exit.patch
+# CVE-2017-7718: cirrus: OOB read access issue (bz #1443443)
+Patch0074: 0074-fix-cirrus_vga-fix-OOB-read-case-qemu-Segmentation-f.patch
+# CVE-2016-9603: cirrus: heap buffer overflow via vnc connection (bz
+# #1432040)
+Patch0075: 0075-cirrus-vnc-zap-bitblit-support-from-console-code.patch
+# CVE-2017-7377: 9pfs: fix file descriptor leak (bz #1437872)
+Patch0076: 0076-9pfs-fix-file-descriptor-leak.patch
+# CVE-2017-7980: cirrus: OOB r/w access issues in bitblt (bz #1444372)
+Patch0077: 0077-cirrus-fix-cirrus_invalidate_region.patch
+Patch0078: 0078-cirrus-stop-passing-around-dst-pointers-in-the-blitt.patch
+Patch0079: 0079-cirrus-stop-passing-around-src-pointers-in-the-blitt.patch
+Patch0080: 0080-cirrus-fix-off-by-one-in-cirrus_bitblt_rop_bkwd_tran.patch
+# CVE-2017-8112: vmw_pvscsi: infinite loop in pvscsi_log2 (bz #1445622)
+Patch0081: 0081-vmw_pvscsi-check-message-ring-page-count-at-initiali.patch
+# CVE-2017-8309: audio: host memory lekage via capture buffer (bz #1446520)
+Patch0082: 0082-audio-release-capture-buffers.patch
+# CVE-2017-8379: input: host memory lekage via keyboard events (bz #1446560)
+Patch0083: 0083-input-limit-kbd-queue-depth.patch
+# CVE-2017-8380: scsi: megasas: out-of-bounds read in megasas_mmio_write (bz
+# #1446578)
+Patch0084: 0084-scsi-avoid-an-off-by-one-error-in-megasas_mmio_write.patch
+# CVE-2017-9060: virtio-gpu: host memory leakage in Virtio GPU device (bz
+# #1452598)
+Patch0085: 0085-virtio-gpu-fix-memory-leak-in-set-scanout.patch
+# CVE-2017-9310: net: infinite loop in e1000e NIC emulation (bz #1452623)
+Patch0086: 0086-net-e1000e-fix-an-infinite-loop-issue.patch
+# CVE-2017-9330: usb: ohci: infinite loop due to incorrect return value (bz
+# #1457699)
+Patch0087: 0087-usb-ohci-fix-error-return-code-in-servicing-iso-td.patch
+# CVE-2017-9374: usb: ehci host memory leakage during hotunplug (bz
+# #1459137)
+Patch0088: 0088-usb-ehci-fix-memory-leak-in-ehci.patch
+# CVE-2017-10806: usb-redirect: stack buffer overflow in debug logging (bz
+# #1468497)
+Patch0089: 0089-usb-redir-fix-stack-overflow-in-usbredir_log_data.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1727,6 +1762,27 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jul 12 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-7
+- CVE-2017-7718: cirrus: OOB read access issue (bz #1443443)
+- CVE-2016-9603: cirrus: heap buffer overflow via vnc connection (bz
+  #1432040)
+- CVE-2017-7377: 9pfs: fix file descriptor leak (bz #1437872)
+- CVE-2017-7980: cirrus: OOB r/w access issues in bitblt (bz #1444372)
+- CVE-2017-8112: vmw_pvscsi: infinite loop in pvscsi_log2 (bz #1445622)
+- CVE-2017-8309: audio: host memory lekage via capture buffer (bz #1446520)
+- CVE-2017-8379: input: host memory lekage via keyboard events (bz #1446560)
+- CVE-2017-8380: scsi: megasas: out-of-bounds read in megasas_mmio_write (bz
+  #1446578)
+- CVE-2017-9060: virtio-gpu: host memory leakage in Virtio GPU device (bz
+  #1452598)
+- CVE-2017-9310: net: infinite loop in e1000e NIC emulation (bz #1452623)
+- CVE-2017-9330: usb: ohci: infinite loop due to incorrect return value (bz
+  #1457699)
+- CVE-2017-9374: usb: ehci host memory leakage during hotunplug (bz
+  #1459137)
+- CVE-2017-10806: usb-redirect: stack buffer overflow in debug logging (bz
+  #1468497)
+
 * Thu Apr 13 2017 Cole Robinson <crobinso@redhat.com> - 2:2.7.1-6
 - chardev data is dropped when host side closed (bz #1352977)
 - CVE-2016-8667: dma: divide by zero error in set_next_tick (bz #1384876)

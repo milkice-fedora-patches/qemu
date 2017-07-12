@@ -18,7 +18,7 @@ Signed-off-by: Greg Kurz <groug@kaod.org>
  2 files changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 54554ba..ad57123 100644
+index 54554bac51..ad57123aaf 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
 @@ -310,7 +310,7 @@ static int v9fs_xattr_fid_clunk(V9fsPDU *pdu, V9fsFidState *fidp)
@@ -57,7 +57,7 @@ index 54554ba..ad57123 100644
      xattr_fidp->fs.xattr.flags = flags;
      v9fs_string_init(&xattr_fidp->fs.xattr.name);
 diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
-index a386033..699235d 100644
+index a38603398e..699235d81c 100644
 --- a/hw/9pfs/9p.h
 +++ b/hw/9pfs/9p.h
 @@ -164,6 +164,7 @@ typedef struct V9fsXattr

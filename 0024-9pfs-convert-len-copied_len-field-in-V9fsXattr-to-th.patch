@@ -28,7 +28,7 @@ Signed-off-by: Greg Kurz <groug@kaod.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
-index 699235d..2067863 100644
+index 699235d81c..2067863100 100644
 --- a/hw/9pfs/9p.h
 +++ b/hw/9pfs/9p.h
 @@ -159,8 +159,8 @@ typedef struct V9fsConf

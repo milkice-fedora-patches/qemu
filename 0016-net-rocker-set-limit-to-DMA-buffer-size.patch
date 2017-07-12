@@ -19,7 +19,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/net/rocker/rocker.c b/hw/net/rocker/rocker.c
-index 30f2ce4..e9d215a 100644
+index 30f2ce417b..e9d215aa4d 100644
 --- a/hw/net/rocker/rocker.c
 +++ b/hw/net/rocker/rocker.c
 @@ -860,7 +860,7 @@ static void rocker_io_writel(void *opaque, hwaddr addr, uint32_t val)

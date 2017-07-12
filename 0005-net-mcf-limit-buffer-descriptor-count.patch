@@ -18,7 +18,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/net/mcf_fec.c b/hw/net/mcf_fec.c
-index 0ee8ad9..d31fea1 100644
+index 0ee8ad9d66..d31fea1f18 100644
 --- a/hw/net/mcf_fec.c
 +++ b/hw/net/mcf_fec.c
 @@ -23,6 +23,7 @@ do { printf("mcf_fec: " fmt , ## __VA_ARGS__); } while (0)

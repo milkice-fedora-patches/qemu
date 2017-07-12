@@ -34,7 +34,7 @@ Message-id: 1486645341-5010-1-git-send-email-kraxel@redhat.com
  1 file changed, 30 insertions(+), 6 deletions(-)
 
 diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index 16f27e8..6bd13fc 100644
+index 16f27e8ac5..6bd13fc78f 100644
 --- a/hw/display/cirrus_vga.c
 +++ b/hw/display/cirrus_vga.c
 @@ -683,14 +683,39 @@ static void cirrus_invalidate_region(CirrusVGAState * s, int off_begin,

@@ -18,7 +18,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/char/serial.c b/hw/char/serial.c
-index 3442f47..eec72b7 100644
+index 3442f47d36..eec72b7b9e 100644
 --- a/hw/char/serial.c
 +++ b/hw/char/serial.c
 @@ -153,8 +153,9 @@ static void serial_update_parameters(SerialState *s)

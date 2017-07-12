@@ -20,7 +20,7 @@ Message-id: 1488789111-27340-1-git-send-email-kraxel@redhat.com
  1 file changed, 5 insertions(+)
 
 diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 62d0c80..e09ce10 100644
+index 62d0c80dcf..e09ce10660 100644
 --- a/hw/display/qxl.c
 +++ b/hw/display/qxl.c
 @@ -478,6 +478,11 @@ static int qxl_track_command(PCIQXLDevice *qxl, struct QXLCommandExt *ext)

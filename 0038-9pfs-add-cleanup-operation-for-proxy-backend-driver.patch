@@ -16,7 +16,7 @@ Signed-off-by: Greg Kurz <groug@kaod.org>
  1 file changed, 13 insertions(+)
 
 diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
-index f265501..336e9fe 100644
+index f265501eac..336e9fef84 100644
 --- a/hw/9pfs/9p-proxy.c
 +++ b/hw/9pfs/9p-proxy.c
 @@ -1179,9 +1179,22 @@ static int proxy_init(FsContext *ctx)

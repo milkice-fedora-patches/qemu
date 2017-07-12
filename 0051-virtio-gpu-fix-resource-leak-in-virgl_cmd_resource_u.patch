@@ -21,7 +21,7 @@ Message-id: 1485167210-4757-1-git-send-email-kraxel@redhat.com
  1 file changed, 8 insertions(+)
 
 diff --git a/hw/display/virtio-gpu-3d.c b/hw/display/virtio-gpu-3d.c
-index f96a0c2..ecb09d1 100644
+index f96a0c2e59..ecb09d17a1 100644
 --- a/hw/display/virtio-gpu-3d.c
 +++ b/hw/display/virtio-gpu-3d.c
 @@ -77,10 +77,18 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,

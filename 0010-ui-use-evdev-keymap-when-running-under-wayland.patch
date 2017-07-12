@@ -12,7 +12,7 @@ Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
  2 files changed, 11 insertions(+)
 
 diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-index 42ca0fe..b3b5005 100644
+index 42ca0fea8b..b3b50059c7 100644
 --- a/include/ui/gtk.h
 +++ b/include/ui/gtk.h
 @@ -18,6 +18,10 @@
@@ -27,7 +27,7 @@ index 42ca0fe..b3b5005 100644
  #include "ui/egl-helpers.h"
  #include "ui/egl-context.h"
 diff --git a/ui/gtk.c b/ui/gtk.c
-index 21ae4cb..c641e49 100644
+index 21ae4cbccc..c641e49033 100644
 --- a/ui/gtk.c
 +++ b/ui/gtk.c
 @@ -90,6 +90,9 @@

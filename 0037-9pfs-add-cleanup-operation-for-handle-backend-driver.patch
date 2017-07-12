@@ -16,7 +16,7 @@ Signed-off-by: Greg Kurz <groug@kaod.org>
  1 file changed, 9 insertions(+)
 
 diff --git a/hw/9pfs/9p-handle.c b/hw/9pfs/9p-handle.c
-index 3d77594..1687661 100644
+index 3d77594f92..1687661bc9 100644
 --- a/hw/9pfs/9p-handle.c
 +++ b/hw/9pfs/9p-handle.c
 @@ -649,6 +649,14 @@ out:

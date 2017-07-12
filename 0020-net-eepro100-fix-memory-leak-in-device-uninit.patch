@@ -14,7 +14,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
-index bab4dbf..4bf71f2 100644
+index bab4dbfc98..4bf71f2d85 100644
 --- a/hw/net/eepro100.c
 +++ b/hw/net/eepro100.c
 @@ -1843,6 +1843,7 @@ static void pci_nic_uninit(PCIDevice *pci_dev)

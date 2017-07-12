@@ -15,7 +15,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 52a4123..ebf0302 100644
+index 52a41239cf..ebf03022ed 100644
 --- a/hw/scsi/megasas.c
 +++ b/hw/scsi/megasas.c
 @@ -672,14 +672,14 @@ static int megasas_map_dcmd(MegasasState *s, MegasasCmd *cmd)

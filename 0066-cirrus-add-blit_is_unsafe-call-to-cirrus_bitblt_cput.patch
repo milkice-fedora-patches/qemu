@@ -19,7 +19,7 @@ Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index 0e47cf8..a093dc8 100644
+index 0e47cf85ad..a093dc8b16 100644
 --- a/hw/display/cirrus_vga.c
 +++ b/hw/display/cirrus_vga.c
 @@ -899,6 +899,10 @@ static int cirrus_bitblt_cputovideo(CirrusVGAState * s)

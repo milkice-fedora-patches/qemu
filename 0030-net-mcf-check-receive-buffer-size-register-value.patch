@@ -17,7 +17,7 @@ Signed-off-by: Jason Wang <jasowang@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/net/mcf_fec.c b/hw/net/mcf_fec.c
-index d31fea1..3d4b3b3 100644
+index d31fea1f18..3d4b3b3b39 100644
 --- a/hw/net/mcf_fec.c
 +++ b/hw/net/mcf_fec.c
 @@ -393,7 +393,7 @@ static void mcf_fec_write(void *opaque, hwaddr addr,
