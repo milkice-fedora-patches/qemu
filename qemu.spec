@@ -492,8 +492,6 @@ x86 system, this will install qemu-system-x86-core
 Summary: QEMU user mode emulation of qemu targets
 Group: Development/Tools
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-Requires(post): systemd-units
-Requires(postun): systemd-units
 # On upgrade, make qemu-user get replaced with qemu-user + qemu-user-binfmt
 Obsoletes: %{name}-user < 2:2.6.0-5%{?dist}
 
@@ -1353,7 +1351,7 @@ for i in dummy \
     qemu-m68k \
 %endif
 %ifnarch ppc %{power64}
-    qemu-ppc qemu-ppc64abi32 qemu-ppc64 \
+    qemu-ppc qemu-ppc64abi32 qemu-ppc64le qemu-ppc64 \
 %endif
 %ifnarch sparc sparc64
     qemu-sparc qemu-sparc32plus qemu-sparc64 \
@@ -1467,9 +1465,14 @@ getent passwd qemu >/dev/null || \
 %systemd_postun_with_restart ksmtuned.service
 
 
-%post user
+%post user-binfmt
 /bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
-%postun user
+%postun user-binfmt
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+
+%post user-static
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun user-static
 /bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 
 
@@ -2032,9 +2035,6 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
-* Thu Jul 13 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-3
-- Workaround libvirt 3.2 CPU issues (bz #1467599)
-
 * Wed Jul 12 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-2
 - CVE-2017-8112: vmw_pvscsi: infinite loop in pvscsi_log2 (bz #1445622)
 - CVE-2017-8309: audio: host memory lekage via capture buffer (bz #1446520)
