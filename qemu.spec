@@ -92,7 +92,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.9.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -156,8 +156,6 @@ Patch0103: 0103-nbd-Fix-regression-on-resiliency-to-port-scan.patch
 # CVE-2017-10664: qemu-nbd: server breaks with SIGPIPE upon client abort (bz
 # #1466192)
 Patch0104: 0104-qemu-nbd-Ignore-SIGPIPE.patch
-# Workaround libvirt 3.2 CPU issues (bz #1467599)
-Patch0105: 0105-Disable-qmp-cpu-commands-bug-1467599.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2036,6 +2034,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Aug 04 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-4
+- Drop qemu workaround for AMD CPU issues (bz #1467599)
+- Backport binfmt/static improvements from rawhide
+
 * Wed Jul 12 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-2
 - CVE-2017-8112: vmw_pvscsi: infinite loop in pvscsi_log2 (bz #1445622)
 - CVE-2017-8309: audio: host memory lekage via capture buffer (bz #1446520)
