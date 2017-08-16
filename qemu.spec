@@ -92,7 +92,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.9.0
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -156,6 +156,12 @@ Patch0103: 0103-nbd-Fix-regression-on-resiliency-to-port-scan.patch
 # CVE-2017-10664: qemu-nbd: server breaks with SIGPIPE upon client abort (bz
 # #1466192)
 Patch0104: 0104-qemu-nbd-Ignore-SIGPIPE.patch
+
+# Backported fixes for VNC input issues after the implementation of queue
+# depth limit in input-limit-kbd-queue-depth.patch (bz #1481858)
+Patch0201: 0201-input-Decrement-queue-count-on-kbd-delay.patch
+Patch0202: 0202-hid-Reset-kbd-modifiers-on-reset.patch
+Patch0203: 0203-vnc-Set-default-kbd-delay-to-10ms.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2034,6 +2040,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 15 2017 Adam Williamson <awilliam@redhat.com> - 2:2.9.0-5
+- Backport fixes for input issues (esp. openQA) after CVE-2017-8379 fix
+
 * Fri Aug 04 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.0-4
 - Drop qemu workaround for AMD CPU issues (bz #1467599)
 - Backport binfmt/static improvements from rawhide
