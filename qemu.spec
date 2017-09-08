@@ -91,8 +91,8 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.9.0
-Release: 5%{?rcrel}%{?dist}
+Version: 2.9.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -126,42 +126,9 @@ Source21: 50-kvm-s390x.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source22: 95-kvm-ppc64-memlock.conf
 
-# CVE-2017-8112: vmw_pvscsi: infinite loop in pvscsi_log2 (bz #1445622)
-Patch0001: 0001-vmw_pvscsi-check-message-ring-page-count-at-initiali.patch
-# CVE-2017-8309: audio: host memory lekage via capture buffer (bz #1446520)
-Patch0002: 0002-audio-release-capture-buffers.patch
-# CVE-2017-8379: input: host memory lekage via keyboard events (bz #1446560)
-Patch0003: 0003-input-limit-kbd-queue-depth.patch
-# CVE-2017-8380: scsi: megasas: out-of-bounds read in megasas_mmio_write (bz
-# #1446578)
-Patch0004: 0004-scsi-avoid-an-off-by-one-error-in-megasas_mmio_write.patch
-# CVE-2017-7493: 9pfs: guest privilege escalation in virtfs mapped-file mode
-# (bz #1451711)
-Patch0005: 0005-9pfs-local-forbid-client-access-to-metadata-CVE-2017.patch
 # CVE-2017-9503: megasas: null pointer dereference while processing megasas
 # command (bz #1459478)
-Patch0006: 0006-megasas-do-not-read-sense-length-more-than-once-from.patch
-Patch0007: 0007-megasas-do-not-read-iovec-count-more-than-once-from-.patch
-Patch0008: 0008-megasas-do-not-read-DCMD-opcode-more-than-once-from-.patch
-Patch0009: 0009-megasas-do-not-read-command-more-than-once-from-fram.patch
-Patch0010: 0010-megasas-do-not-read-SCSI-req-parameters-more-than-on.patch
-Patch0011: 0011-megasas-always-store-SCSIRequest-into-MegasasCmd.patch
-
-# CVE-2017-10806: usb-redirect: stack buffer overflow in debug logging (bz
-# #1468497)
-Patch0101: 0101-usb-redir-fix-stack-overflow-in-usbredir_log_data.patch
-# CVE-2017-9524: nbd: segfault due to client non-negotiation (bz #1460172)
-Patch0102: 0102-nbd-Fully-initialize-client-in-case-of-failed-negoti.patch
-Patch0103: 0103-nbd-Fix-regression-on-resiliency-to-port-scan.patch
-# CVE-2017-10664: qemu-nbd: server breaks with SIGPIPE upon client abort (bz
-# #1466192)
-Patch0104: 0104-qemu-nbd-Ignore-SIGPIPE.patch
-
-# Backported fixes for VNC input issues after the implementation of queue
-# depth limit in input-limit-kbd-queue-depth.patch (bz #1481858)
-Patch0201: 0201-input-Decrement-queue-count-on-kbd-delay.patch
-Patch0202: 0202-hid-Reset-kbd-modifiers-on-reset.patch
-Patch0203: 0203-vnc-Set-default-kbd-delay-to-10ms.patch
+Patch0001: 0001-megasas-always-store-SCSIRequest-into-MegasasCmd.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2040,6 +2007,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Sep 08 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.1-1
+- Rebase to 2.9.1 stable release
+
 * Tue Aug 15 2017 Adam Williamson <awilliam@redhat.com> - 2:2.9.0-5
 - Backport fixes for input issues (esp. openQA) after CVE-2017-8379 fix
 
