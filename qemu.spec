@@ -184,8 +184,9 @@ BuildRequires: libaio-devel
 BuildRequires: pulseaudio-libs-devel
 # alsa audio output
 BuildRequires: alsa-lib-devel
-# qemu-pr-helper multipath support
+# qemu-pr-helper multipath support (requires libudev too)
 BuildRequires: device-mapper-multipath-devel
+BuildRequires: systemd-devel
 # iscsi drive support
 BuildRequires: libiscsi-devel
 # NFS drive support
@@ -199,7 +200,7 @@ BuildRequires: ncurses-devel
 # used by 9pfs
 BuildRequires: libattr-devel
 BuildRequires: libcap-devel
-# used by qemu-bridge-helper
+# used by qemu-bridge-helper and qemu-pr-helper
 BuildRequires: libcap-ng-devel
 # spice usb redirection support
 BuildRequires: usbredir-devel >= 0.5.2
