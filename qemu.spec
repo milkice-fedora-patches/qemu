@@ -2039,7 +2039,6 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
-=======
 * Thu Oct 19 2017 Cole Robinson <crobinso@redhat.com> - 2:2.10.1-1
 - Fix ppc64 KVM failure (bz #1501936)
 - CVE-2017-15038: 9p: information disclosure when reading extended
