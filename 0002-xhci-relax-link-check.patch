@@ -1,0 +1,37 @@
+From: Ladi Prosek <lprosek@redhat.com>
+Date: Fri, 12 May 2017 12:21:00 +0200
+Subject: [PATCH] xhci: relax link check
+
+The strict td link limit added by commit "05f43d4 xhci: limit the
+number of link trbs we are willing to process" causes problems with
+Windows guests. Let's raise the limit.
+
+This change is analogous to:
+
+  commit ab6b1105a2259c7072905887f71caa850ce63190
+  Author: Gerd Hoffmann <kraxel@redhat.com>
+  Date:   Tue Mar 7 09:40:18 2017 +0100
+
+      ohci: relax link check
+
+Signed-off-by: Ladi Prosek <lprosek@redhat.com>
+Message-id: 20170512102100.22675-1-lprosek@redhat.com
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+(cherry picked from commit 99f9aeba5d461f79c9ce73f968ba0feb77fc1f5a)
+---
+ hw/usb/hcd-xhci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index ed0f13f37b..95f127d152 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -50,7 +50,7 @@
+ /* Very pessimistic, let's hope it's enough for all cases */
+ #define EV_QUEUE (((3 * 24) + 16) * MAXSLOTS)
+ 
+-#define TRB_LINK_LIMIT  4
++#define TRB_LINK_LIMIT  32
+ #define COMMAND_LIMIT   256
+ #define TRANSFER_LIMIT  256
+ 

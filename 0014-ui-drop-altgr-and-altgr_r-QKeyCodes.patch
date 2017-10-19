@@ -1,0 +1,89 @@
+From: Gerd Hoffmann <kraxel@redhat.com>
+Date: Thu, 27 Jul 2017 12:47:20 +0200
+Subject: [PATCH] ui: drop altgr and altgr_r QKeyCodes
+
+The right alt key (alt_r aka KEY_RIGHTALT) is used for AltGr.
+The altgr and altgr_r keys simply don't exist.  Drop them.
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-id: 20170727104720.30061-1-kraxel@redhat.com
+(cherry picked from commit 912092b8e47f31c3db25e088af8460d9e752da29)
+---
+ hw/char/escc.c    | 1 -
+ hw/input/adb.c    | 1 -
+ hw/input/ps2.c    | 2 --
+ qapi-schema.json  | 3 ++-
+ ui/input-keymap.c | 2 --
+ 5 files changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/hw/char/escc.c b/hw/char/escc.c
+index 9228091cec..a7a54e55c2 100644
+--- a/hw/char/escc.c
++++ b/hw/char/escc.c
+@@ -721,7 +721,6 @@ static const uint8_t qcode_to_keycode[Q_KEY_CODE__MAX] = {
+     [Q_KEY_CODE_SHIFT_R]       = 110,
+     [Q_KEY_CODE_ALT]           = 19,
+     [Q_KEY_CODE_ALT_R]         = 13,
+-    [Q_KEY_CODE_ALTGR]         = 13,
+     [Q_KEY_CODE_CTRL]          = 76,
+     [Q_KEY_CODE_CTRL_R]        = 76,
+     [Q_KEY_CODE_ESC]           = 29,
+diff --git a/hw/input/adb.c b/hw/input/adb.c
+index 43d3205472..fcca3a8eb9 100644
+--- a/hw/input/adb.c
++++ b/hw/input/adb.c
+@@ -201,7 +201,6 @@ int qcode_to_adb_keycode[] = {
+     [Q_KEY_CODE_SHIFT_R]       = ADB_KEY_RIGHT_SHIFT,
+     [Q_KEY_CODE_ALT]           = ADB_KEY_LEFT_OPTION,
+     [Q_KEY_CODE_ALT_R]         = ADB_KEY_RIGHT_OPTION,
+-    [Q_KEY_CODE_ALTGR]         = ADB_KEY_RIGHT_OPTION,
+     [Q_KEY_CODE_CTRL]          = ADB_KEY_LEFT_CONTROL,
+     [Q_KEY_CODE_CTRL_R]        = ADB_KEY_RIGHT_CONTROL,
+     [Q_KEY_CODE_META_L]        = ADB_KEY_COMMAND,
+diff --git a/hw/input/ps2.c b/hw/input/ps2.c
+index fbf2f8b171..776d6abdd2 100644
+--- a/hw/input/ps2.c
++++ b/hw/input/ps2.c
+@@ -387,8 +387,6 @@ static const uint16_t qcode_to_keycode_set2[Q_KEY_CODE__MAX] = {
+     [Q_KEY_CODE_AC_REFRESH] = 0xe020,
+     [Q_KEY_CODE_AC_BOOKMARKS] = 0xe018,
+ 
+-    [Q_KEY_CODE_ALTGR] = 0x08,
+-    [Q_KEY_CODE_ALTGR_R] = 0xe008,
+     [Q_KEY_CODE_ASTERISK] = 0x7c,
+     [Q_KEY_CODE_LESS] = 0x61,
+     [Q_KEY_CODE_SYSRQ] = 0x7f,
+diff --git a/qapi-schema.json b/qapi-schema.json
+index b298b349cb..e93ae014eb 100644
+--- a/qapi-schema.json
++++ b/qapi-schema.json
+@@ -4750,13 +4750,14 @@
+ # @ac_stop: since 2.10
+ # @ac_refresh: since 2.10
+ # @ac_bookmarks: since 2.10
++# altgr, altgr_r: dropped in 2.10
+ #
+ # Since: 1.3.0
+ #
+ ##
+ { 'enum': 'QKeyCode',
+   'data': [ 'unmapped',
+-            'shift', 'shift_r', 'alt', 'alt_r', 'altgr', 'altgr_r', 'ctrl',
++            'shift', 'shift_r', 'alt', 'alt_r', 'ctrl',
+             'ctrl_r', 'menu', 'esc', '1', '2', '3', '4', '5', '6', '7', '8',
+             '9', '0', 'minus', 'equal', 'backspace', 'tab', 'q', 'w', 'e',
+             'r', 't', 'y', 'u', 'i', 'o', 'p', 'bracket_left', 'bracket_right',
+diff --git a/ui/input-keymap.c b/ui/input-keymap.c
+index ae781beae9..f96adf4165 100644
+--- a/ui/input-keymap.c
++++ b/ui/input-keymap.c
+@@ -146,8 +146,6 @@ static const int qcode_to_number[] = {
+ 
+     [Q_KEY_CODE_ALT] = 0x38,
+     [Q_KEY_CODE_ALT_R] = 0xb8,
+-    [Q_KEY_CODE_ALTGR] = 0x64,
+-    [Q_KEY_CODE_ALTGR_R] = 0xe4,
+     [Q_KEY_CODE_CTRL] = 0x1d,
+     [Q_KEY_CODE_CTRL_R] = 0x9d,
+ 

@@ -92,7 +92,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.9.1
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -129,6 +129,33 @@ Source22: 95-kvm-ppc64-memlock.conf
 # CVE-2017-9503: megasas: null pointer dereference while processing megasas
 # command (bz #1459478)
 Patch0001: 0001-megasas-always-store-SCSIRequest-into-MegasasCmd.patch
+# Fix usb3 drive issues with windows guests (bz #1493196)
+Patch0002: 0002-xhci-relax-link-check.patch
+# CVE-2017-15038: 9p: information disclosure when reading extended
+# attributes (bz #1499111)
+Patch0003: 0003-9pfs-use-g_malloc0-to-allocate-space-for-xattr.patch
+# CVE-2017-15268: potential memory exhaustion via websock connection to VNC
+# (bz #1496882)
+Patch0004: 0004-io-monitor-encoutput-buffer-size-from-websocket-GSou.patch
+# CVE-2017-14167: multiboot OOB access while loading kernel image (bz
+# #1489376)
+Patch0005: 0005-multiboot-validate-multiboot-header-address-values.patch
+# CVE-2017-13672: vga: OOB read access during display update (bz #1486561)
+Patch0006: 0006-vga-stop-passing-pointers-to-vga_draw_line-functions.patch
+# CVE-2017-12809: flushing of empty CDROM drives leads to NULL deref (bz
+# #1483536)
+Patch0007: 0007-IDE-Do-not-flush-empty-CDROM-drives.patch
+# CVE-2017-11434 slirp: out-of-bounds read while parsing dhcp options (bz
+# #1472612)
+Patch0008: 0008-slirp-check-len-against-dhcp-options-array-end.patch
+# Fix sending multimedia keys through spice (bz #1471758)
+Patch0009: 0009-ui-add-next-and-prior-keysyms.patch
+Patch0010: 0010-ui-move-qemu_input_linux_to_qcode.patch
+Patch0011: 0011-ui-update-keymaps.patch
+Patch0012: 0012-ui-add-multimedia-keys.patch
+Patch0013: 0013-ps2-enable-multimedia-keys.patch
+Patch0014: 0014-ui-drop-altgr-and-altgr_r-QKeyCodes.patch
+Patch0015: 0015-ps2-fix-sending-of-PAUSE-BREAK-scancodes.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2007,6 +2034,22 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Oct 19 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.1-2
+- Fix usb3 drive issues with windows guests (bz #1493196)
+- CVE-2017-15038: 9p: information disclosure when reading extended
+  attributes (bz #1499111)
+- CVE-2017-15268: potential memory exhaustion via websock connection to VNC
+  (bz #1496882)
+- CVE-2017-14167: multiboot OOB access while loading kernel image (bz
+  #1489376)
+- CVE-2017-13672: vga: OOB read access during display update (bz #1486561)
+- CVE-2017-12809: flushing of empty CDROM drives leads to NULL deref (bz
+  #1483536)
+- CVE-2017-11434 slirp: out-of-bounds read while parsing dhcp options (bz
+  #1472612)
+- Fix sending multimedia keys through spice (bz #1471758)
+- Another ppc64le binfmt fix (bz #1500526)
+
 * Fri Sep 08 2017 Cole Robinson <crobinso@redhat.com> - 2:2.9.1-1
 - Rebase to 2.9.1 stable release
 
