@@ -106,8 +106,8 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.10.0
-Release: 5%{?rcrel}%{?dist}
+Version: 2.10.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -142,21 +142,34 @@ Source21: 50-kvm-s390x.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source22: 95-kvm-ppc64-memlock.conf
 
-Patch1001: 1001-io-add-new-qio_channel_-readv-writev-read-write-_all.patch
-Patch1002: 1002-io-Yield-rather-than-wait-when-already-in-coroutine.patch
-Patch1003: 1003-scsi-bus-correct-responses-for-INQUIRY-and-REQUEST-S.patch
-Patch1004: 1004-scsi-Refactor-scsi-sense-interpreting-code.patch
-Patch1005: 1005-scsi-Improve-scsi_sense_to_errno.patch
-Patch1006: 1006-scsi-Introduce-scsi_sense_buf_to_errno.patch
-Patch1007: 1007-scsi-rename-scsi_build_sense-to-scsi_convert_sense.patch
-Patch1008: 1008-scsi-move-non-emulation-specific-code-to-scsi.patch
-Patch1009: 1009-scsi-introduce-scsi_build_sense.patch
-Patch1010: 1010-scsi-introduce-sg_io_sense_from_errno.patch
-Patch1011: 1011-scsi-move-block-scsi.h-to-include-scsi-constants.h.patch
-Patch1012: 1012-scsi-file-posix-add-support-for-persistent-reservati.patch
-Patch1013: 1013-scsi-build-qemu-pr-helper.patch
-Patch1014: 1014-scsi-add-multipath-support-to-qemu-pr-helper.patch
-Patch1015: 1015-scsi-add-persistent-reservation-manager-using-qemu-p.patch
+# Backport persistent reservation manager in preparation for SELinux work
+Patch0001: 0001-io-add-new-qio_channel_-readv-writev-read-write-_all.patch
+Patch0002: 0002-io-Yield-rather-than-wait-when-already-in-coroutine.patch
+Patch0003: 0003-scsi-Refactor-scsi-sense-interpreting-code.patch
+Patch0004: 0004-scsi-Improve-scsi_sense_to_errno.patch
+Patch0005: 0005-scsi-Introduce-scsi_sense_buf_to_errno.patch
+Patch0006: 0006-scsi-rename-scsi_build_sense-to-scsi_convert_sense.patch
+Patch0007: 0007-scsi-move-non-emulation-specific-code-to-scsi.patch
+Patch0008: 0008-scsi-introduce-scsi_build_sense.patch
+Patch0009: 0009-scsi-introduce-sg_io_sense_from_errno.patch
+Patch0010: 0010-scsi-move-block-scsi.h-to-include-scsi-constants.h.patch
+Patch0011: 0011-scsi-file-posix-add-support-for-persistent-reservati.patch
+Patch0012: 0012-scsi-build-qemu-pr-helper.patch
+Patch0013: 0013-scsi-add-multipath-support-to-qemu-pr-helper.patch
+Patch0014: 0014-scsi-add-persistent-reservation-manager-using-qemu-p.patch
+
+# Add patches from git master to fix TLS test suite with new GNUTLS
+Patch0101: 0101-crypto-fix-test-cert-generation-to-not-use-SHA1-algo.patch
+Patch0102: 0102-io-fix-check-for-handshake-completion-in-TLS-test.patch
+Patch0103: 0103-io-fix-temp-directory-used-by-test-io-channel-tls-te.patch
+# Fix ppc64 KVM failure (bz #1501936)
+Patch0104: 0104-spapr-fallback-to-raw-mode-if-best-compat-mode-canno.patch
+# CVE-2017-15038: 9p: information disclosure when reading extended
+# attributes (bz #1499111)
+Patch0105: 0105-9pfs-use-g_malloc0-to-allocate-space-for-xattr.patch
+# CVE-2017-15268: potential memory exhaustion via websock connection to VNC
+# (bz #1496882)
+Patch0106: 0106-io-monitor-encoutput-buffer-size-from-websocket-GSou.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -166,7 +179,15 @@ BuildRequires: perl-podlators
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
 # For acpi compilation
+#
+# Upstream disables iasl for big endian and QEMU checks
+# for this. Fedora has re-enabled it on BE circumventing
+# the QEMU checks, but it fails none the less:
+#
+# https://bugzilla.redhat.com/show_bug.cgi?id=1332449
+%ifnarch s390 s390x ppc ppc64
 BuildRequires: iasl
+%endif
 # For chrpath calls in specfile
 BuildRequires: chrpath
 
@@ -1415,9 +1436,9 @@ b="./x86_64-softmmu/qemu-system-x86_64"
 if [ -x "$b" ]; then "$b" -help; fi
 
 %ifarch %{archs_ignore_test_failures}
-make check V=1
-%else
 make check V=1 || :
+%else
+make check V=1
 %endif
 
 %if 0%{?hostqemu:1}
@@ -2018,6 +2039,14 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+=======
+* Thu Oct 19 2017 Cole Robinson <crobinso@redhat.com> - 2:2.10.1-1
+- Fix ppc64 KVM failure (bz #1501936)
+- CVE-2017-15038: 9p: information disclosure when reading extended
+  attributes (bz #1499111)
+- CVE-2017-15268: potential memory exhaustion via websock connection to VNC
+  (bz #1496882)
+
 * Tue Oct 17 2017 Paolo Bonzini <pbonzini@redhat.com> - 2:2.10.0-5
 - Update patch 1014 for new libmultipath/libmpathpersist API
 - Force build to fail if multipath is not available
@@ -2029,6 +2058,9 @@ getent passwd qemu >/dev/null || \
 * Fri Sep 22 2017 Paolo Bonzini <pbonzini@redhat.com> - 2:2.10.0-3
 - Backport persistent reservation manager in preparation for SELinux work
 - Fix endianness of e_type in the ppc64le binfmt (Nathaniel McCallum)
+
+* Mon Sep 18 2017 Nathaniel McCallum <npmccallum@redhat.com> - 2:2.10.0-2
+- Fix endianness of e_type in the ppc64le binfmt
 
 * Thu Sep 07 2017 Cole Robinson <crobinso@redhat.com> - 2:2.10.0-1
 - Rebase to 2.10.0 GA
