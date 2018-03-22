@@ -104,7 +104,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.10.1
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -167,6 +167,10 @@ Patch0105: 0105-9pfs-use-g_malloc0-to-allocate-space-for-xattr.patch
 # CVE-2017-15268: potential memory exhaustion via websock connection to VNC
 # (bz #1496882)
 Patch0106: 0106-io-monitor-encoutput-buffer-size-from-websocket-GSou.patch
+
+# Fix restoring from snapshot more than once in a single run
+# (bz #1531048) - backport from master
+Patch0201: 0201-migration-Reset-rather-than-destroy-main_thread_load.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2036,6 +2040,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Mar 22 2018 Adam Williamson <awilliam@redhat.com> - 2:2.1.01-3
+- Backport fix for restoring snapshot more than once (rhbz #1531048)
+
 * Thu Dec 21 2017 Daniel P. Berrange <berrange@redhat.com> - 2:2.10.1-2
 - Re-enable RBD on arm/ppc (rhbz #1528378)
 
