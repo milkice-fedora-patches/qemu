@@ -100,7 +100,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.11.1
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -146,6 +146,13 @@ Patch0003: 0001-qapi-ensure-stable-sort-ordering-when-checking-QAPI-.patch
 
 # Avoid breakage in tests due to stricter crypto policies
 Patch0004: 0001-crypto-ensure-we-use-a-predictable-TLS-priority-sett.patch
+
+# CVE-2018-3639  Speculative Store Bypass
+Patch0005: 0001-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
+Patch0006: 0002-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
+Patch0007: 0003-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
+
+
 
 # documentation deps
 BuildRequires: texinfo
@@ -1970,6 +1977,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jun 18 2018 Daniel P. Berrangé <berrange@redhat.com> - 2:2.11.1-3
+- New CPU features for speculative store bypass (CVE-2018-3639)
+
 * Mon Mar 19 2018 Daniel P. Berrangé <berrange@redhat.com> - 2:2.11.1-2
 - Re-enable normal hardened build macros to fix ksmctl.c hardening
 - Don't strip _FORTIFY_SOURCE from compiler flags
