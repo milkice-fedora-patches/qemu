@@ -104,7 +104,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.10.1
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -171,6 +171,18 @@ Patch0106: 0106-io-monitor-encoutput-buffer-size-from-websocket-GSou.patch
 # Fix restoring from snapshot more than once in a single run
 # (bz #1531048) - backport from master
 Patch0201: 0201-migration-Reset-rather-than-destroy-main_thread_load.patch
+
+# Spectre & SSBD
+Patch1001: 1001-i386-Change-X86CPUDefinition-model_id-to-const-char.patch
+Patch1002: 1002-i386-Add-support-for-SPEC_CTRL-MSR.patch
+Patch1003: 1003-i386-Add-spec-ctrl-CPUID-bit.patch
+Patch1004: 1004-i386-Add-FEAT_8000_0008_EBX-CPUID-feature-word.patch
+Patch1005: 1005-i386-Add-new-IBRS-versions-of-Intel-CPU-models.patch
+Patch1006: 1006-target-i386-cpu-Add-new-EPYC-CPU-model.patch
+Patch1007: 1007-i386-Add-EPYC-IBPB-CPU-model.patch
+Patch1008: 1008-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
+Patch1009: 1009-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
+Patch1010: 1010-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2040,6 +2052,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jun 19 2018 Daniel P. Berrangé <berrange@redhat.com> - 2:2.10.1-4
+- Add new CPU features for CVE-2017-5715 and CVE-2018-3639
+
 * Thu Mar 22 2018 Adam Williamson <awilliam@redhat.com> - 2:2.1.01-3
 - Backport fix for restoring snapshot more than once (rhbz #1531048)
 
