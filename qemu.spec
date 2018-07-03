@@ -99,8 +99,8 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.11.1
-Release: 3%{?rcrel}%{?dist}
+Version: 2.11.2
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -135,22 +135,8 @@ Source21: 50-kvm-s390x.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source22: 95-kvm-ppc64-memlock.conf
 
-# fix compilation on newer glibc
-Patch0001: 0001-memfd-fix-configure-test.patch
-
 # hacky fix for https://bugs.launchpad.net/qemu/+bug/1738283
-Patch0002: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
-
-# Non-deterministic python hash iterator sort ordering
-Patch0003: 0001-qapi-ensure-stable-sort-ordering-when-checking-QAPI-.patch
-
-# Avoid breakage in tests due to stricter crypto policies
-Patch0004: 0001-crypto-ensure-we-use-a-predictable-TLS-priority-sett.patch
-
-# CVE-2018-3639  Speculative Store Bypass
-Patch0005: 0001-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
-Patch0006: 0002-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
-Patch0007: 0003-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
+Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
 
 
 
@@ -1977,6 +1963,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jul 03 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-1
+- Rebase to qemu 2.11.2 stable release
+
 * Mon Jun 18 2018 Daniel P. Berrangé <berrange@redhat.com> - 2:2.11.1-3
 - New CPU features for speculative store bypass (CVE-2018-3639)
 
