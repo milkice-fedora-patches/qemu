@@ -1,4 +1,3 @@
-From 2c25ad161d7714f15b1951c69c50844ea81f4186 Mon Sep 17 00:00:00 2001
 From: Adam Williamson <awilliam@redhat.com>
 Date: Wed, 20 Dec 2017 15:43:07 -0800
 Subject: [PATCH] Remove problematic 'evdev 86' key from en-us keymap
@@ -27,6 +26,3 @@ index a70e03adc0..e518a9dc35 100644
  # evdev 87 (0x57), QKeyCode "f11", number 0x57
  F11 0x57
  
--- 
-2.15.1
-

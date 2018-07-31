@@ -100,7 +100,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.11.2
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -137,6 +137,18 @@ Source22: 95-kvm-ppc64-memlock.conf
 
 # hacky fix for https://bugs.launchpad.net/qemu/+bug/1738283
 Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+# CVE-2017-16845: ps2: information leakage via post_load (bz #1514150)
+Patch0002: 0002-ps2-check-PS2Queue-pointers-in-post_load-routine.patch
+Patch0003: 0003-ps2-check-PS2Queue-wptr-pointer-in-post_load-routine.patch
+# CVE-2018-11806: slirp: heap buffer overflow while reassembling fragmented
+# datagrams (bz #1586249)
+Patch0004: 0004-slirp-correct-size-computation-while-concatenating-m.patch
+Patch0005: 0005-slirp-reformat-m_inc-routine.patch
+# CVE-2018-12617: qemu-guest-agent: Integer overflow causes segmentation
+# fault in qmp_guest_file_read (bz #1594055)
+Patch0006: 0006-qga-check-bytes-count-read-by-guest-file-read.patch
+# Fix qemu-arm-static slowness (bz #1589506)
+Patch0007: 0007-linux-user-init_guest_space-Try-to-make-ARM-space-co.patch
 
 
 
@@ -1963,6 +1975,14 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jul 31 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-2
+- CVE-2017-16845: ps2: information leakage via post_load (bz #1514150)
+- CVE-2018-11806: slirp: heap buffer overflow while reassembling fragmented
+  datagrams (bz #1586249)
+- CVE-2018-12617: qemu-guest-agent: Integer overflow causes segmentation
+  fault in qmp_guest_file_read (bz #1594055)
+- Fix qemu-arm-static slowness (bz #1589506)
+
 * Tue Jul 03 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-1
 - Rebase to qemu 2.11.2 stable release
 
