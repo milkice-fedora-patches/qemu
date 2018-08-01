@@ -1,7 +1,6 @@
-From db78e38da0554dff3b6414c41a17dbe0db2e9363 Mon Sep 17 00:00:00 2001
 From: Eduardo Habkost <ehabkost@redhat.com>
 Date: Tue, 9 Jan 2018 13:45:16 -0200
-Subject: [PATCH 04/10] i386: Add FEAT_8000_0008_EBX CPUID feature word
+Subject: [PATCH] i386: Add FEAT_8000_0008_EBX CPUID feature word
 
 Add the new feature word and the "ibpb" feature flag.
 
@@ -83,6 +82,3 @@ index 84698f5b62..47082fc798 100644
  #define CPUID_XSAVE_XSAVEOPT   (1U << 0)
  #define CPUID_XSAVE_XSAVEC     (1U << 1)
  #define CPUID_XSAVE_XGETBV1    (1U << 2)
--- 
-2.17.0
-

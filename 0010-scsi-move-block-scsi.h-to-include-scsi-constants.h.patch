@@ -25,9 +25,9 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  hw/scsi/virtio-scsi.c           |   2 +-
  hw/scsi/vmw_pvscsi.c            |   2 +-
  hw/usb/dev-uas.c                |   2 +-
- include/block/scsi.h            | 314 ----------------------------------------
+ include/block/scsi.h            | 314 --------------------------------
  include/hw/ide/internal.h       |   2 +-
- include/scsi/constants.h        | 314 ++++++++++++++++++++++++++++++++++++++++
+ include/scsi/constants.h        | 314 ++++++++++++++++++++++++++++++++
  scsi/utils.c                    |   2 +-
  tests/virtio-scsi-test.c        |   2 +-
  18 files changed, 330 insertions(+), 330 deletions(-)

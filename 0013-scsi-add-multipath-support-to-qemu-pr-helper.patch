@@ -12,10 +12,10 @@ to libmpathpersist.
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  Makefile              |   3 +
- configure             |  54 ++++++++
+ configure             |  54 +++++++
  docs/pr-manager.rst   |  27 ++++
  include/scsi/utils.h  |   4 +
- scsi/qemu-pr-helper.c | 357 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ scsi/qemu-pr-helper.c | 357 +++++++++++++++++++++++++++++++++++++++++-
  scsi/utils.c          |  10 ++
  6 files changed, 452 insertions(+), 3 deletions(-)
 

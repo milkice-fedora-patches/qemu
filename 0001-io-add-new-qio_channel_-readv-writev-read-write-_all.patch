@@ -9,9 +9,9 @@ requested data buffer(s).
 Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
 ---
- include/io/channel.h       |  90 +++++++++++++++++++++++++++++++++++++++
- io/channel.c               |  94 +++++++++++++++++++++++++++++++++++++++++
- tests/io-channel-helpers.c | 102 ++++-----------------------------------------
+ include/io/channel.h       |  90 ++++++++++++++++++++++++++++++++
+ io/channel.c               |  94 ++++++++++++++++++++++++++++++++++
+ tests/io-channel-helpers.c | 102 ++++---------------------------------
  3 files changed, 193 insertions(+), 93 deletions(-)
 
 diff --git a/include/io/channel.h b/include/io/channel.h

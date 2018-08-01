@@ -1,0 +1,32 @@
+From: liujunjie <liujunjie23@huawei.com>
+Date: Thu, 7 Jun 2018 16:02:37 +0800
+Subject: [PATCH] ps2: check PS2Queue wptr pointer in post_load routine
+
+In commit 802cbcb7300, most issues have been fixed when qemu guest
+migration. But the queue size still need to check whether is equal to
+PS2_QUEUE_SIZE. If yes, the wptr should set as 0. Or, wptr would larger
+than PS2_QUEUE_SIZE and never come back when ps2_queue_noirq is called.
+This could lead to OOB access, add check to avoid it.
+
+Signed-off-by: liujunjie <liujunjie23@huawei.com>
+Reviewed-by: Gonglei <arei.gonglei@huawei.com>
+Message-id: 20180607080237.12360-1-liujunjie23@huawei.com
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+(cherry picked from commit b55a06df4f03f21e8a32e9d067a8a5782ac3ce0d)
+---
+ hw/input/ps2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/input/ps2.c b/hw/input/ps2.c
+index 99d9bb06f6..e35bb51142 100644
+--- a/hw/input/ps2.c
++++ b/hw/input/ps2.c
+@@ -1108,7 +1108,7 @@ static void ps2_common_post_load(PS2State *s)
+ 
+     /* reset rptr/wptr/count */
+     q->rptr = 0;
+-    q->wptr = size;
++    q->wptr = (size == PS2_QUEUE_SIZE) ? 0 : size;
+     q->count = size;
+     s->update_irq(s->update_arg, q->count != 0);
+ }

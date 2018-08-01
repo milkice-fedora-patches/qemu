@@ -7,7 +7,7 @@ This adds a concrete subclass of pr-manager that talks to qemu-pr-helper.
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  scsi/Makefile.objs       |   2 +-
- scsi/pr-manager-helper.c | 302 +++++++++++++++++++++++++++++++++++++++++++++++
+ scsi/pr-manager-helper.c | 302 +++++++++++++++++++++++++++++++++++++++
  2 files changed, 303 insertions(+), 1 deletion(-)
  create mode 100644 scsi/pr-manager-helper.c
 

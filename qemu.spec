@@ -103,8 +103,8 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 2.10.1
-Release: 4%{?rcrel}%{?dist}
+Version: 2.10.2
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -155,34 +155,49 @@ Patch0012: 0012-scsi-build-qemu-pr-helper.patch
 Patch0013: 0013-scsi-add-multipath-support-to-qemu-pr-helper.patch
 Patch0014: 0014-scsi-add-persistent-reservation-manager-using-qemu-p.patch
 
+# Spectre & SSBD
+Patch0101: 0101-i386-Change-X86CPUDefinition-model_id-to-const-char.patch
+Patch0102: 0102-i386-Add-support-for-SPEC_CTRL-MSR.patch
+Patch0103: 0103-i386-Add-spec-ctrl-CPUID-bit.patch
+Patch0104: 0104-i386-Add-FEAT_8000_0008_EBX-CPUID-feature-word.patch
+Patch0105: 0105-i386-Add-new-IBRS-versions-of-Intel-CPU-models.patch
+Patch0106: 0106-target-i386-cpu-Add-new-EPYC-CPU-model.patch
+Patch0107: 0107-i386-Add-EPYC-IBPB-CPU-model.patch
+Patch0108: 0108-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
+Patch0109: 0109-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
+Patch0110: 0110-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
+
 # Add patches from git master to fix TLS test suite with new GNUTLS
-Patch0101: 0101-crypto-fix-test-cert-generation-to-not-use-SHA1-algo.patch
-Patch0102: 0102-io-fix-check-for-handshake-completion-in-TLS-test.patch
-Patch0103: 0103-io-fix-temp-directory-used-by-test-io-channel-tls-te.patch
+Patch0201: 0201-crypto-fix-test-cert-generation-to-not-use-SHA1-algo.patch
+Patch0202: 0202-io-fix-check-for-handshake-completion-in-TLS-test.patch
+Patch0203: 0203-io-fix-temp-directory-used-by-test-io-channel-tls-te.patch
 # Fix ppc64 KVM failure (bz #1501936)
-Patch0104: 0104-spapr-fallback-to-raw-mode-if-best-compat-mode-canno.patch
+Patch0204: 0204-spapr-fallback-to-raw-mode-if-best-compat-mode-canno.patch
 # CVE-2017-15038: 9p: information disclosure when reading extended
 # attributes (bz #1499111)
-Patch0105: 0105-9pfs-use-g_malloc0-to-allocate-space-for-xattr.patch
-# CVE-2017-15268: potential memory exhaustion via websock connection to VNC
-# (bz #1496882)
-Patch0106: 0106-io-monitor-encoutput-buffer-size-from-websocket-GSou.patch
-
-# Fix restoring from snapshot more than once in a single run
-# (bz #1531048) - backport from master
-Patch0201: 0201-migration-Reset-rather-than-destroy-main_thread_load.patch
-
-# Spectre & SSBD
-Patch1001: 1001-i386-Change-X86CPUDefinition-model_id-to-const-char.patch
-Patch1002: 1002-i386-Add-support-for-SPEC_CTRL-MSR.patch
-Patch1003: 1003-i386-Add-spec-ctrl-CPUID-bit.patch
-Patch1004: 1004-i386-Add-FEAT_8000_0008_EBX-CPUID-feature-word.patch
-Patch1005: 1005-i386-Add-new-IBRS-versions-of-Intel-CPU-models.patch
-Patch1006: 1006-target-i386-cpu-Add-new-EPYC-CPU-model.patch
-Patch1007: 1007-i386-Add-EPYC-IBPB-CPU-model.patch
-Patch1008: 1008-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
-Patch1009: 1009-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
-Patch1010: 1010-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
+Patch0205: 0205-9pfs-use-g_malloc0-to-allocate-space-for-xattr.patch
+# Fix restoring from snapshot more than once in a single run (bz #1531048)
+Patch0206: 0206-migration-Reset-rather-than-destroy-main_thread_load.patch
+# CVE-2017-16845: ps2: information leakage via post_load (bz #1514150)
+Patch0207: 0207-ps2-check-PS2Queue-pointers-in-post_load-routine.patch
+Patch0208: 0208-ps2-check-PS2Queue-wptr-pointer-in-post_load-routine.patch
+# CVE-2017-17381: virtio: divide by zero exception (bz #1520785)
+Patch0209: 0209-virtio-check-VirtQueue-Vring-object-is-set.patch
+# CVE-2018-5683: Out-of-bounds read in vga_draw_text (bz #1534672)
+Patch0210: 0210-vga-check-the-validation-of-memory-addr-when-draw-te.patch
+# CVE-2018-7550: multiboot OOB access while loading kernel image (bz
+# #1549799)
+Patch0211: 0211-multiboot-bss_end_addr-can-be-zero.patch
+# CVE-2018-7858 cirrus: OOB access when updating vga display (bz #1553404)
+Patch0212: 0212-vga-add-ram_addr_t-cast.patch
+Patch0213: 0213-vga-fix-region-calculation.patch
+# CVE-2018-11806: slirp: heap buffer overflow while reassembling fragmented
+# datagrams (bz #1586249)
+Patch0214: 0214-slirp-correct-size-computation-while-concatenating-m.patch
+Patch0215: 0215-slirp-reformat-m_inc-routine.patch
+# CVE-2018-12617: qemu-guest-agent: Integer overflow causes segmentation
+# fault in qmp_guest_file_read (bz #1594055)
+Patch0216: 0216-qga-check-bytes-count-read-by-guest-file-read.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -2052,6 +2067,22 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jul 31 2018 Cole Robinson <crobinso@redhat.com> - 2:2.10.2-1
+- Fix restoring from snapshot more than once in a single run (bz #1531048)
+- CVE-2017-16845: ps2: information leakage via post_load (bz #1514150)
+- CVE-2017-17381: virtio: divide by zero exception (bz #1520785)
+- CVE-2018-5683: Out-of-bounds read in vga_draw_text (bz #1534672)
+- CVE-2018-7550: multiboot OOB access while loading kernel image (bz
+  #1549799)
+- CVE-2018-7858 cirrus: OOB access when updating vga display (bz #1553404)
+- CVE-2018-11806: slirp: heap buffer overflow while reassembling fragmented
+  datagrams (bz #1586249)
+- CVE-2018-12617: qemu-guest-agent: Integer overflow causes segmentation
+  fault in qmp_guest_file_read (bz #1594055)
+- CVE-2017-15119 nbd: DoS via large option request (bz #1518238)
+- CVE-2017-15118 nbd: buffer overflow in export name (bz #1518235)
+- Rebase to qemu 2.10.2
+
 * Tue Jun 19 2018 Daniel P. Berrangé <berrange@redhat.com> - 2:2.10.1-4
 - Add new CPU features for CVE-2017-5715 and CVE-2018-3639
 

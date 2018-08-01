@@ -1,7 +1,6 @@
-From 402792b5590e9830c1bb1e798e5bf994d5621ffb Mon Sep 17 00:00:00 2001
 From: Eduardo Habkost <ehabkost@redhat.com>
 Date: Tue, 9 Jan 2018 13:45:13 -0200
-Subject: [PATCH 01/10] i386: Change X86CPUDefinition::model_id to const char*
+Subject: [PATCH] i386: Change X86CPUDefinition::model_id to const char*
 
 It is valid to have a 48-character model ID on CPUID, however the
 definition of X86CPUDefinition::model_id is char[48], which can
@@ -85,6 +84,3 @@ index df73958b82..a861518790 100644
  
      type_register(&ti);
      g_free(typename);
--- 
-2.17.0
-

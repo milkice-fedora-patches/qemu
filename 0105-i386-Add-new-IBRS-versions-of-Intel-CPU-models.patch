@@ -1,7 +1,6 @@
-From 1f0192c0474565b68153f7cdb8988c505f44c59a Mon Sep 17 00:00:00 2001
 From: Eduardo Habkost <ehabkost@redhat.com>
 Date: Tue, 9 Jan 2018 13:45:17 -0200
-Subject: [PATCH 05/10] i386: Add new -IBRS versions of Intel CPU models
+Subject: [PATCH] i386: Add new -IBRS versions of Intel CPU models
 
 The new MSR IA32_SPEC_CTRL MSR was introduced by a recent Intel
 microcode updated and can be used by OSes to mitigate
@@ -477,6 +476,3 @@ index 47c7e9db0e..dbe3393b1c 100644
      {
          .name = "Opteron_G1",
          .level = 5,
--- 
-2.17.0
-

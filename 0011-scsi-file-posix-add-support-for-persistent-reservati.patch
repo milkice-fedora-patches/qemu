@@ -45,12 +45,12 @@ only one is implemented right now.  For example, a pr-manager could:
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  Makefile.objs             |   1 +
- block/file-posix.c        |  30 +++++++++++++
- docs/pr-manager.rst       |  51 ++++++++++++++++++++++
- include/scsi/pr-manager.h |  56 ++++++++++++++++++++++++
+ block/file-posix.c        |  30 +++++++++++
+ docs/pr-manager.rst       |  51 ++++++++++++++++++
+ include/scsi/pr-manager.h |  56 ++++++++++++++++++++
  qapi/block-core.json      |   4 ++
  scsi/Makefile.objs        |   2 +
- scsi/pr-manager.c         | 109 ++++++++++++++++++++++++++++++++++++++++++++++
+ scsi/pr-manager.c         | 109 ++++++++++++++++++++++++++++++++++++++
  scsi/trace-events         |   3 ++
  vl.c                      |   3 +-
  9 files changed, 258 insertions(+), 1 deletion(-)

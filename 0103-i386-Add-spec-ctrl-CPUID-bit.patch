@@ -1,7 +1,6 @@
-From 65d35de2759c56d573e8c3a21034e48aa19d943b Mon Sep 17 00:00:00 2001
 From: Eduardo Habkost <ehabkost@redhat.com>
 Date: Tue, 9 Jan 2018 13:45:15 -0200
-Subject: [PATCH 03/10] i386: Add spec-ctrl CPUID bit
+Subject: [PATCH] i386: Add spec-ctrl CPUID bit
 
 Add the feature name and a CPUID_7_0_EDX_SPEC_CTRL macro.
 
@@ -41,6 +40,3 @@ index 58c975beec..84698f5b62 100644
  
  #define CPUID_XSAVE_XSAVEOPT   (1U << 0)
  #define CPUID_XSAVE_XSAVEC     (1U << 1)
--- 
-2.17.0
-

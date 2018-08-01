@@ -20,16 +20,16 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  MAINTAINERS            |   7 +
  Makefile.objs          |   2 +-
  block/iscsi.c          |   6 +-
- hw/scsi/scsi-bus.c     | 397 ---------------------------------------
+ hw/scsi/scsi-bus.c     | 397 ---------------------------------
  hw/scsi/scsi-generic.c |   8 -
  include/block/scsi.h   |   2 -
- include/hw/scsi/scsi.h |  94 +---------
+ include/hw/scsi/scsi.h |  94 +-------
  include/scsi/scsi.h    |  20 --
- include/scsi/utils.h   | 119 ++++++++++++
+ include/scsi/utils.h   | 119 ++++++++++
  scsi/Makefile.objs     |   1 +
- scsi/utils.c           | 492 +++++++++++++++++++++++++++++++++++++++++++++++++
+ scsi/utils.c           | 492 +++++++++++++++++++++++++++++++++++++++++
  util/Makefile.objs     |   1 -
- util/scsi.c            |  90 ---------
+ util/scsi.c            |  90 --------
  13 files changed, 626 insertions(+), 613 deletions(-)
  delete mode 100644 include/scsi/scsi.h
  create mode 100644 include/scsi/utils.h

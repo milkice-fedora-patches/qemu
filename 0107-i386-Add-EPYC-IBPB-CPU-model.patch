@@ -1,7 +1,6 @@
-From c501168ab3abb95aac9dae824097de3f20cc545c Mon Sep 17 00:00:00 2001
 From: Eduardo Habkost <ehabkost@redhat.com>
 Date: Tue, 9 Jan 2018 13:45:18 -0200
-Subject: [PATCH 07/10] i386: Add EPYC-IBPB CPU model
+Subject: [PATCH] i386: Add EPYC-IBPB CPU model
 
 EPYC-IBPB is a copy of the EPYC CPU model with
 just CPUID_8000_0008_EBX_IBPB added.
@@ -76,6 +75,3 @@ index 0862877973..e18623b8c3 100644
  };
  
  typedef struct PropValue {
--- 
-2.17.0
-

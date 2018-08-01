@@ -22,7 +22,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  docs/interop/pr-helper.rst |  83 +++++
  docs/pr-manager.rst        |  33 ++
  scsi/pr-helper.h           |  41 +++
- scsi/qemu-pr-helper.c      | 735 +++++++++++++++++++++++++++++++++++++++++++++
+ scsi/qemu-pr-helper.c      | 735 +++++++++++++++++++++++++++++++++++++
  6 files changed, 905 insertions(+), 5 deletions(-)
  create mode 100644 docs/interop/pr-helper.rst
  create mode 100644 scsi/pr-helper.h
