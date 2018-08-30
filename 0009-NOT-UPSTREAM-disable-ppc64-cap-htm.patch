@@ -1,0 +1,29 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Thu, 30 Aug 2018 17:40:53 -0400
+Subject: [PATCH] NOT UPSTREAM: disable ppc64 cap-htm
+
+Fixes tcg startup regression:
+https://bugzilla.redhat.com/show_bug.cgi?id=1614948
+
+Still figuring out the proper way forward, but this is okay in the
+short term at least
+---
+ hw/ppc/spapr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index a74eb2dc68..003d522f0e 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3843,7 +3843,10 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+     sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+ 
+     spapr_machine_2_12_class_options(mc);
+-    smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
++    /* Custom Fedora change to fix qemu 2.11.2 + TCG:
++     * https://bugzilla.redhat.com/show_bug.cgi?id=1614948
++     */
++    // smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+     SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_2_11);
+ }
+ 

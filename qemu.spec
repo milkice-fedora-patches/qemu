@@ -100,7 +100,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.11.2
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -149,6 +149,10 @@ Patch0005: 0005-slirp-reformat-m_inc-routine.patch
 Patch0006: 0006-qga-check-bytes-count-read-by-guest-file-read.patch
 # Fix qemu-arm-static slowness (bz #1589506)
 Patch0007: 0007-linux-user-init_guest_space-Try-to-make-ARM-space-co.patch
+# Fix 64B usb smartcard packages (bz #1620590)
+Patch0008: 0008-hw-usb-dev-smartcard-reader-Handle-64-B-USB-packets.patch
+# Fix ppc64 + tcg startup regression with cap-htm
+Patch0009: 0009-NOT-UPSTREAM-disable-ppc64-cap-htm.patch
 
 
 
@@ -1975,6 +1979,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Aug 30 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-3
+- Fix 64B usb smartcard packages (bz #1620590)
+- Fix ppc64 + tcg startup regression with cap-htm
+
 * Tue Jul 31 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-2
 - CVE-2017-16845: ps2: information leakage via post_load (bz #1514150)
 - CVE-2018-11806: slirp: heap buffer overflow while reassembling fragmented
