@@ -12,10 +12,10 @@ short term at least
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index a74eb2dc68..003d522f0e 100644
+index 60a4385724..2716ef5e3e 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -3843,7 +3843,10 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+@@ -3844,7 +3844,10 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
      sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
  
      spapr_machine_2_12_class_options(mc);

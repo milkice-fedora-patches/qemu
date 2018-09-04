@@ -100,7 +100,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.11.2
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -151,8 +151,10 @@ Patch0006: 0006-qga-check-bytes-count-read-by-guest-file-read.patch
 Patch0007: 0007-linux-user-init_guest_space-Try-to-make-ARM-space-co.patch
 # Fix 64B usb smartcard packages (bz #1620590)
 Patch0008: 0008-hw-usb-dev-smartcard-reader-Handle-64-B-USB-packets.patch
+# Fix ppc64 error when creating device tree (bz #1624539)
+Patch0009: 0009-spapr-Initialize-reserved-areas-list-in-FDT-in-H_CAS.patch
 # Fix ppc64 + tcg startup regression with cap-htm
-Patch0009: 0009-NOT-UPSTREAM-disable-ppc64-cap-htm.patch
+Patch0010: 0010-NOT-UPSTREAM-disable-ppc64-cap-htm.patch
 
 
 
@@ -1979,6 +1981,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Sep 04 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-4
+- Fix ppc64 error when creating device tree (bz #1624539)
+
 * Thu Aug 30 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-3
 - Fix 64B usb smartcard packages (bz #1620590)
 - Fix ppc64 + tcg startup regression with cap-htm
