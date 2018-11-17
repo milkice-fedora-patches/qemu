@@ -105,7 +105,7 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.0.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -129,6 +129,30 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
+# Fix cpu model crash on AMD hosts (bz #1640140)
+Patch0001: 0001-i386-Disable-TOPOEXT-by-default-on-cpu-host.patch
+# CVE-2018-15746: seccomp blacklist is not applied to all threads (bz
+# #1618357)
+Patch0002: 0002-seccomp-use-SIGSYS-signal-instead-of-killing-the-thr.patch
+Patch0003: 0003-seccomp-prefer-SCMP_ACT_KILL_PROCESS-if-available.patch
+Patch0004: 0004-configure-require-libseccomp-2.2.0.patch
+Patch0005: 0005-seccomp-set-the-seccomp-filter-to-all-threads.patch
+# Fix assertion in address_space_stw_le_cached (bz #1644728)
+Patch0006: 0006-virtio-update-MemoryRegionCaches-when-guest-negotiat.patch
+# CVE-2018-10839: ne2000: fix possible out of bound access (bz #1636429)
+Patch0007: 0007-ne2000-fix-possible-out-of-bound-access-in-ne2000_re.patch
+# CVE-2018-17958: rtl8139: fix possible out of bound access (bz #1636729)
+Patch0008: 0008-rtl8139-fix-possible-out-of-bound-access.patch
+# CVE-2018-17962: pcnet: fix possible buffer overflow (bz #1636775)
+Patch0009: 0009-pcnet-fix-possible-buffer-overflow.patch
+# CVE-2018-17963: net: ignore packet size greater than INT_MAX (bz #1636782)
+Patch0010: 0010-net-ignore-packet-size-greater-than-INT_MAX.patch
+# CVE-2018-18849: lsi53c895a: OOB msg buffer access leads to DoS (bz
+# #1644977)
+Patch0011: 0011-lsi53c895a-check-message-length-value-is-valid.patch
+# CVE-2018-18954: ppc64: Out-of-bounds r/w stack access in pnv_lpc_do_eccb
+# (bz #1645442)
+Patch0012: 0012-ppc-pnv-check-size-before-data-buffer-access.patch
 
 
 # documentation deps
@@ -917,7 +941,9 @@ run_configure \
     --disable-brlapi \
     --disable-mpath \
     --disable-libnfs \
-    --disable-capstone
+    --disable-capstone \
+    --disable-xen \
+    --disable-rdma
 
 make V=1 %{?_smp_mflags} $buildldflags
 
@@ -1598,6 +1624,20 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Nov 16 2018 Cole Robinson <crobinso@redhat.com> - 2:3.0.0-2
+- Fix cpu model crash on AMD hosts (bz #1640140)
+- CVE-2018-15746: seccomp blacklist is not applied to all threads (bz
+  #1618357)
+- Fix assertion in address_space_stw_le_cached (bz #1644728)
+- CVE-2018-10839: ne2000: fix possible out of bound access (bz #1636429)
+- CVE-2018-17958: rtl8139: fix possible out of bound access (bz #1636729)
+- CVE-2018-17962: pcnet: fix possible buffer overflow (bz #1636775)
+- CVE-2018-17963: net: ignore packet size greater than INT_MAX (bz #1636782)
+- CVE-2018-18849: lsi53c895a: OOB msg buffer access leads to DoS (bz
+  #1644977)
+- CVE-2018-18954: ppc64: Out-of-bounds r/w stack access in pnv_lpc_do_eccb
+  (bz #1645442)
+
 * Wed Aug 15 2018 Cole Robinson <crobinso@redhat.com> - 2:3.0.0-1
 - Rebase to qemu-3.0.0 GA
 
