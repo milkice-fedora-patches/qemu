@@ -105,7 +105,7 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.0.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -154,6 +154,8 @@ Patch0011: 0011-lsi53c895a-check-message-length-value-is-valid.patch
 # (bz #1645442)
 Patch0012: 0012-ppc-pnv-check-size-before-data-buffer-access.patch
 
+# Good ol' keymap 86 still messin with us
+Patch1000: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1624,6 +1626,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Dec 18 2018 Adam Williamson <awilliam@redhat.com> - 2:3.0.0-3
+- Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
+
 * Fri Nov 16 2018 Cole Robinson <crobinso@redhat.com> - 2:3.0.0-2
 - Fix cpu model crash on AMD hosts (bz #1640140)
 - CVE-2018-15746: seccomp blacklist is not applied to all threads (bz
