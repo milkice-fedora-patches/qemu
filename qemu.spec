@@ -121,7 +121,7 @@
 %global system_microblaze   system-microblaze
 %global system_mips   system-mips
 %global system_or32   system-or32
-#global system_ppc    system-ppc
+%global system_ppc    system-ppc
 %global system_s390x  system-s390x
 %global system_sh4    system-sh4
 #global system_sparc  system-sparc
@@ -155,7 +155,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.0.0
-Release: 1%{?dist}.6
+Release: 2%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -1533,6 +1533,9 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Fri Feb 08 2019 Murilo Opsfelder Araujo <muriloo@linux.ibm.com> - 2:2.0.0-2
+- Enable qemu-system-ppc package
+
 * Mon Nov 02 2015 Lubomir Rintel <lkundrak@v3.sk> - 2:2.0.0-1.6
 - CVE-2015-5154: ide: Check array bounds before writing to io_buffer (bz #1247143)
 - CVE-2015-3214: i8254: fix out-of-bounds memory access in pit_ioport_read() (bz #1243729)
