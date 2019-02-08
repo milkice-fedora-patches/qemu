@@ -155,7 +155,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.0.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Epoch: 2
 License: GPLv2+ and LGPLv2+ and BSD
 Group: Development/Tools
@@ -774,7 +774,7 @@ CAC emulation development files.
     microblaze-linux-user microblazeel-linux-user mips-linux-user \
     mipsel-linux-user mips64-linux-user mips64el-linux-user \
     mipsn32-linux-user mipsn32el-linux-user \
-    or32-linux-user ppc-linux-user ppc64-linux-user \
+    or32-linux-user ppc-linux-user ppc64-linux-user ppc64le-linux-user \
     ppc64abi32-linux-user s390x-linux-user sh4-linux-user sh4eb-linux-user \
     sparc-linux-user sparc64-linux-user sparc32plus-linux-user \
     unicore32-linux-user"
@@ -1533,6 +1533,9 @@ getent passwd qemu >/dev/null || \
 %endif
 
 %changelog
+* Fri Feb 08 2019 Murilo Opsfelder Araujo <muriloo@linux.ibm.com> - 2:2.0.0-3
+- Enable ppc64le-linux-user
+
 * Fri Feb 08 2019 Murilo Opsfelder Araujo <muriloo@linux.ibm.com> - 2:2.0.0-2
 - Enable qemu-system-ppc package
 
