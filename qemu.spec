@@ -147,7 +147,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.0
-Release: 4%{?rcrel}%{?dist}.3
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -171,8 +171,27 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
-# Good ol' keymap 86 still messin with us
-Patch0: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+# Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
+Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+# linux-user: make pwrite64/pread64(fd, NULL, 0, offset) return 0 (bz
+# #1174267)
+Patch0002: 0002-linux-user-make-pwrite64-pread64-fd-NULL-0-offset-re.patch
+# Fix build with latest gluster (bz #1684298)
+Patch0003: 0003-gluster-Handle-changed-glfs_ftruncate-signature.patch
+Patch0004: 0004-gluster-the-glfs_io_cbk-callback-function-pointer-ad.patch
+# CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
+Patch0005: 0005-pvrdma-release-device-resources-in-case-of-an-error.patch
+# CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
+Patch0006: 0006-usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC.patch
+# CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
+Patch0007: 0007-pvrdma-add-uar_read-routine.patch
+# CVE-2019-6501: scsi-generic: possible OOB access (bz #1669005)
+Patch0008: 0008-scsi-generic-avoid-possible-out-of-bounds-access-to-.patch
+# CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
+Patch0009: 0009-slirp-check-data-length-while-emulating-ident-functi.patch
+# CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
+# disclosure (bz #1678081)
+Patch0010: 0010-i2c-ddc-fix-oob-read.patch
 
 
 
@@ -917,7 +936,6 @@ run_configure() {
         --with-pkgversion=%{name}-%{version}-%{release} \
         --disable-strip \
         --disable-werror \
-        --disable-glusterfs \
         --enable-kvm \
         --python=/usr/bin/python3 \
 %ifarch s390 %{mips64}
@@ -1663,6 +1681,18 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Mar 21 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-5
+- linux-user: make pwrite64/pread64(fd, NULL, 0, offset) return 0 (bz
+  #1174267)
+- Fix build with latest gluster (bz #1684298)
+- CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
+- CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
+- CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
+- CVE-2019-6501: scsi-generic: possible OOB access (bz #1669005)
+- CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
+- CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
+  disclosure (bz #1678081)
+
 * Sun Mar 03 2019 Cole Robinson <aintdiscole@gmail.com> - 2:3.1.0-4.3
 - Temporarily disable glusterfs (bz #1684298)
 
