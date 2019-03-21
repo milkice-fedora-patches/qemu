@@ -163,8 +163,6 @@ Patch0016: 0016-9p-fix-QEMU-crash-when-renaming-files.patch
 # CVE-2018-16867: usb-mtp: path traversal issue (bz #1656746)
 Patch0017: 0017-usb-mtp-fix-utf16_to_str.patch
 Patch0018: 0018-usb-mtp-outlaw-slashes-in-filenames.patch
-# CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
-Patch0019: 0019-pvrdma-release-device-resources-in-case-of-an-error.patch
 # CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
 Patch0020: 0020-usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC.patch
 # CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
@@ -1648,7 +1646,6 @@ getent passwd qemu >/dev/null || \
 - CVE-2018-19364: 9pfs: use-after-free (bz #1651359)
 - CVE-2018-19489: 9pfs: use-after-free renaming files (bz #1653157)
 - CVE-2018-16867: usb-mtp: path traversal issue (bz #1656746)
-- CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
 - CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
 - CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
 - CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
