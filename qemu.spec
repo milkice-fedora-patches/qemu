@@ -105,7 +105,7 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.0.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -153,9 +153,27 @@ Patch0011: 0011-lsi53c895a-check-message-length-value-is-valid.patch
 # CVE-2018-18954: ppc64: Out-of-bounds r/w stack access in pnv_lpc_do_eccb
 # (bz #1645442)
 Patch0012: 0012-ppc-pnv-check-size-before-data-buffer-access.patch
-
-# Good ol' keymap 86 still messin with us
-Patch1000: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+# Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
+Patch0013: 0013-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+# CVE-2018-19364: 9pfs: use-after-free (bz #1651359)
+Patch0014: 0014-9p-write-lock-path-in-v9fs_co_open2.patch
+Patch0015: 0015-9p-take-write-lock-on-fid-path-updates-CVE-2018-1936.patch
+# CVE-2018-19489: 9pfs: use-after-free renaming files (bz #1653157)
+Patch0016: 0016-9p-fix-QEMU-crash-when-renaming-files.patch
+# CVE-2018-16867: usb-mtp: path traversal issue (bz #1656746)
+Patch0017: 0017-usb-mtp-fix-utf16_to_str.patch
+Patch0018: 0018-usb-mtp-outlaw-slashes-in-filenames.patch
+# CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
+Patch0019: 0019-pvrdma-release-device-resources-in-case-of-an-error.patch
+# CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
+Patch0020: 0020-usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC.patch
+# CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
+Patch0021: 0021-pvrdma-add-uar_read-routine.patch
+# CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
+Patch0022: 0022-slirp-check-data-length-while-emulating-ident-functi.patch
+# CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
+# disclosure (bz #1678081)
+Patch0023: 0023-i2c-ddc-fix-oob-read.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1626,6 +1644,17 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Mar 21 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.0-4
+- CVE-2018-19364: 9pfs: use-after-free (bz #1651359)
+- CVE-2018-19489: 9pfs: use-after-free renaming files (bz #1653157)
+- CVE-2018-16867: usb-mtp: path traversal issue (bz #1656746)
+- CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
+- CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
+- CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
+- CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
+- CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
+  disclosure (bz #1678081)
+
 * Tue Dec 18 2018 Adam Williamson <awilliam@redhat.com> - 2:3.0.0-3
 - Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
 
