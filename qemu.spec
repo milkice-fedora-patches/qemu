@@ -147,7 +147,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -194,6 +194,10 @@ Patch0009: 0009-slirp-check-data-length-while-emulating-ident-functi.patch
 Patch0010: 0010-i2c-ddc-fix-oob-read.patch
 
 
+# Fix a crasher with 3D acceleration enabled (RHBZ#1692323)
+# https://lists.gnu.org/archive/html/qemu-devel/2019-03/msg04413.html
+# (danpb's original version, not the broken Otobo version)
+Patch0100: 0001-qemu-seccomp-dont-kill-process-for-resource-contro.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1681,6 +1685,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Mar 25 2019 Adam Williamson <awilliam@redhat.com> - 2:3.1.0-6
+- Backport patch to fix 3D crasher bug (bz #1692323)
+
 * Thu Mar 21 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-5
 - linux-user: make pwrite64/pread64(fd, NULL, 0, offset) return 0 (bz
   #1174267)
