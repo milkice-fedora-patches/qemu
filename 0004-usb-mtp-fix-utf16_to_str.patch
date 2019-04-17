@@ -26,10 +26,10 @@ Message-id: 20181203101045.27976-2-kraxel@redhat.com
  1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
-index 1ded7ac9a3..16e325ac46 100644
+index f4223fb9de..123a7f687d 100644
 --- a/hw/usb/dev-mtp.c
 +++ b/hw/usb/dev-mtp.c
-@@ -1567,17 +1567,23 @@ static void usb_mtp_cancel_packet(USBDevice *dev, USBPacket *p)
+@@ -1572,17 +1572,23 @@ static void usb_mtp_cancel_packet(USBDevice *dev, USBPacket *p)
      fprintf(stderr, "%s\n", __func__);
  }
  
@@ -57,7 +57,7 @@ index 1ded7ac9a3..16e325ac46 100644
  }
  
  static void usb_mtp_write_data(MTPState *s)
-@@ -1657,7 +1663,7 @@ static void usb_mtp_write_metadata(MTPState *s)
+@@ -1662,7 +1668,7 @@ static void usb_mtp_write_metadata(MTPState *s)
  {
      MTPData *d = s->data_out;
      ObjectInfo *dataset = (ObjectInfo *)d->data;
@@ -66,12 +66,12 @@ index 1ded7ac9a3..16e325ac46 100644
      MTPObject *o;
      MTPObject *p = usb_mtp_object_lookup(s, s->dataset.parent_handle);
      uint32_t next_handle = s->next_handle;
-@@ -1665,7 +1671,7 @@ static void usb_mtp_write_metadata(MTPState *s)
+@@ -1670,7 +1676,7 @@ static void usb_mtp_write_metadata(MTPState *s)
      assert(!s->write_pending);
      assert(p != NULL);
  
 -    utf16_to_str(dataset->length, dataset->filename, filename);
 +    filename = utf16_to_str(dataset->length, dataset->filename);
  
-     o = usb_mtp_object_lookup_name(p, filename, dataset->length);
-     if (o != NULL) {
+     if (strchr(filename, '/')) {
+         usb_mtp_queue_result(s, RES_PARAMETER_NOT_SUPPORTED, d->trans,

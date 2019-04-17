@@ -104,8 +104,8 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 3.0.0
-Release: 4%{?rcrel}%{?dist}
+Version: 3.0.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -129,49 +129,18 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
-# Fix cpu model crash on AMD hosts (bz #1640140)
-Patch0001: 0001-i386-Disable-TOPOEXT-by-default-on-cpu-host.patch
-# CVE-2018-15746: seccomp blacklist is not applied to all threads (bz
-# #1618357)
-Patch0002: 0002-seccomp-use-SIGSYS-signal-instead-of-killing-the-thr.patch
-Patch0003: 0003-seccomp-prefer-SCMP_ACT_KILL_PROCESS-if-available.patch
-Patch0004: 0004-configure-require-libseccomp-2.2.0.patch
-Patch0005: 0005-seccomp-set-the-seccomp-filter-to-all-threads.patch
-# Fix assertion in address_space_stw_le_cached (bz #1644728)
-Patch0006: 0006-virtio-update-MemoryRegionCaches-when-guest-negotiat.patch
-# CVE-2018-10839: ne2000: fix possible out of bound access (bz #1636429)
-Patch0007: 0007-ne2000-fix-possible-out-of-bound-access-in-ne2000_re.patch
-# CVE-2018-17958: rtl8139: fix possible out of bound access (bz #1636729)
-Patch0008: 0008-rtl8139-fix-possible-out-of-bound-access.patch
-# CVE-2018-17962: pcnet: fix possible buffer overflow (bz #1636775)
-Patch0009: 0009-pcnet-fix-possible-buffer-overflow.patch
-# CVE-2018-17963: net: ignore packet size greater than INT_MAX (bz #1636782)
-Patch0010: 0010-net-ignore-packet-size-greater-than-INT_MAX.patch
-# CVE-2018-18849: lsi53c895a: OOB msg buffer access leads to DoS (bz
-# #1644977)
-Patch0011: 0011-lsi53c895a-check-message-length-value-is-valid.patch
-# CVE-2018-18954: ppc64: Out-of-bounds r/w stack access in pnv_lpc_do_eccb
-# (bz #1645442)
-Patch0012: 0012-ppc-pnv-check-size-before-data-buffer-access.patch
 # Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
-Patch0013: 0013-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
+Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
 # CVE-2018-19364: 9pfs: use-after-free (bz #1651359)
-Patch0014: 0014-9p-write-lock-path-in-v9fs_co_open2.patch
-Patch0015: 0015-9p-take-write-lock-on-fid-path-updates-CVE-2018-1936.patch
-# CVE-2018-19489: 9pfs: use-after-free renaming files (bz #1653157)
-Patch0016: 0016-9p-fix-QEMU-crash-when-renaming-files.patch
-# CVE-2018-16867: usb-mtp: path traversal issue (bz #1656746)
-Patch0017: 0017-usb-mtp-fix-utf16_to_str.patch
-Patch0018: 0018-usb-mtp-outlaw-slashes-in-filenames.patch
+Patch0002: 0002-9p-write-lock-path-in-v9fs_co_open2.patch
+Patch0003: 0003-9p-take-write-lock-on-fid-path-updates-CVE-2018-1936.patch
 # CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
-Patch0020: 0020-usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC.patch
+Patch0004: 0004-usb-mtp-fix-utf16_to_str.patch
 # CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
-Patch0021: 0021-pvrdma-add-uar_read-routine.patch
-# CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
-Patch0022: 0022-slirp-check-data-length-while-emulating-ident-functi.patch
+Patch0005: 0005-pvrdma-add-uar_read-routine.patch
 # CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
 # disclosure (bz #1678081)
-Patch0023: 0023-i2c-ddc-fix-oob-read.patch
+Patch0006: 0006-i2c-ddc-fix-oob-read.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1642,6 +1611,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Apr 16 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.1-1
+- Update to qemu 3.0.1
+
 * Thu Mar 21 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.0-4
 - CVE-2018-19364: 9pfs: use-after-free (bz #1651359)
 - CVE-2018-19489: 9pfs: use-after-free renaming files (bz #1653157)

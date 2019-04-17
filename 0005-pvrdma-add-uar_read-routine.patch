@@ -14,7 +14,7 @@ Signed-off-by: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/hw/rdma/vmw/pvrdma_main.c b/hw/rdma/vmw/pvrdma_main.c
-index 2a43dca714..e303331bf9 100644
+index 3ed7409763..2636d69fdb 100644
 --- a/hw/rdma/vmw/pvrdma_main.c
 +++ b/hw/rdma/vmw/pvrdma_main.c
 @@ -382,6 +382,11 @@ static const MemoryRegionOps regs_ops = {
