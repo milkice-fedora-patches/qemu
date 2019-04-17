@@ -147,7 +147,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -192,12 +192,12 @@ Patch0009: 0009-slirp-check-data-length-while-emulating-ident-functi.patch
 # CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
 # disclosure (bz #1678081)
 Patch0010: 0010-i2c-ddc-fix-oob-read.patch
-
-
-# Fix a crasher with 3D acceleration enabled (RHBZ#1692323)
-# https://lists.gnu.org/archive/html/qemu-devel/2019-03/msg04413.html
-# (danpb's original version, not the broken Otobo version)
-Patch0100: 0001-qemu-seccomp-dont-kill-process-for-resource-contro.patch
+# Fix virtio 3d crasher (bz #1692323)
+Patch0011: 0011-seccomp-don-t-kill-process-for-resource-control-sysc.patch
+# Don't block migration with nested VMX (bz #1697997)
+# Not upstream: temporary workaround until kernel supports lands for nested
+# VMX migration
+Patch0012: 0012-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1685,6 +1685,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Apr 16 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-7
+- Don't block migration with nested VMX (bz #1697997)
+
 * Mon Mar 25 2019 Adam Williamson <awilliam@redhat.com> - 2:3.1.0-6
 - Backport patch to fix 3D crasher bug (bz #1692323)
 
