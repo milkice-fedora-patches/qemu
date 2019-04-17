@@ -105,7 +105,7 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.0.1
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -141,6 +141,8 @@ Patch0005: 0005-pvrdma-add-uar_read-routine.patch
 # CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
 # disclosure (bz #1678081)
 Patch0006: 0006-i2c-ddc-fix-oob-read.patch
+# Fix nvme endianess issues
+Patch0007: 0007-nvme-fix-CMB-endianness-confusion.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1611,6 +1613,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Apr 17 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.1-2
+- Fix nvme endianess issues
+
 * Tue Apr 16 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.1-1
 - Update to qemu 3.0.1
 
