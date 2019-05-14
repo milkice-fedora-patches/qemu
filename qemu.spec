@@ -147,7 +147,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.0
-Release: 7%{?rcrel}%{?dist}
+Release: 8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -198,6 +198,9 @@ Patch0011: 0011-seccomp-don-t-kill-process-for-resource-control-sysc.patch
 # Not upstream: temporary workaround until kernel supports lands for nested
 # VMX migration
 Patch0012: 0012-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
+
+# CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
+Patch1001: 0001-target-i386-define-md-clear-bit.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1685,6 +1688,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue May 14 2019 Daniel P. Berrangé <berrange@redhat.com> - 2:3.1.0-8
+- Define md-clear CPUID bit
+- Resolves: rhbz #1710002 (CVE-2018-12126), rhbz #1710004 (CVE-2018-12127),
+  rhbz #1710003 (CVE-2018-12130), rhbz #1710006 (CVE-2019-11091)
+
 * Tue Apr 16 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-7
 - Don't block migration with nested VMX (bz #1697997)
 
