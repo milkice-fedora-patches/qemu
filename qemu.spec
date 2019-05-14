@@ -100,7 +100,7 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 2.11.2
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -157,6 +157,9 @@ Patch0009: 0009-spapr-Initialize-reserved-areas-list-in-FDT-in-H_CAS.patch
 Patch0010: 0010-NOT-UPSTREAM-disable-ppc64-cap-htm.patch
 
 
+
+# CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
+Patch1001: 0001-target-i386-define-md-clear-bit.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1981,6 +1984,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue May 14 2019 Daniel P. Berrangé <berrange@redhat.com> - 2:2.11.2-5
+- Define md-clear CPUID bit
+- Resolves: rhbz #1710002 (CVE-2018-12126), rhbz #1710004 (CVE-2018-12127),
+  rhbz #1710003 (CVE-2018-12130), rhbz #1710006 (CVE-2019-11091)
+
 * Tue Sep 04 2018 Cole Robinson <crobinso@redhat.com> - 2:2.11.2-4
 - Fix ppc64 error when creating device tree (bz #1624539)
 
