@@ -105,7 +105,7 @@ Requires: %{name}-ui-sdl = %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.0.1
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -143,9 +143,18 @@ Patch0005: 0005-pvrdma-add-uar_read-routine.patch
 Patch0006: 0006-i2c-ddc-fix-oob-read.patch
 # Fix nvme endianess issues
 Patch0007: 0007-nvme-fix-CMB-endianness-confusion.patch
-
 # CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
-Patch1001: 0001-target-i386-define-md-clear-bit.patch
+Patch0008: 0008-target-i386-define-md-clear-bit.patch
+# CVE-2019-12155: qxl: null pointer dereference while releasing spice
+# resources (bz #1712727, bz #1712670)
+Patch0009: 0009-qxl-check-release-info-object.patch
+# CVE-2019-5008: NULL pointer dereference in hw/sparc64/sun4u.c leading to
+# DoS (bz #1705916, bz #1705915)
+Patch0010: 0010-sun4u-add-power_mem_read-routine.patch
+# CVE-2018-20815: device_tree: heap buffer overflow while loading device
+# tree blob (bz #1693117, bz #1693101)
+Patch0011: 0011-device_tree.c-Don-t-use-load_image.patch
+Patch0012: 0012-device_tree-Fix-integer-overflowing-in-load_device_t.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1616,6 +1625,14 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Jun 20 2019 Cole Robinson <crobinso@redhat.com> - 2:3.0.1-4
+- CVE-2019-12155: qxl: null pointer dereference while releasing spice
+  resources (bz #1712727, bz #1712670)
+- CVE-2019-5008: NULL pointer dereference in hw/sparc64/sun4u.c leading to
+  DoS (bz #1705916, bz #1705915)
+- CVE-2018-20815: device_tree: heap buffer overflow while loading device
+  tree blob (bz #1693117, bz #1693101)
+
 * Tue May 14 2019 Daniel P. Berrangé <berrange@redhat.com> - 2:3.0.1-3
 - Define md-clear CPUID bit
 - Resolves: rhbz #1710002 (CVE-2018-12126), rhbz #1710004 (CVE-2018-12127),
