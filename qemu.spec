@@ -147,7 +147,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.0
-Release: 8%{?rcrel}%{?dist}
+Release: 9%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -198,9 +198,21 @@ Patch0011: 0011-seccomp-don-t-kill-process-for-resource-control-sysc.patch
 # Not upstream: temporary workaround until kernel supports lands for nested
 # VMX migration
 Patch0012: 0012-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
-
 # CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
-Patch1001: 0001-target-i386-define-md-clear-bit.patch
+Patch0013: 0013-target-i386-define-md-clear-bit.patch
+# CVE-2019-12155: qxl: null pointer dereference while releasing spice
+# resources (bz #1712727, bz #1712670)
+Patch0014: 0014-qxl-check-release-info-object.patch
+# CVE-2019-5008: NULL pointer dereference in hw/sparc64/sun4u.c leading to
+# DoS (bz #1705916, bz #1705915)
+Patch0015: 0015-sun4u-add-power_mem_read-routine.patch
+# CVE-2018-20815: device_tree: heap buffer overflow while loading device
+# tree blob (bz #1693117, bz #1693101)
+Patch0016: 0016-device_tree.c-Don-t-use-load_image.patch
+Patch0017: 0017-device_tree-Fix-integer-overflowing-in-load_device_t.patch
+# CVE-2019-9824: Slirp: information leakage in tcp_emu() due to
+# uninitialized stack variables (bz #1689794, bz #1678515)
+Patch0018: 0018-slirp-check-sscanf-result-when-emulating-ident.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1688,6 +1700,16 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Jun 20 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-9
+- CVE-2019-12155: qxl: null pointer dereference while releasing spice
+  resources (bz #1712727, bz #1712670)
+- CVE-2019-5008: NULL pointer dereference in hw/sparc64/sun4u.c leading to
+  DoS (bz #1705916, bz #1705915)
+- CVE-2018-20815: device_tree: heap buffer overflow while loading device
+  tree blob (bz #1693117, bz #1693101)
+- CVE-2019-9824: Slirp: information leakage in tcp_emu() due to
+  uninitialized stack variables (bz #1689794, bz #1678515)
+
 * Tue May 14 2019 Daniel P. Berrangé <berrange@redhat.com> - 2:3.1.0-8
 - Define md-clear CPUID bit
 - Resolves: rhbz #1710002 (CVE-2018-12126), rhbz #1710004 (CVE-2018-12127),
