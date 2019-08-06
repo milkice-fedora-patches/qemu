@@ -15,7 +15,7 @@ Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f81d35e1f9..33e26657e5 100644
+index 40814719bb..5f6f005e42 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
 @@ -1038,7 +1038,7 @@ static FeatureWordInfo feature_word_info[FEATURE_WORDS] = {

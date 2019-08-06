@@ -146,8 +146,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 3.1.0
-Release: 9%{?rcrel}%{?dist}
+Version: 3.1.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -173,46 +173,12 @@ Source21: 95-kvm-ppc64-memlock.conf
 
 # Restore patch to drop phantom 86 key from en-us keymap (bz #1658676)
 Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
-# linux-user: make pwrite64/pread64(fd, NULL, 0, offset) return 0 (bz
-# #1174267)
-Patch0002: 0002-linux-user-make-pwrite64-pread64-fd-NULL-0-offset-re.patch
-# Fix build with latest gluster (bz #1684298)
-Patch0003: 0003-gluster-Handle-changed-glfs_ftruncate-signature.patch
-Patch0004: 0004-gluster-the-glfs_io_cbk-callback-function-pointer-ad.patch
-# CVE-2018-20123: pvrdma: memory leakage in device hotplug (bz #1658964)
-Patch0005: 0005-pvrdma-release-device-resources-in-case-of-an-error.patch
-# CVE-2018-16872: usb-mtp: path traversal issue (bz #1659150)
-Patch0006: 0006-usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC.patch
-# CVE-2018-20191: pvrdma: uar_read leads to NULL deref (bz #1660315)
-Patch0007: 0007-pvrdma-add-uar_read-routine.patch
-# CVE-2019-6501: scsi-generic: possible OOB access (bz #1669005)
-Patch0008: 0008-scsi-generic-avoid-possible-out-of-bounds-access-to-.patch
-# CVE-2019-6778: slirp: heap buffer overflow (bz #1669072)
-Patch0009: 0009-slirp-check-data-length-while-emulating-ident-functi.patch
-# CVE-2019-3812: Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory
-# disclosure (bz #1678081)
-Patch0010: 0010-i2c-ddc-fix-oob-read.patch
-# Fix virtio 3d crasher (bz #1692323)
-Patch0011: 0011-seccomp-don-t-kill-process-for-resource-control-sysc.patch
 # Don't block migration with nested VMX (bz #1697997)
 # Not upstream: temporary workaround until kernel supports lands for nested
 # VMX migration
-Patch0012: 0012-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
+Patch0002: 0002-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
 # CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
-Patch0013: 0013-target-i386-define-md-clear-bit.patch
-# CVE-2019-12155: qxl: null pointer dereference while releasing spice
-# resources (bz #1712727, bz #1712670)
-Patch0014: 0014-qxl-check-release-info-object.patch
-# CVE-2019-5008: NULL pointer dereference in hw/sparc64/sun4u.c leading to
-# DoS (bz #1705916, bz #1705915)
-Patch0015: 0015-sun4u-add-power_mem_read-routine.patch
-# CVE-2018-20815: device_tree: heap buffer overflow while loading device
-# tree blob (bz #1693117, bz #1693101)
-Patch0016: 0016-device_tree.c-Don-t-use-load_image.patch
-Patch0017: 0017-device_tree-Fix-integer-overflowing-in-load_device_t.patch
-# CVE-2019-9824: Slirp: information leakage in tcp_emu() due to
-# uninitialized stack variables (bz #1689794, bz #1678515)
-Patch0018: 0018-slirp-check-sscanf-result-when-emulating-ident.patch
+Patch0003: 0003-target-i386-define-md-clear-bit.patch
 
 # documentation deps
 BuildRequires: texinfo
@@ -1700,6 +1666,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 06 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.1-1
+- Rebase to v3.1.1
+
 * Thu Jun 20 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.0-9
 - CVE-2019-12155: qxl: null pointer dereference while releasing spice
   resources (bz #1712727, bz #1712670)
