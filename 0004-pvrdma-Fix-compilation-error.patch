@@ -1,0 +1,30 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Tue, 6 Aug 2019 13:51:10 -0400
+Subject: [PATCH] pvrdma: Fix compilation error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+  In function ‘create_qp’:
+  hw/rdma/vmw/pvrdma_cmd.c:517:16: error: ‘rc’ undeclared
+
+The backport of 509f57c98 in 41dd30ff6 mishandled the conflict
+
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+---
+ hw/rdma/vmw/pvrdma_cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
+index bb9a9f1cd1..a3a86d7c8e 100644
+--- a/hw/rdma/vmw/pvrdma_cmd.c
++++ b/hw/rdma/vmw/pvrdma_cmd.c
+@@ -514,7 +514,7 @@ static int create_qp(PVRDMADev *dev, union pvrdma_cmd_req *req,
+                                      cmd->recv_cq_handle, rings, &resp->qpn);
+     if (resp->hdr.err) {
+         destroy_qp_rings(rings);
+-        return rc;
++        goto out;
+     }
+ 
+     resp->max_send_wr = cmd->max_send_wr;

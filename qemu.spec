@@ -179,6 +179,8 @@ Patch0001: 0001-Remove-problematic-evdev-86-key-from-en-us-keymap.patch
 Patch0002: 0002-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
 # CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
 Patch0003: 0003-target-i386-define-md-clear-bit.patch
+# Fix v3.1.1 stable pvrdma build
+Patch0004: 0004-pvrdma-Fix-compilation-error.patch
 
 # documentation deps
 BuildRequires: texinfo
