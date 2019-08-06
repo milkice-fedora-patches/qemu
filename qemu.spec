@@ -181,6 +181,8 @@ Patch0002: 0002-Revert-target-i386-kvm-add-VMX-migration-blocker.patch
 Patch0003: 0003-target-i386-define-md-clear-bit.patch
 # Fix v3.1.1 stable pvrdma build
 Patch0004: 0004-pvrdma-Fix-compilation-error.patch
+# Fix build with latest kernels
+Patch0005: 0005-NOT-UPSTREAM-Build-fix-with-latest-kernel.patch
 
 # documentation deps
 BuildRequires: texinfo
