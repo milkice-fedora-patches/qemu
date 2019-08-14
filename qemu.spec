@@ -83,8 +83,7 @@
 %define with_block_rbd 1
 %endif
 
-# Temp disabled due to API breakage https://bugzilla.redhat.com/show_bug.cgi?id=1684298
-%global with_block_gluster 0
+%global with_block_gluster 1
 
 %define evr %{epoch}:%{version}-%{release}
 
@@ -147,7 +146,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 3.1.1
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1670,6 +1669,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Aug 14 2019 Richard W.M. Jones <rjones@redhat.com> - 2:3.1.1-2
+- Reenable gluster block driver (RHBZ#1741208).
+
 * Tue Aug 06 2019 Cole Robinson <crobinso@redhat.com> - 2:3.1.1-1
 - Rebase to v3.1.1
 
