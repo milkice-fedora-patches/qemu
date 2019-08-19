@@ -138,7 +138,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc2
+#global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -148,7 +148,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.1.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1854,6 +1854,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Aug 19 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.1.0-1
+- Update to qemu-4.1.0 GA
+
 * Wed Jul 17 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.1.0-0.1.rc2
 - Update to qemu-4.1.0-rc2
 - Re-add libattr for qemu-user-static (bz 1731756)
