@@ -177,9 +177,9 @@ Source21: 95-kvm-ppc64-memlock.conf
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl-podlators
+%ifnarch %{ix86}
 # For sanity test
 BuildRequires: qemu-sanity-check-nodeps
-%ifnarch %{ix86}
 BuildRequires: kernel
 %endif
 %if %{have_iasl}
