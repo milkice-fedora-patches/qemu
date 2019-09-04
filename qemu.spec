@@ -148,7 +148,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.1.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -171,6 +171,10 @@ Source15: qemu-pr-helper.socket
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
+
+# gluster 4K block size fixes (bz #1737256)
+Patch0001: 0001-file-posix-Handle-undetectable-alignment.patch
+Patch0002: 0002-block-posix-Always-allocate-the-first-block.patch
 
 
 # documentation deps
@@ -1854,6 +1858,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Sep 04 2019 Cole Robinson <crobinso@redhat.com> - 2:4.1.0-2
+- gluster 4K block size fixes (bz #1737256)
+
 * Mon Aug 19 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.1.0-1
 - Update to qemu-4.1.0 GA
 
