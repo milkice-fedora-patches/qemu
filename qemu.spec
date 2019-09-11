@@ -148,7 +148,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.1.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1858,6 +1858,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Sep 11 2019 Leigh Scott <leigh123linux@googlemail.com> - 2:4.1.0-3
+- Rebuild for new libnfs version
+
 * Wed Sep 04 2019 Cole Robinson <crobinso@redhat.com> - 2:4.1.0-2
 - gluster 4K block size fixes (bz #1737256)
 
