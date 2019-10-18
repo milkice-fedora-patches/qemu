@@ -1032,6 +1032,7 @@ run_configure_disable_everything() {
         --disable-sparse \
         --disable-spice \
         --disable-system \
+        --disable-tcg \
         --disable-tcmalloc \
         --disable-tools \
         --disable-tpm \
@@ -1090,6 +1091,7 @@ run_configure \
     --audio-drv-list=pa,sdl,alsa,oss \
     --enable-kvm \
     --enable-system \
+    --enable-tcg \
     --enable-linux-user \
     --enable-pie \
     --enable-modules \
