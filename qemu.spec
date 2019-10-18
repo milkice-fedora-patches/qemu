@@ -175,6 +175,8 @@ Source21: 95-kvm-ppc64-memlock.conf
 # gluster 4K block size fixes (bz #1737256)
 Patch0001: 0001-file-posix-Handle-undetectable-alignment.patch
 Patch0002: 0002-block-posix-Always-allocate-the-first-block.patch
+# Fix tests on kernel 5.3+
+Patch0003: 0003-tests-make-filemonitor-test-more-robust-to-event-ord.patch
 
 
 # documentation deps
