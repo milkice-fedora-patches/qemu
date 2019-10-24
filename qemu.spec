@@ -1076,6 +1076,7 @@ run_configure_disable_everything \
     --disable-pie \
     --enable-attr \
     --enable-linux-user \
+    --enable-tcg \
     --static
 
 make V=1 %{?_smp_mflags} $buildldflags
