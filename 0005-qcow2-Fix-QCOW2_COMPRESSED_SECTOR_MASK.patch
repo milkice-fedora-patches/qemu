@@ -1,0 +1,27 @@
+From: Max Reitz <mreitz@redhat.com>
+Date: Mon, 28 Oct 2019 17:18:40 +0100
+Subject: [PATCH] qcow2: Fix QCOW2_COMPRESSED_SECTOR_MASK
+
+Masks for L2 table entries should have 64 bit.
+
+Fixes: b6c246942b14d3e0dec46a6c5868ed84e7dbea19
+Buglink: https://bugs.launchpad.net/qemu/+bug/1850000
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Max Reitz <mreitz@redhat.com>
+---
+ block/qcow2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/qcow2.h b/block/qcow2.h
+index 567375e56c..45f9585c08 100644
+--- a/block/qcow2.h
++++ b/block/qcow2.h
+@@ -77,7 +77,7 @@
+ 
+ /* Defined in the qcow2 spec (compressed cluster descriptor) */
+ #define QCOW2_COMPRESSED_SECTOR_SIZE 512U
+-#define QCOW2_COMPRESSED_SECTOR_MASK (~(QCOW2_COMPRESSED_SECTOR_SIZE - 1))
++#define QCOW2_COMPRESSED_SECTOR_MASK (~(QCOW2_COMPRESSED_SECTOR_SIZE - 1ULL))
+ 
+ /* Must be at least 2 to cover COW */
+ #define MIN_L2_CACHE_SIZE 2 /* cache entries */

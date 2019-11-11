@@ -148,7 +148,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.1.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -179,6 +179,8 @@ Patch0002: 0002-block-posix-Always-allocate-the-first-block.patch
 Patch0003: 0003-tests-make-filemonitor-test-more-robust-to-event-ord.patch
 # Workaround for qcow2 triggered XFS corruption (bz #1763519)
 Patch0004: 0004-Revert-block-avoid-recursive-block_status-call-if-po.patch
+# Fix compressed qcow2 'qemu-img check' errors (bz #1768541)
+Patch0005: 0005-qcow2-Fix-QCOW2_COMPRESSED_SECTOR_MASK.patch
 
 
 # documentation deps
@@ -1865,6 +1867,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Nov 11 2019 Cole Robinson <crobinso@redhat.com> - 2:4.1.0-6
+- Fix compressed qcow2 'qemu-img check' errors (bz #1768541)
+
 * Thu Oct 24 2019 Cole Robinson <crobinso@redhat.com> - 2:4.1.0-5
 - Workaround for qcow2 triggered XFS corruption (bz #1763519)
 
