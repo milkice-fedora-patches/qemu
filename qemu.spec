@@ -115,7 +115,7 @@
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
 %define requires_ui_gtk Requires: %{name}-ui-gtk = %{evr}
 %define requires_ui_sdl Requires: %{name}-ui-sdl = %{evr}
-%define requires_ui_spice_add Requires: %{name}-ui-spice-app = %{evr}
+%define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
 
 %global requires_all_modules \
 %{requires_block_curl} \
@@ -132,7 +132,7 @@
 %{requires_ui_curses} \
 %{requires_ui_gtk} \
 %{requires_ui_sdl} \
-%{requires_ui_spice_add}
+%{requires_ui_spice_app}
 
 # Modules which can be conditionally built
 %global obsoletes_some_modules \
