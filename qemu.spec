@@ -131,7 +131,8 @@
 %{requires_audio_sdl} \
 %{requires_ui_curses} \
 %{requires_ui_gtk} \
-%{requires_ui_sdl}
+%{requires_ui_sdl} \
+%{requires_ui_spice_add}
 
 # Modules which can be conditionally built
 %global obsoletes_some_modules \
