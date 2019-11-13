@@ -157,6 +157,9 @@ URL: http://www.qemu.org/
 
 Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.xz
 
+# Fix a test suite error
+Patch1: 0001-tests-fix-modules-test-duplicate-test-case-error.patch
+
 # guest agent service
 Source10: qemu-guest-agent.service
 Source17: qemu-ga.sysconfig
