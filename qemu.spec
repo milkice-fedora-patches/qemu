@@ -1846,6 +1846,7 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/qemu-system-x86_64.1*
 %{_datadir}/%{name}/bios.bin
 %{_datadir}/%{name}/bios-256k.bin
+%{_datadir}/%{name}/bios-microvm.bin
 %{_datadir}/%{name}/kvmvapic.bin
 %{_datadir}/%{name}/linuxboot.bin
 %{_datadir}/%{name}/linuxboot_dma.bin
