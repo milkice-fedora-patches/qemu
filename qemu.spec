@@ -147,8 +147,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 4.1.0
-Release: 6%{?rcrel}%{?dist}
+Version: 4.1.1
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -171,17 +171,6 @@ Source15: qemu-pr-helper.socket
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
-
-# gluster 4K block size fixes (bz #1737256)
-Patch0001: 0001-file-posix-Handle-undetectable-alignment.patch
-Patch0002: 0002-block-posix-Always-allocate-the-first-block.patch
-# Fix tests on kernel 5.3+
-Patch0003: 0003-tests-make-filemonitor-test-more-robust-to-event-ord.patch
-# Workaround for qcow2 triggered XFS corruption (bz #1763519)
-Patch0004: 0004-Revert-block-avoid-recursive-block_status-call-if-po.patch
-# Fix compressed qcow2 'qemu-img check' errors (bz #1768541)
-Patch0005: 0005-qcow2-Fix-QCOW2_COMPRESSED_SECTOR_MASK.patch
-
 
 # documentation deps
 BuildRequires: texinfo
@@ -1867,6 +1856,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Nov 15 2019 Cole Robinson <aintdiscole@gmail.com> - 4.1.1-1
+- Update to qemu 4.1.1 stable
+
 * Mon Nov 11 2019 Cole Robinson <crobinso@redhat.com> - 2:4.1.0-6
 - Fix compressed qcow2 'qemu-img check' errors (bz #1768541)
 
