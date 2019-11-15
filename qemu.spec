@@ -115,7 +115,12 @@
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
 %define requires_ui_gtk Requires: %{name}-ui-gtk = %{evr}
 %define requires_ui_sdl Requires: %{name}-ui-sdl = %{evr}
+
+%if %{have_spice}
 %define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
+%else
+%define requires_ui_spice_app Requires: %{nil}
+%endif
 
 %global requires_all_modules \
 %{requires_block_curl} \
@@ -521,11 +526,13 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-sdl
 This package provides the additional SDL UI for QEMU.
 
+%if %{have_spice}
 %package  ui-spice-app
 Summary: QEMU spice-app UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-spice-app
 This package provides the additional spice-app UI for QEMU.
+%endif
 
 
 %if %{have_kvm}
@@ -1496,8 +1503,10 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/ui-gtk.so
 %files ui-sdl
 %{_libdir}/qemu/ui-sdl.so
+%if %{have_spice}
 %files ui-spice-app
 %{_libdir}/qemu/ui-spice-app.so
+%endif
 
 
 %files -n ivshmem-tools
