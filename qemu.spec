@@ -119,7 +119,7 @@
 %if %{have_spice}
 %define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
 %else
-%define requires_ui_spice_app Requires: %{nil}
+%define requires_ui_spice_app %{nil}
 %endif
 
 %global requires_all_modules \
