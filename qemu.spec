@@ -145,7 +145,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc1
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -155,7 +155,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -164,6 +164,8 @@ Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.x
 
 # Fix a test suite error
 Patch1: 0001-tests-fix-modules-test-duplicate-test-case-error.patch
+# Properly skip pseries test on not-kvm
+Patch2: 0002-pseries-disable-migration-test-if-dev-kvm-cannot-be-.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -1882,6 +1884,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Nov 20 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.2.0-0.2.rc2
+- Update to qemu-4.2.0 rc2
+
 * Tue Nov 12 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.2.0-0.1.rc1
 - Update to qemu-4.2.0 rc1
 
