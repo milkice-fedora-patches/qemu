@@ -1319,10 +1319,7 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 %global archs_ignore_test_failures 0
 
 # Enable this temporarily if tests are broken
-# 4.1.0-rc1 pcc64le tests consistently failing:
-# Memory content inconsistency at 58f6000 first_byte = 46 last_byte = 45 current = 46 hit_edge = 1
-# ERROR - Bail out! ERROR:/builddir/build/BUILD/qemu-4.2.0-rc1/tests/migration-test.c:372:check_guests_ram: assertion failed: (bad == 0)
-%global temp_skip_check 1
+%global temp_skip_check 0
 
 pushd build-dynamic
 %ifnarch %{archs_skip_tests}
