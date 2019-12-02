@@ -87,6 +87,12 @@
 %endif
 %global with_block_gluster 1
 
+%ifarch %{arm}
+%define with_rdma 0
+%else
+%define with_rdma 1
+%endif
+
 %define evr %{epoch}:%{version}-%{release}
 
 %define requires_block_curl Requires: %{name}-block-curl = %{evr}
@@ -155,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 0.2%{?rcrel}%{?dist}
+Release: 0.3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -279,7 +285,9 @@ BuildRequires: vte291-devel
 # GTK translations
 BuildRequires: gettext
 # RDMA migration
+%if %{with_rdma}
 BuildRequires: rdma-core-devel
+%endif
 %if %{have_xen}
 # Xen support
 BuildRequires: xen-devel
@@ -1881,6 +1889,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Dec  2 2019 Daniel P. Berrangé <berrange@redhat.com> - 2:4.2.0-0.3.rc2
+- Disable RDMA on 32-bit arm (rhbz #1778517)
+
 * Wed Nov 20 2019 Cole Robinson <aintdiscole@gmail.com> - 2:4.2.0-0.2.rc2
 - Update to qemu-4.2.0 rc2
 
