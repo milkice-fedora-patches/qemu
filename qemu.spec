@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1887,6 +1887,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Dec 19 2019 Mohan Boddu <mboddu@bhujji.com> - 4.2.0-2
+- Rebuild for xen 4.13
+
 * Fri Dec 13 2019 Cole Robinson <aintdiscole@gmail.com> - 4.2.0-1
 - Update to qemu-4.2.0 GA
 
