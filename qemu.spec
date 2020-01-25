@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -170,6 +170,14 @@ Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.x
 
 # Fix a test suite error
 Patch1: 0001-tests-fix-modules-test-duplicate-test-case-error.patch
+
+# Miscellaneous fixes for RISC-V, merged upstream in commit
+# ba2ed84fe6a78f64b2da441750fc6e925d94106a.
+Patch2: 0001-riscv-sifive_u-fix-a-memory-leak-in-soc_realize.patch
+Patch3: 0002-riscv-Set-xPIE-to-1-after-xRET.patch
+Patch4: 0003-target-riscv-Fix-tb-flags-FS-status.patch
+Patch5: 0004-target-riscv-fsd-fsw-doesn-t-dirty-FP-state.patch
+Patch6: 0005-target-riscv-update-mstatus.SD-when-FS-is-set-dirty.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -1887,6 +1895,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sat Jan 25 2019 Mohan Boddu <mboddu@bhujji.com> - 4.2.0-3
+- Add miscellaneous fixes for RISC-V (RHBZ#1794902).
+
 * Thu Dec 19 2019 Mohan Boddu <mboddu@bhujji.com> - 4.2.0-2
 - Rebuild for xen 4.13
 
