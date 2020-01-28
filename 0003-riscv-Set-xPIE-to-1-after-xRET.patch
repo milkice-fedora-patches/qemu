@@ -1,7 +1,6 @@
-From a37f21c27d3e2342c2080aafd4cfe7e949612428 Mon Sep 17 00:00:00 2001
 From: Yiting Wang <yiting.wang@windriver.com>
 Date: Fri, 3 Jan 2020 11:53:42 +0800
-Subject: [PATCH 2/5] riscv: Set xPIE to 1 after xRET
+Subject: [PATCH] riscv: Set xPIE to 1 after xRET
 
 When executing an xRET instruction, supposing xPP holds the
 value y, xIE is set to xPIE; the privilege mode is changed to y;
@@ -38,6 +37,3 @@ index 331cc36232..e87c9115bc 100644
      mstatus = set_field(mstatus, MSTATUS_MPP, PRV_U);
      riscv_cpu_set_mode(env, prev_priv);
      env->mstatus = mstatus;
--- 
-2.24.1
-

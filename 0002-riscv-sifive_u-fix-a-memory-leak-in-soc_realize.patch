@@ -1,7 +1,6 @@
-From bb8136df698bd565ee4f6c18d26c50dee320bfe4 Mon Sep 17 00:00:00 2001
 From: Pan Nengyuan <pannengyuan@huawei.com>
 Date: Tue, 10 Dec 2019 15:14:37 +0800
-Subject: [PATCH 1/5] riscv/sifive_u: fix a memory leak in soc_realize()
+Subject: [PATCH] riscv/sifive_u: fix a memory leak in soc_realize()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -29,6 +28,3 @@ index 0140e95732..0e12b3ccef 100644
      sifive_uart_create(system_memory, memmap[SIFIVE_U_UART0].base,
          serial_hd(0), qdev_get_gpio_in(DEVICE(s->plic), SIFIVE_U_UART0_IRQ));
      sifive_uart_create(system_memory, memmap[SIFIVE_U_UART1].base,
--- 
-2.24.1
-

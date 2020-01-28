@@ -1,7 +1,6 @@
-From a59796eb6d59bbd74ce28ddbddb1b83e60674e96 Mon Sep 17 00:00:00 2001
 From: ShihPo Hung <shihpo.hung@sifive.com>
 Date: Tue, 14 Jan 2020 22:17:32 -0800
-Subject: [PATCH 4/5] target/riscv: fsd/fsw doesn't dirty FP state
+Subject: [PATCH] target/riscv: fsd/fsw doesn't dirty FP state
 
 Signed-off-by: ShihPo Hung <shihpo.hung@sifive.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
@@ -36,6 +35,3 @@ index 172dbfa919..e23cd639a6 100644
      return true;
  }
  
--- 
-2.24.1
-
