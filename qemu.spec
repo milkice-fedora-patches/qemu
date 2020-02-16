@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -305,6 +305,9 @@ Patch0114: 0114-virtiofsd-Convert-lo_destroy-to-take-the-lo-mutex-lo.patch
 Patch0115: 0115-virtiofsd-passthrough_ll-Pass-errno-to-fuse_reply_er.patch
 Patch0116: 0116-virtiofsd-stop-all-queue-threads-on-exit-in-virtio_l.patch
 Patch0117: 0117-virtiofsd-add-some-options-to-the-help-message.patch
+
+# Fix ppc shutdown issue (bz #1784961)
+Patch0201: 0201-spapr-Don-t-trigger-a-CAS-reboot-for-XICS-XIVE-mode-.patch
 
 
 # documentation deps
@@ -2007,6 +2010,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sat Feb 15 2020 Cole Robinson <crobinso@redhat.com> - 2:4.2.0-5
+- Fix ppc shutdown issue (bz #1784961)
+
 * Tue Jan 28 2020 Cole Robinson <crobinso@redhat.com> - 2:4.2.0-4
 - virtio-fs support
 
