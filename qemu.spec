@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2010,6 +2010,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Feb 25 2020 Cole Robinson <crobinso@redhat.com> - 2:4.2.0-6
+- Rebuild for libiscsi soname bump
+
 * Sat Feb 15 2020 Cole Robinson <crobinso@redhat.com> - 2:4.2.0-5
 - Fix ppc shutdown issue (bz #1784961)
 
