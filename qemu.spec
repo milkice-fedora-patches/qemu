@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 4.2.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -305,6 +305,8 @@ Patch0114: 0114-virtiofsd-Convert-lo_destroy-to-take-the-lo-mutex-lo.patch
 Patch0115: 0115-virtiofsd-passthrough_ll-Pass-errno-to-fuse_reply_er.patch
 Patch0116: 0116-virtiofsd-stop-all-queue-threads-on-exit-in-virtio_l.patch
 Patch0117: 0117-virtiofsd-add-some-options-to-the-help-message.patch
+# Fix segfault with SR-IOV hot-{plug,unplug}
+Patch0118: 0118-vfio-pci-Don-t-remove-irqchip-notifier-if-not-regist.patch
 
 # Fix ppc shutdown issue (bz #1784961)
 Patch0201: 0201-spapr-Don-t-trigger-a-CAS-reboot-for-XICS-XIVE-mode-.patch
@@ -2010,6 +2012,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Mar 17 2020 Fabiano Fidêncio <fidencio@redhat.com> - 2:4.2.0-7
+- Fix segfault with SR-IOV hot-{plug,unplug} (bz #1814017)
+
 * Tue Feb 25 2020 Cole Robinson <crobinso@redhat.com> - 2:4.2.0-6
 - Rebuild for libiscsi soname bump
 
