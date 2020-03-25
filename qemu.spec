@@ -327,8 +327,10 @@ BuildRequires: perl-Test-Harness
 # Required for making python shebangs versioned
 BuildRequires: /usr/bin/pathfix.py
 BuildRequires: python3-devel
-# qemu 5.0 liburing support
+%ifnarch %{arm}
+# qemu 5.0 liburing support. Library isn't built for arm
 BuildRequires: liburing-devel
+%endif
 # qemu 5.0 zstd compression support
 BuildRequires: libzstd-devel
 
