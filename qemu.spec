@@ -359,6 +359,7 @@ Requires: %{name}-system-nios2 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-or1k = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-ppc = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-riscv = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-rx = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-s390x = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-sh4 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-sparc = %{epoch}:%{version}-%{release}
@@ -801,6 +802,20 @@ Summary: QEMU system emulator for RISC-V
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-riscv-core
 This package provides the QEMU system emulator for RISC-V systems.
+
+
+%package system-rx
+Summary: QEMU system emulator for RX
+Requires: %{name}-system-rx-core = %{epoch}:%{version}-%{release}
+%{requires_all_modules}
+%description system-rx
+This package provides the QEMU system emulator for RX systems.
+
+%package system-rx-core
+Summary: QEMU system emulator for RX
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+%description system-rx-core
+This package provides the QEMU system emulator for RX systems.
 
 
 %package system-s390x
@@ -1401,8 +1416,12 @@ getent passwd qemu >/dev/null || \
 %doc %{qemudocdir}/qemu-qmp-ref.html
 %doc %{qemudocdir}/qemu-qmp-ref.txt
 %doc %{qemudocdir}/README.rst
+%doc %{qemudocdir}/index.html
 %doc %{qemudocdir}/interop
 %doc %{qemudocdir}/specs
+%doc %{qemudocdir}/system
+%doc %{qemudocdir}/tools
+%doc %{qemudocdir}/user
 %license %{qemudocdir}/COPYING
 %license %{qemudocdir}/COPYING.LIB
 %license %{qemudocdir}/LICENSE
@@ -1442,6 +1461,7 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/qemu.1*
 %{_mandir}/man1/qemu-trace-stap.1*
 %{_mandir}/man1/virtfs-proxy-helper.1*
+%{_mandir}/man1/virtiofsd.1*
 %{_mandir}/man7/qemu-block-drivers.7*
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-ga-ref.7*
@@ -1450,6 +1470,7 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
 %{_bindir}/qemu-pr-helper
+%{_bindir}/qemu-storage-daemon
 %{_bindir}/qemu-trace-stap
 %{_bindir}/virtfs-proxy-helper
 %{_unitdir}/qemu-pr-helper.service
@@ -1574,111 +1595,26 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-xtensa
 %{_bindir}/qemu-xtensaeb
 
-%{_datadir}/systemtap/tapset/qemu-i386.stp
-%{_datadir}/systemtap/tapset/qemu-i386-log.stp
-%{_datadir}/systemtap/tapset/qemu-i386-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-x86_64.stp
-%{_datadir}/systemtap/tapset/qemu-x86_64-log.stp
-%{_datadir}/systemtap/tapset/qemu-x86_64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64-log.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64_be.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64_be-log.stp
-%{_datadir}/systemtap/tapset/qemu-aarch64_be-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-alpha.stp
-%{_datadir}/systemtap/tapset/qemu-alpha-log.stp
-%{_datadir}/systemtap/tapset/qemu-alpha-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-arm.stp
-%{_datadir}/systemtap/tapset/qemu-arm-log.stp
-%{_datadir}/systemtap/tapset/qemu-arm-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-armeb.stp
-%{_datadir}/systemtap/tapset/qemu-armeb-log.stp
-%{_datadir}/systemtap/tapset/qemu-armeb-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-cris.stp
-%{_datadir}/systemtap/tapset/qemu-cris-log.stp
-%{_datadir}/systemtap/tapset/qemu-cris-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-hppa.stp
-%{_datadir}/systemtap/tapset/qemu-hppa-log.stp
-%{_datadir}/systemtap/tapset/qemu-hppa-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-m68k.stp
-%{_datadir}/systemtap/tapset/qemu-m68k-log.stp
-%{_datadir}/systemtap/tapset/qemu-m68k-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-microblaze.stp
-%{_datadir}/systemtap/tapset/qemu-microblaze-log.stp
-%{_datadir}/systemtap/tapset/qemu-microblaze-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-microblazeel.stp
-%{_datadir}/systemtap/tapset/qemu-microblazeel-log.stp
-%{_datadir}/systemtap/tapset/qemu-microblazeel-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mips.stp
-%{_datadir}/systemtap/tapset/qemu-mips-log.stp
-%{_datadir}/systemtap/tapset/qemu-mips-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mipsel.stp
-%{_datadir}/systemtap/tapset/qemu-mipsel-log.stp
-%{_datadir}/systemtap/tapset/qemu-mipsel-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mips64.stp
-%{_datadir}/systemtap/tapset/qemu-mips64-log.stp
-%{_datadir}/systemtap/tapset/qemu-mips64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mips64el.stp
-%{_datadir}/systemtap/tapset/qemu-mips64el-log.stp
-%{_datadir}/systemtap/tapset/qemu-mips64el-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32-log.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32el.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32el-log.stp
-%{_datadir}/systemtap/tapset/qemu-mipsn32el-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-nios2.stp
-%{_datadir}/systemtap/tapset/qemu-nios2-log.stp
-%{_datadir}/systemtap/tapset/qemu-nios2-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-or1k.stp
-%{_datadir}/systemtap/tapset/qemu-or1k-log.stp
-%{_datadir}/systemtap/tapset/qemu-or1k-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-ppc.stp
-%{_datadir}/systemtap/tapset/qemu-ppc-log.stp
-%{_datadir}/systemtap/tapset/qemu-ppc-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64-log.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64abi32.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64abi32-log.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64abi32-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64le.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64le-log.stp
-%{_datadir}/systemtap/tapset/qemu-ppc64le-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-riscv32.stp
-%{_datadir}/systemtap/tapset/qemu-riscv32-log.stp
-%{_datadir}/systemtap/tapset/qemu-riscv32-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-riscv64.stp
-%{_datadir}/systemtap/tapset/qemu-riscv64-log.stp
-%{_datadir}/systemtap/tapset/qemu-riscv64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-s390x.stp
-%{_datadir}/systemtap/tapset/qemu-s390x-log.stp
-%{_datadir}/systemtap/tapset/qemu-s390x-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-sh4.stp
-%{_datadir}/systemtap/tapset/qemu-sh4-log.stp
-%{_datadir}/systemtap/tapset/qemu-sh4-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-sh4eb.stp
-%{_datadir}/systemtap/tapset/qemu-sh4eb-log.stp
-%{_datadir}/systemtap/tapset/qemu-sh4eb-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-sparc.stp
-%{_datadir}/systemtap/tapset/qemu-sparc-log.stp
-%{_datadir}/systemtap/tapset/qemu-sparc-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-sparc32plus.stp
-%{_datadir}/systemtap/tapset/qemu-sparc32plus-log.stp
-%{_datadir}/systemtap/tapset/qemu-sparc32plus-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-sparc64.stp
-%{_datadir}/systemtap/tapset/qemu-sparc64-log.stp
-%{_datadir}/systemtap/tapset/qemu-sparc64-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-tilegx.stp
-%{_datadir}/systemtap/tapset/qemu-tilegx-log.stp
-%{_datadir}/systemtap/tapset/qemu-tilegx-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-xtensa.stp
-%{_datadir}/systemtap/tapset/qemu-xtensa-log.stp
-%{_datadir}/systemtap/tapset/qemu-xtensa-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-xtensaeb.stp
-%{_datadir}/systemtap/tapset/qemu-xtensaeb-log.stp
-%{_datadir}/systemtap/tapset/qemu-xtensaeb-simpletrace.stp
+%{_datadir}/systemtap/tapset/qemu-i386*.stp
+%{_datadir}/systemtap/tapset/qemu-x86_64*.stp
+%{_datadir}/systemtap/tapset/qemu-aarch64*.stp
+%{_datadir}/systemtap/tapset/qemu-alpha*.stp
+%{_datadir}/systemtap/tapset/qemu-arm*.stp
+%{_datadir}/systemtap/tapset/qemu-cris*.stp
+%{_datadir}/systemtap/tapset/qemu-hppa*.stp
+%{_datadir}/systemtap/tapset/qemu-m68k*.stp
+%{_datadir}/systemtap/tapset/qemu-microblaze*.stp
+%{_datadir}/systemtap/tapset/qemu-mips*.stp
+%{_datadir}/systemtap/tapset/qemu-nios2*.stp
+%{_datadir}/systemtap/tapset/qemu-or1k*.stp
+%{_datadir}/systemtap/tapset/qemu-ppc*.stp
+%{_datadir}/systemtap/tapset/qemu-riscv*.stp
+%{_datadir}/systemtap/tapset/qemu-s390x*.stp
+%{_datadir}/systemtap/tapset/qemu-sh4*.stp
+%{_datadir}/systemtap/tapset/qemu-sparc*.stp
+%{_datadir}/systemtap/tapset/qemu-tilegx*.stp
+%{_datadir}/systemtap/tapset/qemu-xtensa*.stp
+
 
 %files user-binfmt
 %{_exec_prefix}/lib/binfmt.d/qemu-*-dynamic.conf
@@ -1797,7 +1733,6 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/qemu-system-ppc64.1*
 %{_datadir}/%{name}/bamboo.dtb
 %{_datadir}/%{name}/canyonlands.dtb
-%{_datadir}/%{name}/ppc_rom.bin
 %{_datadir}/%{name}/qemu_vga.ndrv
 %{_datadir}/%{name}/skiboot.lid
 %{_datadir}/%{name}/u-boot.e500
@@ -1814,6 +1749,13 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/opensbi-riscv*.bin
 %{_datadir}/systemtap/tapset/qemu-system-riscv*.stp
 %{_mandir}/man1/qemu-system-riscv*.1*
+
+
+%files system-rx
+%files system-rx-core
+%{_bindir}/qemu-system-rx
+%{_datadir}/systemtap/tapset/qemu-system-rx*.stp
+%{_mandir}/man1/qemu-system-rx.1*
 
 
 %files system-s390x
