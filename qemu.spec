@@ -1124,6 +1124,10 @@ run_configure \
 %if 0%{?fedora} > 30
     --enable-slirp=system \
 %endif
+    --disable-linux-io-uring
+
+# uring temporarily disabled, it's breaking the test suite:
+# https://lists.gnu.org/archive/html/qemu-block/2020-03/msg01395.html
 
 echo "config-host.mak contents:"
 echo "==="
