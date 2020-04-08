@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1835,6 +1835,12 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Apr 08 2020 Adam Williamson <awilliam@redhat.com> - 2:5.0.0-0.2.rc0
+- Rebuild for new brltty
+
+* Wed Mar 25 2020 Cole Robinson <crobinso@redhat.com> - 2:5.0.0-0.1.rc0
+- Update to qemu-5.0.0-rc0
+
 * Tue Mar 17 2020 Fabiano Fidêncio <fidencio@redhat.com> - 2:4.2.0-7
 - Fix segfault with SR-IOV hot-{plug,unplug} (bz #1814017)
 
