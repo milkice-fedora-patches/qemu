@@ -333,6 +333,8 @@ BuildRequires: liburing-devel
 %endif
 # qemu 5.0 zstd compression support
 BuildRequires: libzstd-devel
+# `hostname` used by test suite
+BuildRequires: hostname
 
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
 
