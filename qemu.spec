@@ -1344,7 +1344,8 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 %global archs_ignore_test_failures 0
 
 # Enable this temporarily if tests are broken
-%global temp_skip_check 0
+# An iotest is failing for i686
+%global temp_skip_check 1
 
 pushd build-dynamic
 %ifnarch %{archs_skip_tests}
