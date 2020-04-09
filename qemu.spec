@@ -151,7 +151,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc0
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 0.2%{?rcrel}%{?dist}
+Release: 0.3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1141,10 +1141,6 @@ run_configure \
 %if 0%{?fedora} > 30
     --enable-slirp=system \
 %endif
-    --disable-linux-io-uring
-
-# uring temporarily disabled, it's breaking the test suite:
-# https://lists.gnu.org/archive/html/qemu-block/2020-03/msg01395.html
 
 echo "config-host.mak contents:"
 echo "==="
@@ -1835,6 +1831,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Apr 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.0.0-0.3.rc2
+- Update to qemu 5.0.0 rc2
+
 * Wed Apr 08 2020 Adam Williamson <awilliam@redhat.com> - 2:5.0.0-0.2.rc0
 - Rebuild for new brltty
 
