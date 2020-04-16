@@ -151,7 +151,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc2
+%global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -1834,6 +1834,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Apr 16 2020 Cole Robinson <aintdiscole@gmail.com> - 5.0.0-0.3.rc3
+- Update to qemu 5.0.0 rc3
+
 * Thu Apr 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.0.0-0.3.rc2
 - Update to qemu 5.0.0 rc2
 
