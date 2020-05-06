@@ -151,7 +151,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc3
+# global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 0.3%{?rcrel}%{?dist}
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1834,6 +1834,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed May 06 2020 Cole Robinson <crobinso@redhat.com> - 5.0.0-1
+- Update to version 5.0.0
+
 * Thu Apr 16 2020 Cole Robinson <aintdiscole@gmail.com> - 5.0.0-0.3.rc3
 - Update to qemu 5.0.0 rc3
 
