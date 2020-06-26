@@ -59,7 +59,7 @@ index 3d50ec094c..88b26747fc 100644
       * cap_net_admin */
      if (geteuid() == 0 && getuid() != geteuid()) {
 diff --git a/scsi/qemu-pr-helper.c b/scsi/qemu-pr-helper.c
-index debb18f4aa..0659ceef09 100644
+index 38c273de19..181ed4a186 100644
 --- a/scsi/qemu-pr-helper.c
 +++ b/scsi/qemu-pr-helper.c
 @@ -24,7 +24,7 @@
@@ -89,7 +89,7 @@ index debb18f4aa..0659ceef09 100644
  "  -u, --user=USER           user to drop privileges to\n"
  "  -g, --group=GROUP         group to drop privileges to\n"
  #endif
-@@ -827,7 +827,7 @@ static void close_server_socket(void)
+@@ -830,7 +830,7 @@ static void close_server_socket(void)
      num_active_sockets--;
  }
  
@@ -98,7 +98,7 @@ index debb18f4aa..0659ceef09 100644
  static int drop_privileges(void)
  {
      /* clear all capabilities */
-@@ -920,7 +920,7 @@ int main(int argc, char **argv)
+@@ -923,7 +923,7 @@ int main(int argc, char **argv)
              pidfile = g_strdup(optarg);
              pidfile_specified = true;
              break;
@@ -107,7 +107,7 @@ index debb18f4aa..0659ceef09 100644
          case 'u': {
              unsigned long res;
              struct passwd *userinfo = getpwnam(optarg);
-@@ -1056,7 +1056,7 @@ int main(int argc, char **argv)
+@@ -1059,7 +1059,7 @@ int main(int argc, char **argv)
          exit(EXIT_FAILURE);
      }
  
