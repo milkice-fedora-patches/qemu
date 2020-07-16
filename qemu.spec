@@ -151,7 +151,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-# global rcver rc3
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -160,8 +160,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 5.0.0
-Release: 6%{?rcrel}%{?dist}
+Version: 5.1.0
+Release: 0.1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -184,14 +184,6 @@ Source15: qemu-pr-helper.socket
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
-
-# Fix iouring hang (bz #1823751)
-# https://lists.gnu.org/archive/html/qemu-devel/2020-05/msg02728.html
-Patch0001: 0001-aio-posix-don-t-duplicate-fd-handler-deletion-in-fdm.patch
-Patch0002: 0002-aio-posix-disable-fdmon-io_uring-when-GSource-is-use.patch
-
-# Fix for cert in the test suite that uses an insecure algorithm.
-Patch0003: 0001-crypto-use-a-stronger-private-key-for-tests.patch
 
 
 # documentation deps
@@ -337,6 +329,8 @@ BuildRequires: liburing-devel
 BuildRequires: libzstd-devel
 # `hostname` used by test suite
 BuildRequires: hostname
+# Used for nvdimm dax
+BuildRequires: daxctl-devel
 
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
 
@@ -353,6 +347,7 @@ Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-arm = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-avr = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-cris = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-lm32 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-m68k = %{epoch}:%{version}-%{release}
@@ -548,6 +543,32 @@ This package provides the additional spice-app UI for QEMU.
 %endif
 
 
+%package  char-baum
+Summary: QEMU Baum chardev driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description char-baum
+This package provides the Baum chardev driver for QEMU.
+
+
+%package device-display-qxl
+Summary: QEMU QXL display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-qxl
+This package provides the QXL display device for QEMU.
+
+%package device-usb-redirect
+Summary: QEMU usbredir device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-usb-redirect
+This package provides the usbredir device for QEMU.
+
+%package device-usb-smartcard
+Summary: QEMU USB smartcard device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-usb-smartcard
+This package provides the USB smartcard device for QEMU.
+
+
 %if %{have_kvm}
 %package kvm
 Summary: QEMU metapackage for KVM support
@@ -647,6 +668,20 @@ Summary: QEMU system emulator for ARM
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-arm-core
 This package provides the QEMU system emulator for ARM boards.
+
+
+%package system-avr
+Summary: QEMU system emulator for AVR
+Requires: %{name}-system-avr-core = %{epoch}:%{version}-%{release}
+%{requires_all_modules}
+%description system-avr
+This package provides the QEMU system emulator for AVR systems.
+
+%package system-avr-core
+Summary: QEMU system emulator for ARM
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+%description system-avr-core
+This package provides the QEMU system emulator for AVR systems.
 
 
 %package system-cris
@@ -1035,7 +1070,9 @@ run_configure_disable_everything() {
         --disable-hvf \
         --disable-iconv \
         --disable-jemalloc \
+        --disable-keyring \
         --disable-kvm \
+        --disable-libdaxctl \
         --disable-libiscsi \
         --disable-libnfs \
         --disable-libpmem \
@@ -1064,6 +1101,7 @@ run_configure_disable_everything() {
         --disable-rbd \
         --disable-rdma \
         --disable-replication \
+        --disable-rng-none \
         --disable-sdl \
         --disable-sdl-image \
         --disable-seccomp \
@@ -1087,6 +1125,7 @@ run_configure_disable_everything() {
         --disable-vhost-net \
         --disable-vhost-scsi \
         --disable-vhost-user \
+        --disable-vhost-vdpa \
         --disable-vhost-vsock \
         --disable-virglrenderer \
         --disable-virtfs \
@@ -1096,7 +1135,6 @@ run_configure_disable_everything() {
         --disable-vnc-sasl \
         --disable-vte \
         --disable-vvfat \
-        --disable-vxhs \
         --disable-whpx \
         --disable-xen \
         --disable-xen-pci-passthrough \
@@ -1412,10 +1450,6 @@ getent passwd qemu >/dev/null || \
 %files common -f %{name}.lang
 %dir %{qemudocdir}
 %doc %{qemudocdir}/Changelog
-%doc %{qemudocdir}/qemu-ga-ref.html
-%doc %{qemudocdir}/qemu-ga-ref.txt
-%doc %{qemudocdir}/qemu-qmp-ref.html
-%doc %{qemudocdir}/qemu-qmp-ref.txt
 %doc %{qemudocdir}/README.rst
 %doc %{qemudocdir}/index.html
 %doc %{qemudocdir}/interop
@@ -1465,19 +1499,19 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/virtiofsd.1*
 %{_mandir}/man7/qemu-block-drivers.7*
 %{_mandir}/man7/qemu-cpu-models.7*
-%{_mandir}/man7/qemu-ga-ref.7*
 %{_mandir}/man7/qemu-qmp-ref.7*
+%{_mandir}/man7/qemu-ga-ref.7*
 %{_bindir}/elf2dmp
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
-%{_bindir}/qemu-pr-helper
 %{_bindir}/qemu-storage-daemon
 %{_bindir}/qemu-trace-stap
-%{_bindir}/virtfs-proxy-helper
 %{_unitdir}/qemu-pr-helper.service
 %{_unitdir}/qemu-pr-helper.socket
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
+%{_libexecdir}/qemu-pr-helper
 %{_libexecdir}/vhost-user-gpu
+%{_libexecdir}/virtfs-proxy-helper
 %{_libexecdir}/virtiofsd
 %config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
 %dir %{_sysconfdir}/qemu
@@ -1543,6 +1577,16 @@ getent passwd qemu >/dev/null || \
 %files ui-spice-app
 %{_libdir}/qemu/ui-spice-app.so
 %endif
+
+%files char-baum
+%{_libdir}/qemu/chardev-baum.so
+
+%files device-display-qxl
+%{_libdir}/qemu/hw-display-qxl.so
+%files device-usb-redirect
+%{_libdir}/qemu/hw-usb-redirect.so
+%files device-usb-smartcard
+%{_libdir}/qemu/hw-usb-smartcard.so
 
 
 %files -n ivshmem-tools
@@ -1650,6 +1694,13 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-system-arm
 %{_datadir}/systemtap/tapset/qemu-system-arm*.stp
 %{_mandir}/man1/qemu-system-arm.1*
+
+
+%files system-avr
+%files system-avr-core
+%{_bindir}/qemu-system-avr
+%{_datadir}/systemtap/tapset/qemu-system-avr*.stp
+%{_mandir}/man1/qemu-system-avr.1*
 
 
 %files system-cris
@@ -1836,6 +1887,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 04 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-0.1.rc2
+- Update to qemu 5.1.0 rc2
+
 * Fri Jul 31 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.0.0-6
 - Remove obsolete Fedora conditionals (PR#9)
 
