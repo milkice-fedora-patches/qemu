@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1839,6 +1839,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jul 27 2020 Kevin Fenzi <kevin@scrye.com> - 5.0.0-3
+- Rebuild for new xen
+
 * Wed May 13 2020 Cole Robinson <crobinso@redhat.com> - 5.0.0-2
 - Fix iouring hang (bz #1823751)
 
