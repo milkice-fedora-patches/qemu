@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -189,6 +189,9 @@ Source21: 95-kvm-ppc64-memlock.conf
 # https://lists.gnu.org/archive/html/qemu-devel/2020-05/msg02728.html
 Patch0001: 0001-aio-posix-don-t-duplicate-fd-handler-deletion-in-fdm.patch
 Patch0002: 0002-aio-posix-disable-fdmon-io_uring-when-GSource-is-use.patch
+
+# Fix for cert in the test suite that uses an insecure algorithm.
+Patch0003: 0001-crypto-use-a-stronger-private-key-for-tests.patch
 
 
 # documentation deps
@@ -1839,6 +1842,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jul 29 2020 Richard W.M. Jones <rjones@redhat.com> - 5.0.0-4
+- Backport Dan's upstream patch to fix insecure cert in test suite.
+
 * Mon Jul 27 2020 Kevin Fenzi <kevin@scrye.com> - 5.0.0-3
 - Rebuild for new xen
 
