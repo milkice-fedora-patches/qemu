@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -955,6 +955,8 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" scripts/qemu-trace-stap
 
 
 %build
+# Disable LTO since it caused lots of strange assert failures.
+%define _lto_cflags %{nil}
 
 # drop -g flag to prevent memory exhaustion by linker
 %ifarch s390
@@ -1842,6 +1844,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Jul 30 2020 Richard W.M. Jones <rjones@redhat.com> - 5.0.0-5
+- Disable LTO as it caused many strange assert failures.
+
 * Wed Jul 29 2020 Richard W.M. Jones <rjones@redhat.com> - 5.0.0-4
 - Backport Dan's upstream patch to fix insecure cert in test suite.
 
