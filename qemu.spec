@@ -161,7 +161,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.0.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -321,15 +321,9 @@ BuildRequires: libudev-devel
 # qemu 4.0: Use for qauth infrastructure
 BuildRequires: pam-devel
 # qemu 4.0: user-mode networking
-%if 0%{?fedora} > 30
 BuildRequires: libslirp-devel
-%endif
 # qemu 4.0: sphinx-build used for some docs
-%if 0%{?fedora} > 30
 BuildRequires: python3-sphinx
-%else
-BuildRequires: python2-sphinx
-%endif
 # qemu 4.0: Used by test suite ./scripts/tap-driver.pl
 BuildRequires: perl-Test-Harness
 # Required for making python shebangs versioned
@@ -1150,9 +1144,7 @@ run_configure \
 %ifarch s390 %{mips64}
     --enable-tcg-interpreter \
 %endif
-%if 0%{?fedora} > 30
-    --enable-slirp=system \
-%endif
+    --enable-slirp=system
 
 echo "config-host.mak contents:"
 echo "==="
@@ -1844,6 +1836,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Jul 31 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.0.0-6
+- Remove obsolete Fedora conditionals (PR#9)
+
 * Thu Jul 30 2020 Richard W.M. Jones <rjones@redhat.com> - 5.0.0-5
 - Disable LTO as it caused many strange assert failures.
 
