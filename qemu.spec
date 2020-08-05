@@ -118,6 +118,10 @@
 %define requires_audio_oss Requires: %{name}-audio-oss = %{evr}
 %define requires_audio_pa Requires: %{name}-audio-pa = %{evr}
 %define requires_audio_sdl Requires: %{name}-audio-sdl = %{evr}
+%define requires_char_baum Requires: %{name}-char-baum = %{evr}
+%define requires_device_display_qxl Requires: %{name}-device-display-qxl = %{evr}
+%define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
+%define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
 %define requires_ui_gtk Requires: %{name}-ui-gtk = %{evr}
 %define requires_ui_sdl Requires: %{name}-ui-sdl = %{evr}
@@ -143,7 +147,11 @@
 %{requires_ui_curses} \
 %{requires_ui_gtk} \
 %{requires_ui_sdl} \
-%{requires_ui_spice_app}
+%{requires_ui_spice_app} \
+%{requires_char_baum} \
+%{requires_device_display_qxl} \
+%{requires_device_usb_redirect} \
+%{requires_device_usb_smartcard} \
 
 # Modules which can be conditionally built
 %global obsoletes_some_modules \
@@ -161,7 +169,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1887,6 +1895,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Aug 05 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-0.2.rc2
+- Pull in new modules by default, like we do for others
+
 * Tue Aug 04 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-0.1.rc2
 - Update to qemu 5.1.0 rc2
 
