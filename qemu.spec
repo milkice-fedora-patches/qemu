@@ -678,7 +678,7 @@ Requires: %{name}-system-avr-core = %{epoch}:%{version}-%{release}
 This package provides the QEMU system emulator for AVR systems.
 
 %package system-avr-core
-Summary: QEMU system emulator for ARM
+Summary: QEMU system emulator for AVR
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-avr-core
 This package provides the QEMU system emulator for AVR systems.
