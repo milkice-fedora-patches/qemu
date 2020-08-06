@@ -198,7 +198,7 @@ Source21: 95-kvm-ppc64-memlock.conf
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl-podlators
-%ifnarch %{ix86}
+%ifarch %{kernel_arches}
 # For sanity test
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
@@ -1895,6 +1895,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Aug 06 2020 Merlin Mathesius <mmathesi@redhat.com> - 5.1.0-0.2.rc2
+- Use new %%{kernel_arches} macro to determine when a full kernel is available
+
 * Wed Aug 05 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-0.2.rc2
 - Pull in new modules by default, like we do for others
 
