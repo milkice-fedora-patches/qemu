@@ -342,14 +342,6 @@ BuildRequires: daxctl-devel
 
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
 
-%if 0%{?hostqemu:1}
-# For complicated reasons, this is required so that
-# /bin/kernel-install puts the kernel directly into /boot, instead of
-# into a /boot/<machine-id> subdirectory (in Fedora >= 23).  This is
-# so we can run qemu-sanity-check.  Read the kernel-install script to
-# understand why.
-BuildRequires: grubby
-%endif
 
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
