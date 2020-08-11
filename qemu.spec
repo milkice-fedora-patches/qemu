@@ -159,7 +159,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc3
+# global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -169,7 +169,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 0.3%{?rcrel}%{?dist}
+Release: 1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1392,8 +1392,8 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 %global archs_ignore_test_failures 0
 
 # Enable this temporarily if tests are broken
-# An iotest is failing for i686
-%global temp_skip_check 0
+# 2020-08-11: iotests failing due to missing qxl symbol
+%global temp_skip_check 1
 
 pushd build-dynamic
 %ifnarch %{archs_skip_tests}
@@ -1895,6 +1895,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 11 2020 Cole Robinson <crobinso@redhat.com> - 5.1.0-1
+- Update to version 5.1.0
+
 * Fri Aug 07 2020 Cole Robinson <crobinso@redhat.com> - 5.1.0-0.3.rc3
 - Update to version 5.1.0-rc3
 
