@@ -201,7 +201,8 @@ BuildRequires: perl-podlators
 %ifarch %{kernel_arches}
 # For sanity test
 BuildRequires: qemu-sanity-check-nodeps
-BuildRequires: kernel
+# 2020-08-12: Disable due to new f34 missing kernel package
+#BuildRequires: kernel
 %endif
 %if %{have_iasl}
 # For acpi compilation
