@@ -119,7 +119,6 @@
 %define requires_audio_pa Requires: %{name}-audio-pa = %{evr}
 %define requires_audio_sdl Requires: %{name}-audio-sdl = %{evr}
 %define requires_char_baum Requires: %{name}-char-baum = %{evr}
-%define requires_device_display_qxl Requires: %{name}-device-display-qxl = %{evr}
 %define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
 %define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
@@ -128,8 +127,10 @@
 
 %if %{have_spice}
 %define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
+%define requires_device_display_qxl Requires: %{name}-device-display-qxl = %{evr}
 %else
 %define requires_ui_spice_app %{nil}
+%define requires_device_display_qxl Requires: %{nil}
 %endif
 
 %global requires_all_modules \
@@ -551,11 +552,13 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 This package provides the Baum chardev driver for QEMU.
 
 
+%if %{have_spice}
 %package device-display-qxl
 Summary: QEMU QXL display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-qxl
 This package provides the QXL display device for QEMU.
+%endif
 
 %package device-usb-redirect
 Summary: QEMU usbredir device
@@ -1582,6 +1585,10 @@ getent passwd qemu >/dev/null || \
 %files char-baum
 %{_libdir}/qemu/chardev-baum.so
 
+%if %{have_spice}
+%files device-display-qxl
+%{_libdir}/qemu/hw-display-qxl.so
+%endif
 %files device-display-qxl
 %{_libdir}/qemu/hw-display-qxl.so
 %files device-usb-redirect
