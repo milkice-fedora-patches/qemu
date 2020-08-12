@@ -130,7 +130,7 @@
 %define requires_device_display_qxl Requires: %{name}-device-display-qxl = %{evr}
 %else
 %define requires_ui_spice_app %{nil}
-%define requires_device_display_qxl Requires: %{nil}
+%define requires_device_display_qxl %{nil}
 %endif
 
 %global requires_all_modules \
@@ -1589,8 +1589,6 @@ getent passwd qemu >/dev/null || \
 %files device-display-qxl
 %{_libdir}/qemu/hw-display-qxl.so
 %endif
-%files device-display-qxl
-%{_libdir}/qemu/hw-display-qxl.so
 %files device-usb-redirect
 %{_libdir}/qemu/hw-usb-redirect.so
 %files device-usb-smartcard
