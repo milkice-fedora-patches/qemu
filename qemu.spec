@@ -170,7 +170,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -195,6 +195,7 @@ Source20: kvm-x86.modprobe.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
 
+BuildRequires: gcc
 # documentation deps
 BuildRequires: texinfo
 # For /usr/bin/pod2man
@@ -1895,6 +1896,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Aug 18 2020 Tom Stellard <tstellar@redhat.com> - 5.1.0-3
+- Add BuildRequires: gcc
+- https://fedoraproject.org/wiki/Packaging:C_and_C%2B%2B#BuildRequires_and_Requires
+
 * Mon Aug 17 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-2
 - Disable dtrace generation to fix use of modules (bz 1869339)
 
