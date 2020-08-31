@@ -1396,11 +1396,13 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 %global tests_skip 1
 %endif
 
-# 2020-08-17: tests still failing locally but output is working
+# 2020-08-31: tests passing, but s390x fails due to
+# spurious warning breaking an iotest case
+# https://lists.gnu.org/archive/html/qemu-devel/2020-08/msg03279.html
 %global tests_nofail 1
 
 pushd build-dynamic
-%if %{tests_skip}
+%if !%{tests_skip}
 %if %{tests_nofail}
  make check V=1 || :
 %else
