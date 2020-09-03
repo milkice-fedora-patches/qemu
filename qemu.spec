@@ -170,12 +170,22 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
 
 Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.xz
+
+Patch1: 0001-linux-user-fix-implicit-conversion-from-enumeration-.patch
+Patch2: 0002-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
+Patch3: 0003-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
+Patch4: 0004-linux-user-Add-support-for-btrfs-ioctls-used-to-mani.patch
+Patch5: 0005-linux-user-Add-support-for-btrfs-ioctls-used-to-get-.patch
+Patch6: 0006-linux-user-Add-support-for-a-group-of-btrfs-inode-io.patch
+Patch7: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
+Patch8: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
+Patch9: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -1898,6 +1908,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
+- Add btrfs ioctls to linux-user (rhbz #1872918)
+
 * Tue Aug 18 2020 Tom Stellard <tstellar@redhat.com> - 5.1.0-3
 - Add BuildRequires: gcc
 - https://fedoraproject.org/wiki/Packaging:C_and_C%2B%2B#BuildRequires_and_Requires
