@@ -79,6 +79,13 @@
 %global hostqemu x86_64-softmmu/qemu-system-x86_64
 %endif
 
+%global qemu_sanity_check 0
+%ifarch x %{?kernel_arches}
+%if 0%{?hostqemu:1}
+%global qemu_sanity_check 1
+%endif
+%endif
+
 # All modules should be listed here.
 %ifarch %{ix86} %{arm}
 %define with_block_rbd 0
@@ -210,8 +217,7 @@ BuildRequires: gcc
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl-podlators
-%ifarch %{kernel_arches}
-# For sanity test
+%if %{qemu_sanity_check}
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
 %endif
@@ -1402,7 +1408,7 @@ pushd build-dynamic
  make check V=1
 %endif
 
-%if 0%{?hostqemu:1}
+%if %{qemu_sanity_check}
 # Sanity-check current kernel can boot on this qemu.
 # The results are advisory only.
 qemu-sanity-check --qemu=%{?hostqemu} ||:
@@ -1895,6 +1901,7 @@ getent passwd qemu >/dev/null || \
 - Drop conditions for ppc, ppc64, mips64 and s390 arches
 - Fix host qemu binary path for aarch64
 - Re-enable kernel BR for QEMU sanity check
+- Fix conditionals for enabling QEMU sanity check
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
