@@ -70,7 +70,7 @@
 %global hostqemu arm-softmmu/qemu-system-arm
 %endif
 %ifarch aarch64
-%global hostqemu arm-softmmu/qemu-system-aarch64
+%global hostqemu aarch64-softmmu/qemu-system-aarch64
 %endif
 %ifarch %{ix86}
 %global hostqemu i386-softmmu/qemu-system-i386
@@ -1894,6 +1894,7 @@ getent passwd qemu >/dev/null || \
 %changelog
 * Fri Sep  4 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-5
 - Drop conditions for ppc, ppc64, mips64 and s390 arches
+- Fix host qemu binary path for aarch64
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
