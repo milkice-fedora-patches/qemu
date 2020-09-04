@@ -1408,15 +1408,15 @@ pushd build-dynamic
  make check V=1
 %endif
 
+# Check the binary runs (see eg RHBZ#998722).
+b="./x86_64-softmmu/qemu-system-x86_64"
+if [ -x "$b" ]; then "$b" -help; fi
+
 %if %{qemu_sanity_check}
 # Sanity-check current kernel can boot on this qemu.
 # The results are advisory only.
 qemu-sanity-check --qemu=%{?hostqemu} ||:
 %endif
-
-# Check the binary runs (see eg RHBZ#998722).
-b="./x86_64-softmmu/qemu-system-x86_64"
-if [ -x "$b" ]; then "$b" -help; fi
 
 %endif
 popd
@@ -1902,6 +1902,7 @@ getent passwd qemu >/dev/null || \
 - Fix host qemu binary path for aarch64
 - Re-enable kernel BR for QEMU sanity check
 - Fix conditionals for enabling QEMU sanity check
+- Check whether emulator works before doing sanity check
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
