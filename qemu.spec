@@ -86,6 +86,13 @@
 %endif
 %endif
 
+# QEMU sanity check doesn't know how to pick machine type
+# which is needed on ARM as there is no defualt
+# https://bugzilla.redhat.com/show_bug.cgi?id=1875763
+%ifarch %{arm} aarch64
+%global qemu_sanity_check 0
+%endif
+
 # All modules should be listed here.
 %ifarch %{ix86} %{arm}
 %define with_block_rbd 0
@@ -1414,10 +1421,9 @@ if [ -x "$b" ]; then "$b" -help; fi
 
 %if %{qemu_sanity_check}
 # Sanity-check current kernel can boot on this qemu.
-# The results are advisory only.
 KERNEL=`find /lib/modules -name vmlinuz | head -1`
 echo "Trying to boot kernel $KERNEL with %{?hostqemu}"
-qemu-sanity-check --qemu=%{?hostqemu} --kernel=$KERNEL ||:
+qemu-sanity-check --qemu=%{?hostqemu} --kernel=$KERNEL
 %endif
 
 %endif
@@ -1906,6 +1912,7 @@ getent passwd qemu >/dev/null || \
 - Fix conditionals for enabling QEMU sanity check
 - Check whether emulator works before doing sanity check
 - Provide explicit kernel path for QEMU sanity check
+- Make QEMU sanity check a build blocker
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
