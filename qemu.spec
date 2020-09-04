@@ -1415,7 +1415,9 @@ if [ -x "$b" ]; then "$b" -help; fi
 %if %{qemu_sanity_check}
 # Sanity-check current kernel can boot on this qemu.
 # The results are advisory only.
-qemu-sanity-check --qemu=%{?hostqemu} ||:
+KERNEL=`find /lib/modules -name vmlinuz | head -1`
+echo "Trying to boot kernel $KERNEL with %{?hostqemu}"
+qemu-sanity-check --qemu=%{?hostqemu} --kernel=$KERNEL ||:
 %endif
 
 %endif
@@ -1903,6 +1905,7 @@ getent passwd qemu >/dev/null || \
 - Re-enable kernel BR for QEMU sanity check
 - Fix conditionals for enabling QEMU sanity check
 - Check whether emulator works before doing sanity check
+- Provide explicit kernel path for QEMU sanity check
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
