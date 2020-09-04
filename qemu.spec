@@ -33,7 +33,7 @@
 
 # Matches numactl ExcludeArch
 %global have_numactl 1
-%ifarch s390 %{arm}
+%ifarch %{arm}
 %global have_numactl 0
 %endif
 
@@ -43,7 +43,7 @@
 #
 # https://bugzilla.redhat.com/show_bug.cgi?id=1332449
 %global have_iasl 1
-%ifnarch s390 s390x ppc ppc64
+%ifnarch s390x
 %global have_iasl 0
 %endif
 
@@ -170,7 +170,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1002,14 +1002,8 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" scripts/qemu-trace-stap
 # Disable LTO since it caused lots of strange assert failures.
 %define _lto_cflags %{nil}
 
-# drop -g flag to prevent memory exhaustion by linker
-%ifarch s390
-%global optflags %(echo %{optflags} | sed 's/-g//')
-sed -i.debug 's/"-g $CFLAGS"/"$CFLAGS"/g' configure
-%endif
-
 # OOM killer breaks builds with parallel make on s390(x)
-%ifarch s390 s390x
+%ifarch s390x
 %global _smp_mflags %{nil}
 %endif
 
@@ -1198,9 +1192,6 @@ run_configure \
     --enable-modules \
     --enable-mpath \
     %{spiceflag} \
-%ifarch s390 %{mips64}
-    --enable-tcg-interpreter \
-%endif
     --enable-slirp=system
 
 echo "config-host.mak contents:"
@@ -1398,13 +1389,6 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 %global tests_skip 0
 # Enable this temporarily if tests are broken
 %global tests_nofail 0
-
-# Tests are hanging on s390 as of 2.3.0
-#   https://bugzilla.redhat.com/show_bug.cgi?id=1206057
-# Tests seem to be a recurring problem on s390, leave them disabled.
-%ifarch s390
-%global tests_skip 1
-%endif
 
 # 2020-08-31: tests passing, but s390x fails due to
 # spurious warning breaking an iotest case
@@ -1908,6 +1892,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Sep  4 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-5
+- Drop conditions for ppc, ppc64, mips64 and s390 arches
+
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
 
