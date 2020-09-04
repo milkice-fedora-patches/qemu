@@ -213,8 +213,7 @@ BuildRequires: perl-podlators
 %ifarch %{kernel_arches}
 # For sanity test
 BuildRequires: qemu-sanity-check-nodeps
-# 2020-08-12: Disable due to new f34 missing kernel package
-#BuildRequires: kernel
+BuildRequires: kernel
 %endif
 %if %{have_iasl}
 # For acpi compilation
@@ -1895,6 +1894,7 @@ getent passwd qemu >/dev/null || \
 * Fri Sep  4 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-5
 - Drop conditions for ppc, ppc64, mips64 and s390 arches
 - Fix host qemu binary path for aarch64
+- Re-enable kernel BR for QEMU sanity check
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
 - Add btrfs ioctls to linux-user (rhbz #1872918)
