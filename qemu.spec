@@ -329,8 +329,10 @@ BuildRequires: libepoxy-devel
 BuildRequires: libtasn1-devel
 # qemu 2.5: libcacard is it's own project now
 BuildRequires: libcacard-devel >= 2.5.0
+%if 0%{?fedora}
 # qemu 2.5: virgl 3d support
 BuildRequires: virglrenderer-devel
+%endif
 # qemu 2.6: Needed for gtk GL support, vhost-user-gpu
 BuildRequires: mesa-libgbm-devel
 # qemu 2.11: preferred disassembler for TCG
