@@ -55,9 +55,29 @@
 
 # Matches xen ExclusiveArch
 %global have_xen 0
+%if 0%{?fedora}
 %ifarch %{ix86} x86_64 armv7hl aarch64
 %global have_xen 1
 %endif
+%endif
+
+%global have_liburing 0
+%if 0%{?fedora}
+%ifnarch %{arm}
+%global have_liburing 1
+%endif
+%endif
+
+%global have_virgl 0
+%if 0%{?fedora}
+%global have_virgl 1
+%endif
+
+%global have_pmem 0
+%ifarch x86_64 %{power64}
+%global have_pmem 1
+%endif
+
 
 # Matches edk2.spec ExclusiveArch
 %global have_edk2 0
@@ -329,7 +349,7 @@ BuildRequires: libepoxy-devel
 BuildRequires: libtasn1-devel
 # qemu 2.5: libcacard is it's own project now
 BuildRequires: libcacard-devel >= 2.5.0
-%if 0%{?fedora}
+%if %{have_virgl}
 # qemu 2.5: virgl 3d support
 BuildRequires: virglrenderer-devel
 %endif
@@ -339,7 +359,7 @@ BuildRequires: mesa-libgbm-devel
 BuildRequires: capstone-devel
 # qemu 2.12: parallels disk images require libxml2 now
 BuildRequires: libxml2-devel
-%ifarch x86_64
+%if %{have_pmem}
 # qemu 3.1: Used for nvdimm
 BuildRequires: libpmem-devel
 %endif
@@ -356,7 +376,7 @@ BuildRequires: perl-Test-Harness
 # Required for making python shebangs versioned
 BuildRequires: /usr/bin/pathfix.py
 BuildRequires: python3-devel
-%ifnarch %{arm}
+%if %{have_liburing}
 # qemu 5.0 liburing support. Library isn't built for arm
 BuildRequires: liburing-devel
 %endif
@@ -1509,7 +1529,6 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/efi-virtio.rom
 %{_datadir}/%{name}/pxe-vmxnet3.rom
 %{_datadir}/%{name}/efi-vmxnet3.rom
-%{_datadir}/%{name}/vhost-user/50-qemu-gpu.json
 %{_datadir}/%{name}/vhost-user/50-qemu-virtiofsd.json
 %{_mandir}/man1/qemu.1*
 #{_mandir}/man1/qemu-trace-stap.1*
@@ -1528,13 +1547,16 @@ getent passwd qemu >/dev/null || \
 %{_unitdir}/qemu-pr-helper.socket
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
 %{_libexecdir}/qemu-pr-helper
-%{_libexecdir}/vhost-user-gpu
 %{_libexecdir}/virtfs-proxy-helper
 %{_libexecdir}/virtiofsd
 %config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
 %dir %{_sysconfdir}/qemu
 %config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 %dir %{_libdir}/qemu
+%if %{have_virgl}
+%{_datadir}/%{name}/vhost-user/50-qemu-gpu.json
+%{_libexecdir}/vhost-user-gpu
+%endif
 
 
 %files guest-agent
