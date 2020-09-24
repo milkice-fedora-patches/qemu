@@ -37,16 +37,6 @@
 %global have_numactl 0
 %endif
 
-# Upstream disables iasl for big endian and QEMU checks
-# for this. Fedora has re-enabled it on BE circumventing
-# the QEMU checks, but it fails none the less:
-#
-# https://bugzilla.redhat.com/show_bug.cgi?id=1332449
-%global have_iasl 1
-%ifnarch s390x
-%global have_iasl 0
-%endif
-
 # Matches spice ExclusiveArch
 %global have_spice 0
 %ifarch %{ix86} x86_64 %{arm} aarch64
@@ -247,10 +237,6 @@ BuildRequires: perl-podlators
 %if %{qemu_sanity_check}
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
-%endif
-%if %{have_iasl}
-# For acpi compilation
-BuildRequires: iasl
 %endif
 # For chrpath calls in specfile
 BuildRequires: chrpath
