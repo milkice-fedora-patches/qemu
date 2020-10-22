@@ -232,13 +232,11 @@ Source21: 95-kvm-ppc64-memlock.conf
 BuildRequires: gcc
 # documentation deps
 BuildRequires: texinfo
-# For /usr/bin/pod2man
-BuildRequires: perl-podlators
 %if %{qemu_sanity_check}
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
 %endif
-# For chrpath calls in specfile
+# chrpath calls in specfile
 BuildRequires: chrpath
 
 # -display sdl support
@@ -266,47 +264,45 @@ BuildRequires: libnfs-devel
 BuildRequires: snappy-devel
 # lzo compression for memory dump
 BuildRequires: lzo-devel
-# needed for -display curses
+# curses display backend
 BuildRequires: ncurses-devel
-# used by 9pfs
+# 9pfs filesystem
 BuildRequires: libattr-devel
-# used by qemu-bridge-helper and qemu-pr-helper
+# qemu-bridge-helper, qemu-pr-helper and more
 BuildRequires: libcap-ng-devel
 # spice usb redirection support
-BuildRequires: usbredir-devel >= 0.5.2
+BuildRequires: usbredir-devel
 %if %{have_spice}
 # spice graphics support
-BuildRequires: spice-protocol >= 0.12.2
-BuildRequires: spice-server-devel >= 0.12.0
+BuildRequires: spice-protocol
+BuildRequires: spice-server-devel
 %endif
 # seccomp containment support
-BuildRequires: libseccomp-devel >= 2.3.0
-# For network block driver
+BuildRequires: libseccomp-devel
+# network block driver
 BuildRequires: libcurl-devel
 %if %{with_block_rbd}
-# For rbd block driver
-BuildRequires: librados2-devel
-BuildRequires: librbd1-devel
+# RBD block driver
+BuildRequires: librbd-devel
 %endif
 # We need both because the 'stap' binary is probed for by configure
 BuildRequires: systemtap
 BuildRequires: systemtap-sdt-devel
-# For VNC JPEG support
+# VNC JPEG support
 BuildRequires: libjpeg-devel
-# For VNC PNG support
+# VNC PNG support
 BuildRequires: libpng-devel
-# For Braille device support
+# Braille device support
 BuildRequires: brlapi-devel
-# For FDT device tree support
+# FDT device tree support
 BuildRequires: libfdt-devel
-# Hard requirement for version >= 1.3
+# QEMU display pixel manipulation
 BuildRequires: pixman-devel
 %if %{with_block_gluster}
-# For gluster support
-BuildRequires: glusterfs-devel >= 3.4.0
-BuildRequires: glusterfs-api-devel >= 3.4.0
+# gluster block driver
+BuildRequires: glusterfs-api-devel
 %endif
-# Needed for usb passthrough for qemu >= 1.5
+# USB passthrough
 BuildRequires: libusbx-devel
 # SSH block driver
 BuildRequires: libssh-devel
@@ -324,53 +320,53 @@ BuildRequires: rdma-core-devel
 BuildRequires: xen-devel
 %endif
 %if %{have_numactl}
-# qemu 2.1: needed for memdev hostmem backend
+# memdev hostmem backend
 BuildRequires: numactl-devel
 %endif
-# qemu 2.3: reading bzip2 compressed dmg images
+# reading bzip2 compressed dmg images
 BuildRequires: bzip2-devel
-# qemu 2.4: needed for opengl bits
+# opengl bits
 BuildRequires: libepoxy-devel
-# qemu 2.5: needed for TLS test suite
+# TLS test suite
 BuildRequires: libtasn1-devel
-# qemu 2.5: libcacard is it's own project now
-BuildRequires: libcacard-devel >= 2.5.0
+# smartcard device
+BuildRequires: libcacard-devel
 %if %{have_virgl}
-# qemu 2.5: virgl 3d support
+# virgl 3d support
 BuildRequires: virglrenderer-devel
 %endif
-# qemu 2.6: Needed for gtk GL support, vhost-user-gpu
+# gtk GL support, vhost-user-gpu
 BuildRequires: mesa-libgbm-devel
-# qemu 2.11: preferred disassembler for TCG
+# preferred disassembler for TCG
 BuildRequires: capstone-devel
-# qemu 2.12: parallels disk images require libxml2 now
+# parallels disk images require libxml2
 BuildRequires: libxml2-devel
 %if %{have_pmem}
-# qemu 3.1: Used for nvdimm
+# nvdimm
 BuildRequires: libpmem-devel
 %endif
-# qemu 3.1: Used for qemu-ga
+# qemu-ga
 BuildRequires: libudev-devel
-# qemu 4.0: Use for qauth infrastructure
+# qauth infrastructure
 BuildRequires: pam-devel
-# qemu 4.0: user-mode networking
+# user-mode networking
 BuildRequires: libslirp-devel
-# qemu 4.0: sphinx-build used for some docs
+# Documentation build
 BuildRequires: python3-sphinx
-# qemu 4.0: Used by test suite ./scripts/tap-driver.pl
+# Test suite ./scripts/tap-driver.pl
 BuildRequires: perl-Test-Harness
-# Required for making python shebangs versioned
+# For making python shebangs versioned
 BuildRequires: /usr/bin/pathfix.py
 BuildRequires: python3-devel
 %if %{have_liburing}
-# qemu 5.0 liburing support. Library isn't built for arm
+# liburing support. Library isn't built for arm
 BuildRequires: liburing-devel
 %endif
-# qemu 5.0 zstd compression support
+# zstd compression support
 BuildRequires: libzstd-devel
 # `hostname` used by test suite
 BuildRequires: hostname
-# Used for nvdimm dax
+# nvdimm dax
 BuildRequires: daxctl-devel
 
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
