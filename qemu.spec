@@ -194,7 +194,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1015,6 +1015,9 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" scripts/qemu-trace-stap
 
 
 %build
+# Disable LTO since it caused lots of strange assert failures.
+%define _lto_cflags %{nil}
+
 # OOM killer breaks builds with parallel make on s390(x)
 %ifarch s390x
 %global _smp_mflags %{nil}
@@ -1908,6 +1911,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Nov  5 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-7
+- Disable LTO again. Tests were not passing, we were ignoring failures.
+
 * Mon Oct 26 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-6
 - Re-enable LTO since tests now pass without asserts
 
