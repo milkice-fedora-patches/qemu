@@ -148,13 +148,24 @@
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
 %define requires_ui_gtk Requires: %{name}-ui-gtk = %{evr}
 %define requires_ui_sdl Requires: %{name}-ui-sdl = %{evr}
+%define requires_ui_egl_headless Requires: %{name}-ui-egl-headless = %{evr}
+%define requires_ui_opengl Requires: %{name}-ui-opengl = %{evr}
+%define requires_device_display_virtio_gpu Requires: %{name}-device-display-virtio-gpu = %{evr}
+%define requires_device_display_virtio_gpu_pci Requires: %{name}-device-display-virtio-gpu-pci = %{evr}
+%define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
 
 %if %{have_spice}
 %define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
+%define requires_ui_spice_core Requires: %{name}-ui-spice-core = %{evr}
 %define requires_device_display_qxl Requires: %{name}-device-display-qxl = %{evr}
+%define requires_audio_spice Requires: %{name}-audio-spice = %{evr}
+%define requires_char_spice Requires: %{name}-char-spice = %{evr}
 %else
 %define requires_ui_spice_app %{nil}
+%define requires_ui_spice_core %{nil}
 %define requires_device_display_qxl %{nil}
+%define requires_audio_spice %{nil}
+%define requires_char_spice %{nil}
 %endif
 
 %global requires_all_modules \
@@ -169,12 +180,20 @@
 %{requires_audio_oss} \
 %{requires_audio_pa} \
 %{requires_audio_sdl} \
+%{requires_audio_spice} \
 %{requires_ui_curses} \
 %{requires_ui_gtk} \
 %{requires_ui_sdl} \
+%{requires_ui_egl_headless} \
+%{requires_ui_opengl} \
 %{requires_ui_spice_app} \
+%{requires_ui_spice_core} \
 %{requires_char_baum} \
+%{requires_char_spice} \
 %{requires_device_display_qxl} \
+%{requires_device_display_virtio_gpu} \
+%{requires_device_display_virtio_gpu_pci} \
+%{requires_device_display_virtio_vga} \
 %{requires_device_usb_redirect} \
 %{requires_device_usb_smartcard} \
 
@@ -184,7 +203,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-# global rcver rc3
+%global rcver rc0
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -193,23 +212,14 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 5.1.0
-Release: 7%{?rcrel}%{?dist}
+Version: 5.2.0
+Release: 0.1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
 
 Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.xz
-
-Patch1: 0001-linux-user-fix-implicit-conversion-from-enumeration-.patch
-Patch2: 0002-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
-Patch3: 0003-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
-Patch4: 0004-linux-user-Add-support-for-btrfs-ioctls-used-to-mani.patch
-Patch5: 0005-linux-user-Add-support-for-btrfs-ioctls-used-to-get-.patch
-Patch6: 0006-linux-user-Add-support-for-a-group-of-btrfs-inode-io.patch
-Patch7: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
-Patch8: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
-Patch9: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
+Patch0001: 0001-configure-Fix-gio-detection.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -220,15 +230,13 @@ Source11: 99-qemu-guest-agent.rules
 Source12: bridge.conf
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
-# PR manager service
-Source14: qemu-pr-helper.service
-Source15: qemu-pr-helper.socket
 # /etc/modprobe.d/kvm.conf, for x86
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
 
+BuildRequires: meson
 BuildRequires: gcc
 # documentation deps
 BuildRequires: texinfo
@@ -378,11 +386,9 @@ Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-arm = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-avr = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-cris = %{epoch}:%{version}-%{release}
-Requires: %{name}-system-lm32 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-m68k = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-microblaze = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-mips = %{epoch}:%{version}-%{release}
-Requires: %{name}-system-moxie = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-nios2 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-or1k = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-ppc = %{epoch}:%{version}-%{release}
@@ -392,7 +398,6 @@ Requires: %{name}-system-s390x = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-sh4 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-sparc = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-tricore = %{epoch}:%{version}-%{release}
-Requires: %{name}-system-unicore32 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-x86 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-xtensa = %{epoch}:%{version}-%{release}
 Requires: %{name}-img = %{epoch}:%{version}-%{release}
@@ -421,6 +426,9 @@ Requires(post): /usr/sbin/useradd
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
+Obsoletes: %{name}-system-lm32 <= %{epoch}:%{version}-%{release}
+Obsoletes: %{name}-system-moxie <= %{epoch}:%{version}-%{release}
+Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release}
 %{obsoletes_some_modules}
 %description common
 This package provides the common files needed by all QEMU targets
@@ -442,12 +450,6 @@ This package does not need to be installed on the host OS.
 Summary: QEMU command line tool for manipulating disk images
 %description img
 This package provides a command line tool for manipulating disk images
-
-
-%package -n ivshmem-tools
-Summary: Client and server for QEMU ivshmem device
-%description -n ivshmem-tools
-This package provides client and server tools for QEMU's ivshmem device.
 
 
 %package  block-curl
@@ -563,13 +565,17 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-sdl
 This package provides the additional SDL UI for QEMU.
 
-%if %{have_spice}
-%package  ui-spice-app
-Summary: QEMU spice-app UI driver
+%package  ui-egl-headless
+Summary: QEMU EGL headless driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-%description ui-spice-app
-This package provides the additional spice-app UI for QEMU.
-%endif
+%description ui-egl-headless
+This package provides the additional egl-headless UI for QEMU.
+
+%package  ui-opengl
+Summary: QEMU OpenGL driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description ui-opengl
+This package provides the additional opengl UI for QEMU.
 
 
 %package  char-baum
@@ -579,13 +585,21 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 This package provides the Baum chardev driver for QEMU.
 
 
-%if %{have_spice}
-%package device-display-qxl
-Summary: QEMU QXL display device
+%package device-display-virtio-gpu
+Summary: QEMU virtio-gpu display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-%description device-display-qxl
-This package provides the QXL display device for QEMU.
-%endif
+%description device-display-virtio-gpu
+This package provides the virtio-gpu display device for QEMU.
+%package device-display-virtio-gpu-pci
+Summary: QEMU virtio-gpu-pci display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-gpu-pci
+This package provides the virtio-gpu-pci display device for QEMU.
+%package device-display-virtio-vga
+Summary: QEMU virtio-vga display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-vga
+This package provides the virtio-vga display device for QEMU.
 
 %package device-usb-redirect
 Summary: QEMU usbredir device
@@ -598,6 +612,39 @@ Summary: QEMU USB smartcard device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-usb-smartcard
 This package provides the USB smartcard device for QEMU.
+
+
+%if %{have_spice}
+%package  ui-spice-core
+Summary: QEMU spice-core UI driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description ui-spice-core
+This package provides the additional spice-core UI for QEMU.
+
+%package  ui-spice-app
+Summary: QEMU spice-app UI driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description ui-spice-app
+This package provides the additional spice-app UI for QEMU.
+
+%package device-display-qxl
+Summary: QEMU QXL display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-qxl
+This package provides the QXL display device for QEMU.
+
+%package  char-spice
+Summary: QEMU spice chardev driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description char-spice
+This package provides the spice chardev driver for QEMU.
+
+%package  audio-spice
+Summary: QEMU spice audio driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description audio-spice
+This package provides the spice audio driver for QEMU.
+%endif
 
 
 %if %{have_kvm}
@@ -743,20 +790,6 @@ Requires: %{name}-common = %{epoch}:%{version}-%{release}
 This package provides the QEMU system emulator for HPPA.
 
 
-%package system-lm32
-Summary: QEMU system emulator for LatticeMico32
-Requires: %{name}-system-lm32-core = %{epoch}:%{version}-%{release}
-%{requires_all_modules}
-%description system-lm32
-This package provides the QEMU system emulator for LatticeMico32 boards.
-
-%package system-lm32-core
-Summary: QEMU system emulator for LatticsMico32
-Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%description system-lm32-core
-This package provides the QEMU system emulator for LatticeMico32 boards.
-
-
 %package system-m68k
 Summary: QEMU system emulator for ColdFire (m68k)
 Requires: %{name}-system-m68k-core = %{epoch}:%{version}-%{release}
@@ -797,20 +830,6 @@ Summary: QEMU system emulator for MIPS
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-mips-core
 This package provides the QEMU system emulator for MIPS systems.
-
-
-%package system-moxie
-Summary: QEMU system emulator for Moxie
-Requires: %{name}-system-moxie-core = %{epoch}:%{version}-%{release}
-%{requires_all_modules}
-%description system-moxie
-This package provides the QEMU system emulator for Moxie boards.
-
-%package system-moxie-core
-Summary: QEMU system emulator for Moxie
-Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%description system-moxie-core
-This package provides the QEMU system emulator for Moxie boards.
 
 
 %package system-nios2
@@ -943,20 +962,6 @@ Summary: QEMU system emulator for tricore
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-tricore-core
 This package provides the QEMU system emulator for Tricore.
-
-
-%package system-unicore32
-Summary: QEMU system emulator for Unicore32
-Requires: %{name}-system-unicore32-core = %{epoch}:%{version}-%{release}
-%{requires_all_modules}
-%description system-unicore32
-This package provides the QEMU system emulator for Unicore32 boards.
-
-%package system-unicore32-core
-Summary: QEMU system emulator for Unicore32
-Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%description system-unicore32-core
-This package provides the QEMU system emulator for Unicore32 boards.
 
 
 %package system-x86
@@ -1202,6 +1207,7 @@ run_configure \
     --audio-drv-list=pa,sdl,alsa,oss \
     --enable-kvm \
     --enable-system \
+    --target-list-exclude=moxie-softmmu \
     --enable-tcg \
     --enable-linux-user \
     --enable-pie \
@@ -1247,8 +1253,8 @@ touch %{buildroot}%{_localstatedir}/log/qga-fsfreeze-hook.log
 
 
 # Install qemu-pr-helper service
-install -m 0644 %{_sourcedir}/qemu-pr-helper.service %{buildroot}%{_unitdir}
-install -m 0644 %{_sourcedir}/qemu-pr-helper.socket %{buildroot}%{_unitdir}
+install -m 0644 ./contrib/systemd/qemu-pr-helper.service %{buildroot}%{_unitdir}
+install -m 0644 ./contrib/systemd/qemu-pr-helper.socket %{buildroot}%{_unitdir}
 
 
 # Install ppc64 memlock
@@ -1290,7 +1296,7 @@ popd
 
 
 # Copy some static data into place
-install -D -p -m 0644 -t %{buildroot}%{qemudocdir} Changelog README.rst COPYING COPYING.LIB LICENSE
+install -D -p -m 0644 -t %{buildroot}%{qemudocdir} README.rst COPYING COPYING.LIB LICENSE
 install -D -p -m 0644 qemu.sasl %{buildroot}%{_sysconfdir}/sasl2/qemu.conf
 
 
@@ -1461,7 +1467,6 @@ getent passwd qemu >/dev/null || \
 
 %files common -f %{name}.lang
 %dir %{qemudocdir}
-%doc %{qemudocdir}/Changelog
 %doc %{qemudocdir}/README.rst
 %doc %{qemudocdir}/index.html
 %doc %{qemudocdir}/interop
@@ -1515,12 +1520,12 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/elf2dmp
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
+%{_bindir}/qemu-pr-helper
 %{_bindir}/qemu-storage-daemon
 #{_bindir}/qemu-trace-stap
 %{_unitdir}/qemu-pr-helper.service
 %{_unitdir}/qemu-pr-helper.socket
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
-%{_libexecdir}/qemu-pr-helper
 %{_libexecdir}/virtfs-proxy-helper
 %{_libexecdir}/virtiofsd
 %config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
@@ -1587,27 +1592,39 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/ui-gtk.so
 %files ui-sdl
 %{_libdir}/qemu/ui-sdl.so
-%if %{have_spice}
-%files ui-spice-app
-%{_libdir}/qemu/ui-spice-app.so
-%endif
+%files ui-egl-headless
+%{_libdir}/qemu/ui-egl-headless.so
+%files ui-opengl
+%{_libdir}/qemu/ui-opengl.so
 
 %files char-baum
 %{_libdir}/qemu/chardev-baum.so
 
-%if %{have_spice}
-%files device-display-qxl
-%{_libdir}/qemu/hw-display-qxl.so
-%endif
+
+%files device-display-virtio-gpu
+%{_libdir}/qemu/hw-display-virtio-gpu.so
+%files device-display-virtio-gpu-pci
+%{_libdir}/qemu/hw-display-virtio-gpu-pci.so
+%files device-display-virtio-vga
+%{_libdir}/qemu/hw-display-virtio-vga.so
 %files device-usb-redirect
 %{_libdir}/qemu/hw-usb-redirect.so
 %files device-usb-smartcard
 %{_libdir}/qemu/hw-usb-smartcard.so
 
 
-%files -n ivshmem-tools
-%{_bindir}/ivshmem-client
-%{_bindir}/ivshmem-server
+%if %{have_spice}
+%files audio-spice
+%{_libdir}/qemu/audio-spice.so
+%files char-spice
+%{_libdir}/qemu/chardev-spice.so
+%files device-display-qxl
+%{_libdir}/qemu/hw-display-qxl.so
+%files ui-spice-core
+%{_libdir}/qemu/ui-spice-core.so
+%files ui-spice-app
+%{_libdir}/qemu/ui-spice-app.so
+%endif
 
 
 %if %{have_kvm}
@@ -1642,7 +1659,6 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-or1k
 %{_bindir}/qemu-ppc
 %{_bindir}/qemu-ppc64
-%{_bindir}/qemu-ppc64abi32
 %{_bindir}/qemu-ppc64le
 %{_bindir}/qemu-riscv32
 %{_bindir}/qemu-riscv64
@@ -1652,7 +1668,6 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-sparc
 %{_bindir}/qemu-sparc32plus
 %{_bindir}/qemu-sparc64
-%{_bindir}/qemu-tilegx
 %{_bindir}/qemu-xtensa
 %{_bindir}/qemu-xtensaeb
 
@@ -1673,7 +1688,6 @@ getent passwd qemu >/dev/null || \
 #{_datadir}/systemtap/tapset/qemu-s390x*.stp
 #{_datadir}/systemtap/tapset/qemu-sh4*.stp
 #{_datadir}/systemtap/tapset/qemu-sparc*.stp
-#{_datadir}/systemtap/tapset/qemu-tilegx*.stp
 #{_datadir}/systemtap/tapset/qemu-xtensa*.stp
 
 
@@ -1708,6 +1722,7 @@ getent passwd qemu >/dev/null || \
 %files system-arm
 %files system-arm-core
 %{_bindir}/qemu-system-arm
+%{_datadir}/%{name}/npcm7xx_bootrom.bin
 #{_datadir}/systemtap/tapset/qemu-system-arm*.stp
 %{_mandir}/man1/qemu-system-arm.1*
 
@@ -1732,13 +1747,6 @@ getent passwd qemu >/dev/null || \
 #{_datadir}/systemtap/tapset/qemu-system-hppa*.stp
 %{_mandir}/man1/qemu-system-hppa.1*
 %{_datadir}/%{name}/hppa-firmware.img
-
-
-%files system-lm32
-%files system-lm32-core
-%{_bindir}/qemu-system-lm32
-#{_datadir}/systemtap/tapset/qemu-system-lm32*.stp
-%{_mandir}/man1/qemu-system-lm32.1*
 
 
 %files system-m68k
@@ -1769,13 +1777,6 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/qemu-system-mipsel.1*
 %{_mandir}/man1/qemu-system-mips64el.1*
 %{_mandir}/man1/qemu-system-mips64.1*
-
-
-%files system-moxie
-%files system-moxie-core
-%{_bindir}/qemu-system-moxie
-#{_datadir}/systemtap/tapset/qemu-system-moxie*.stp
-%{_mandir}/man1/qemu-system-moxie.1*
 
 
 %files system-nios2
@@ -1815,6 +1816,7 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-system-riscv32
 %{_bindir}/qemu-system-riscv64
 %{_datadir}/%{name}/opensbi-riscv*.bin
+%{_datadir}/%{name}/opensbi-riscv*.elf
 #{_datadir}/systemtap/tapset/qemu-system-riscv*.stp
 %{_mandir}/man1/qemu-system-riscv*.1*
 
@@ -1862,13 +1864,6 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man1/qemu-system-tricore.1*
 
 
-%files system-unicore32
-%files system-unicore32-core
-%{_bindir}/qemu-system-unicore32
-#{_datadir}/systemtap/tapset/qemu-system-unicore32*.stp
-%{_mandir}/man1/qemu-system-unicore32.1*
-
-
 %files system-x86
 %files system-x86-core
 %{_bindir}/qemu-system-i386
@@ -1885,6 +1880,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/linuxboot_dma.bin
 %{_datadir}/%{name}/multiboot.bin
 %{_datadir}/%{name}/pvh.bin
+%{_datadir}/%{name}/qboot.rom
 %{_datadir}/%{name}/sgabios.bin
 %if 0%{?need_qemu_kvm}
 %{_bindir}/qemu-kvm
@@ -1903,6 +1899,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Sun Nov 08 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.1.rc0
+- Rebase to qemu-5.2.0-rc0
+
 * Thu Nov  5 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-7
 - Disable LTO again. Tests were not passing, we were ignoring failures.
 
