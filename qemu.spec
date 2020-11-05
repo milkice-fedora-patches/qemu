@@ -1402,10 +1402,6 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 
 
 %check
-%global tests_skip 0
-# Enable this temporarily if tests are broken
-%global tests_nofail 0
-
 # 2020-08-31: tests passing, but s390x fails due to
 # spurious warning breaking an iotest case
 # https://lists.gnu.org/archive/html/qemu-devel/2020-08/msg03279.html
@@ -1414,12 +1410,7 @@ perl -i -p -e 's/^(127|267)/# $1/' tests/qemu-iotests/group
 %endif
 
 pushd build-dynamic
-%if !%{tests_skip}
-%if %{tests_nofail}
- make check V=1 || :
-%else
- make check V=1
-%endif
+make check V=1
 
 # Check the binary runs (see eg RHBZ#998722).
 b="./x86_64-softmmu/qemu-system-x86_64"
@@ -1432,7 +1423,6 @@ echo "Trying to boot kernel $KERNEL with %{?hostqemu}"
 qemu-sanity-check --qemu=%{?hostqemu} --kernel=$KERNEL
 %endif
 
-%endif
 popd
 
 
