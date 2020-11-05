@@ -1409,7 +1409,9 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 # 2020-08-31: tests passing, but s390x fails due to
 # spurious warning breaking an iotest case
 # https://lists.gnu.org/archive/html/qemu-devel/2020-08/msg03279.html
-%global tests_nofail 1
+%ifarch s390x
+perl -i -p -e 's/^(127|267)/# $1/' tests/qemu-iotests/group
+%endif
 
 pushd build-dynamic
 %if !%{tests_skip}
