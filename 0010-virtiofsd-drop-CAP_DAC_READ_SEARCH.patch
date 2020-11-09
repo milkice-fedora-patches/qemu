@@ -1,0 +1,36 @@
+From 1c7cb1f52e2577e190c09c9a14e6b6f56f4a3ec3 Mon Sep 17 00:00:00 2001
+From: Stefan Hajnoczi <stefanha@redhat.com>
+Date: Mon, 27 Jul 2020 20:02:21 +0100
+Subject: [PATCH] virtiofsd: drop CAP_DAC_READ_SEARCH
+
+virtiofsd does not need CAP_DAC_READ_SEARCH because it already has
+the more powerful CAP_DAC_OVERRIDE. Drop it from the list of
+capabilities.
+
+This is important because container runtimes may not include
+CAP_DAC_READ_SEARCH by default. This patch allows virtiofsd to reduce
+its capabilities when running inside a Docker container.
+
+Note that CAP_DAC_READ_SEARCH may be necessary again in the future if
+virtiofsd starts using open_by_handle_at(2).
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Message-Id: <20200727190223.422280-2-stefanha@redhat.com>
+Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+---
+ tools/virtiofsd/passthrough_ll.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tools/virtiofsd/passthrough_ll.c b/tools/virtiofsd/passthrough_ll.c
+index a9feb90fd0..784330e0e4 100644
+--- a/tools/virtiofsd/passthrough_ll.c
++++ b/tools/virtiofsd/passthrough_ll.c
+@@ -2596,7 +2596,6 @@ static void setup_capabilities(char *modcaps_in)
+     if (capng_updatev(CAPNG_ADD, CAPNG_PERMITTED | CAPNG_EFFECTIVE,
+             CAP_CHOWN,
+             CAP_DAC_OVERRIDE,
+-            CAP_DAC_READ_SEARCH,
+             CAP_FOWNER,
+             CAP_FSETID,
+             CAP_SETGID,

@@ -184,7 +184,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -200,6 +200,7 @@ Patch6: 0006-linux-user-Add-support-for-a-group-of-btrfs-inode-io.patch
 Patch7: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
 Patch8: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
 Patch9: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
+Patch10: 0010-virtiofsd-drop-CAP_DAC_READ_SEARCH.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -1905,6 +1906,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Nov 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-6
+- virtiofsd: drop CAP_DAC_READ_SEARCH
+
 * Fri Sep  4 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-5
 - Drop conditions for ppc, ppc64, mips64 and s390 arches
 - Fix host qemu binary path for aarch64
