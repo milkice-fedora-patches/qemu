@@ -201,6 +201,7 @@ Patch7: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
 Patch8: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
 Patch9: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
 Patch10: 0010-virtiofsd-drop-CAP_DAC_READ_SEARCH.patch
+Patch11: 0011-virtiofsd-avoid-proc-self-fd-tempdir.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -1907,7 +1908,7 @@ getent passwd qemu >/dev/null || \
 
 %changelog
 * Mon Nov 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-6
-- virtiofsd: drop CAP_DAC_READ_SEARCH
+- virtiofsd caps fixes
 
 * Fri Sep  4 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-5
 - Drop conditions for ppc, ppc64, mips64 and s390 arches
