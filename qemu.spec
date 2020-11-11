@@ -203,7 +203,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc0
+%global rcver rc1
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -213,13 +213,12 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
 
 Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.xz
-Patch0001: 0001-configure-Fix-gio-detection.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -376,6 +375,8 @@ BuildRequires: libzstd-devel
 BuildRequires: hostname
 # nvdimm dax
 BuildRequires: daxctl-devel
+# used by some linux user impls
+BuildRequires: libdrm-devel
 
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
 
@@ -1899,6 +1900,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Nov 11 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.2.rc1
+- Rebase to qemu-5.2.0-rc1
+
 * Sun Nov 08 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.1.rc0
 - Rebase to qemu-5.2.0-rc0
 
