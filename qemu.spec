@@ -428,8 +428,11 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
 Obsoletes: %{name}-system-lm32 <= %{epoch}:%{version}-%{release}
+Obsoletes: %{name}-system-lm32-core <= %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-system-moxie <= %{epoch}:%{version}-%{release}
+Obsoletes: %{name}-system-moxie-core <= %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release}
+Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 %{obsoletes_some_modules}
 %description common
 This package provides the common files needed by all QEMU targets
