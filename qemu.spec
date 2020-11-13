@@ -25,6 +25,9 @@
 %endif
 
 %global user_static 1
+%if 0%{?rhel}
+%global user_static 0
+%endif
 
 %global have_kvm 0
 %if 0%{?kvm_package:1}
@@ -213,7 +216,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.2%{?rcrel}%{?dist}
+Release: 0.3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -378,7 +381,9 @@ BuildRequires: daxctl-devel
 # used by some linux user impls
 BuildRequires: libdrm-devel
 
+%if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
+%endif
 
 
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
@@ -1903,6 +1908,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Nov 13 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.2.0-0.3.rc1
+- Disable user mode static builds in ELN
+
 * Wed Nov 11 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.2.rc1
 - Rebase to qemu-5.2.0-rc1
 
