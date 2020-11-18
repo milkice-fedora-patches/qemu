@@ -206,7 +206,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc1
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -216,7 +216,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.3%{?rcrel}%{?dist}
+Release: 0.4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1908,6 +1908,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Nov 18 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.4.rc2
+- Rebase to qemu-5.2.0-rc2
+
 * Fri Nov 13 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.2.0-0.3.rc1
 - Disable user mode static builds in ELN
 
