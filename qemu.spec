@@ -216,7 +216,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.5%{?rcrel}%{?dist}
+Release: 0.6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1066,7 +1066,6 @@ run_configure() {
         --with-pkgversion=%{name}-%{version}-%{release} \
         --extra-ldflags="$extraldflags -Wl,-z,relro -Wl,-z,now" \
         --extra-cflags="%{optflags}" \
-        --python=%{__python3} \
         --disable-strip \
         --disable-werror \
         --tls-priority=@QEMU,SYSTEM \
@@ -1906,6 +1905,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Nov 19 2020 Paolo Bonzini <pbonzini@redhat.com> - 5.2.0-0.6.rc2
+- Remove --python=... to force use of system meson
+
 * Thu Nov 19 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.2.0-0.5.rc2
 - Re-enable systemtap tracing
 
