@@ -1,0 +1,73 @@
+From 0e330ca9023487b3635cdcee1b7ef03266ea9068 Mon Sep 17 00:00:00 2001
+From: Stefan Hajnoczi <stefanha@redhat.com>
+Date: Thu, 19 Nov 2020 11:27:04 +0000
+Subject: [PATCH] trace: use STAP_SDT_V2 to work around symbol visibility
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+QEMU binaries no longer launch successfully with recent SystemTap
+releases. This is because modular QEMU builds link the sdt semaphores
+into the main binary instead of into the shared objects where they are
+used. The symbol visibility of semaphores is 'hidden' and the dynamic
+linker prints an error during module loading:
+
+  $ ./configure --enable-trace-backends=dtrace --enable-modules ...
+  ...
+  Failed to open module: /builddir/build/BUILD/qemu-4.2.0/s390x-softmmu/../block-curl.so: undefined symbol: qemu_curl_close_semaphore
+
+The long-term solution is to generate per-module dtrace .o files and
+link them into the module instead of the main binary.
+
+In the short term we can define STAP_SDT_V2 so dtrace(1) produces a .o
+file with 'default' symbol visibility instead of 'hidden'. This
+workaround is small and easier to merge for QEMU 5.2.
+
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: wcohen@redhat.com
+Cc: fche@redhat.com
+Cc: kraxel@redhat.com
+Cc: rjones@redhat.com
+Cc: mrezanin@redhat.com
+Cc: ddepaula@redhat.com
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ configure         | 1 +
+ trace/meson.build | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/configure b/configure
+index 714e75b5d8..5d91d49c7b 100755
+--- a/configure
++++ b/configure
+@@ -4832,6 +4832,7 @@ if have_backend "dtrace"; then
+   trace_backend_stap="no"
+   if has 'stap' ; then
+     trace_backend_stap="yes"
++    QEMU_CFLAGS="$QEMU_CFLAGS -DSTAP_SDT_V2"
+   fi
+ fi
+ 
+diff --git a/trace/meson.build b/trace/meson.build
+index d5fc45c628..843ea14495 100644
+--- a/trace/meson.build
++++ b/trace/meson.build
+@@ -38,13 +38,13 @@ foreach dir : [ '.' ] + trace_events_subdirs
+     trace_dtrace_h = custom_target(fmt.format('trace-dtrace', 'h'),
+                                    output: fmt.format('trace-dtrace', 'h'),
+                                    input: trace_dtrace,
+-                                   command: [ 'dtrace', '-o', '@OUTPUT@', '-h', '-s', '@INPUT@' ])
++                                   command: [ 'dtrace', '-DSTAP_SDT_V2', '-o', '@OUTPUT@', '-h', '-s', '@INPUT@' ])
+     trace_ss.add(trace_dtrace_h)
+     if host_machine.system() != 'darwin'
+       trace_dtrace_o = custom_target(fmt.format('trace-dtrace', 'o'),
+                                      output: fmt.format('trace-dtrace', 'o'),
+                                      input: trace_dtrace,
+-                                     command: [ 'dtrace', '-o', '@OUTPUT@', '-G', '-s', '@INPUT@' ])
++                                     command: [ 'dtrace', '-DSTAP_SDT_V2', '-o', '@OUTPUT@', '-G', '-s', '@INPUT@' ])
+       trace_ss.add(trace_dtrace_o)
+     endif
+ 
+-- 
+2.28.0
+
