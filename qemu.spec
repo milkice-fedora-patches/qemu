@@ -216,7 +216,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.6%{?rcrel}%{?dist}
+Release: 0.7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -239,6 +239,8 @@ Source21: 95-kvm-ppc64-memlock.conf
 
 Patch0001: 0001-trace-use-STAP_SDT_V2-to-work-around-symbol-visibili.patch
 
+# Fix running 9p tests in copr
+Patch0002: 0001-tests-9pfs-Mark-local-tests-as-slow.patch
 
 BuildRequires: meson
 BuildRequires: gcc
@@ -1905,6 +1907,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Nov 24 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.7.rc2
+- Fix running 9p tests in copr
+
 * Thu Nov 19 2020 Paolo Bonzini <pbonzini@redhat.com> - 5.2.0-0.6.rc2
 - Remove --python=... to force use of system meson
 
