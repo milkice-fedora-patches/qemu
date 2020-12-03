@@ -206,7 +206,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc2
+%global rcver rc4
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -216,7 +216,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 0.7%{?rcrel}%{?dist}
+Release: 0.8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -237,10 +237,6 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
-Patch0001: 0001-trace-use-STAP_SDT_V2-to-work-around-symbol-visibili.patch
-
-# Fix running 9p tests in copr
-Patch0002: 0001-tests-9pfs-Mark-local-tests-as-slow.patch
 
 BuildRequires: meson
 BuildRequires: gcc
@@ -1525,6 +1521,7 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-qmp-ref.7*
 %{_mandir}/man7/qemu-ga-ref.7*
+%{_mandir}/man8/qemu-pr-helper.8*
 %{_bindir}/elf2dmp
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
@@ -1907,6 +1904,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Dec 03 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.8.rc4
+- Rebase to qemu-5.2.0-rc4
+
 * Tue Nov 24 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-0.7.rc2
 - Fix running 9p tests in copr
 
