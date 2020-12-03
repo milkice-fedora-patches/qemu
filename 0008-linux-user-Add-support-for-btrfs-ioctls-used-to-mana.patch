@@ -1,8 +1,6 @@
-From d62c16ff35a17743c2a0f8ebfb39f84064afcb3c Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:27:00 +0200
-Subject: [PATCH 8/9] linux-user: Add support for btrfs ioctls used to manage
- quota
+Subject: [PATCH] linux-user: Add support for btrfs ioctls used to manage quota
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -230,6 +228,3 @@ index 5566d101c2..d9b7106a69 100644
  STRUCT(btrfs_ioctl_feature_flags,
         TYPE_ULONGLONG, /* compat_flags */
         TYPE_ULONGLONG, /* compat_ro_flags */
--- 
-2.26.2
-

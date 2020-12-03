@@ -1,7 +1,6 @@
-From 5695918e7c599f21fd6913a61160c482a0e41639 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:27:01 +0200
-Subject: [PATCH 9/9] linux-user: Add support for btrfs ioctls used to scrub a
+Subject: [PATCH] linux-user: Add support for btrfs ioctls used to scrub a
  filesystem
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -137,6 +136,3 @@ index d9b7106a69..789723cfb9 100644
  #ifdef BTRFS_IOC_DEV_INFO
  STRUCT(btrfs_ioctl_dev_info_args,
         TYPE_ULONGLONG, /* devid */
--- 
-2.26.2
-

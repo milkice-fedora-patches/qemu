@@ -1,8 +1,7 @@
-From e0eab99255d34c9dbaac7b73a1a2a79f823a7da9 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:54 +0200
-Subject: [PATCH 2/9] linux-user: Add support for a group of btrfs ioctls used
- for subvolumes
+Subject: [PATCH] linux-user: Add support for a group of btrfs ioctls used for
+ subvolumes
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -259,6 +258,3 @@ index 3f1f033464..db61dbc1b3 100644
  STRUCT(rtc_time,
         TYPE_INT, /* tm_sec */
         TYPE_INT, /* tm_min */
--- 
-2.26.2
-

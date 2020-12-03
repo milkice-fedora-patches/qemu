@@ -1,7 +1,6 @@
-From 5793eb73d4d6d37293c6ca95ed85414fcccb9662 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:57 +0200
-Subject: [PATCH 5/9] linux-user: Add support for btrfs ioctls used to get/set
+Subject: [PATCH] linux-user: Add support for btrfs ioctls used to get/set
  features
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -115,6 +114,3 @@ index ea6898979b..925054cfd4 100644
  STRUCT(rtc_time,
         TYPE_INT, /* tm_sec */
         TYPE_INT, /* tm_min */
--- 
-2.26.2
-

@@ -1,7 +1,6 @@
-From 79116330e3eea392dec9a1f38fddf3449ad0195a Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:58 +0200
-Subject: [PATCH 6/9] linux-user: Add support for a group of btrfs inode ioctls
+Subject: [PATCH] linux-user: Add support for a group of btrfs inode ioctls
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -231,6 +230,3 @@ index 925054cfd4..b84e14235f 100644
  #ifdef BTRFS_IOC_DEV_INFO
  STRUCT(btrfs_ioctl_dev_info_args,
         TYPE_ULONGLONG, /* devid */
--- 
-2.26.2
-

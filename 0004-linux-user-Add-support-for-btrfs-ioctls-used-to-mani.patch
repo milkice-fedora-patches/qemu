@@ -1,8 +1,7 @@
-From ead1cdc1e4bb9fa4d09ca4d8af94c2687e7f5d36 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:56 +0200
-Subject: [PATCH 4/9] linux-user: Add support for btrfs ioctls used to
- manipulate with devices
+Subject: [PATCH] linux-user: Add support for btrfs ioctls used to manipulate
+ with devices
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -217,6 +216,3 @@ index 038cd7869b..ea6898979b 100644
  STRUCT(rtc_time,
         TYPE_INT, /* tm_sec */
         TYPE_INT, /* tm_min */
--- 
-2.26.2
-

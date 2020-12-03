@@ -1,7 +1,6 @@
-From 58252f756d7fb2a8516c0815034c0bded4697852 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:59 +0200
-Subject: [PATCH 7/9] linux-user: Add support for two btrfs ioctls used for
+Subject: [PATCH] linux-user: Add support for two btrfs ioctls used for
  subvolume
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -127,6 +126,3 @@ index b84e14235f..5566d101c2 100644
  #ifdef BTRFS_IOC_GET_DEV_STATS
  STRUCT(btrfs_ioctl_get_dev_stats,
         TYPE_ULONGLONG, /* devid */
--- 
-2.26.2
-

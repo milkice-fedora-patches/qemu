@@ -1,8 +1,7 @@
-From 40fdd783ec707e61c285e081816bd2df54dfede4 Mon Sep 17 00:00:00 2001
 From: Filip Bozuta <Filip.Bozuta@syrmia.com>
 Date: Thu, 3 Sep 2020 01:26:55 +0200
-Subject: [PATCH 3/9] linux-user: Add support for a group of btrfs ioctls used
- for snapshots
+Subject: [PATCH] linux-user: Add support for a group of btrfs ioctls used for
+ snapshots
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -93,6 +92,3 @@ index db61dbc1b3..038cd7869b 100644
  STRUCT(btrfs_ioctl_vol_args,
         TYPE_LONGLONG, /* fd */
         MK_ARRAY(TYPE_CHAR, BTRFS_PATH_NAME_MAX + 1)) /* name */
--- 
-2.26.2
-

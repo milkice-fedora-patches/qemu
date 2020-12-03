@@ -184,24 +184,12 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
 
 Source0: http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.xz
-
-Patch1: 0001-linux-user-fix-implicit-conversion-from-enumeration-.patch
-Patch2: 0002-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
-Patch3: 0003-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
-Patch4: 0004-linux-user-Add-support-for-btrfs-ioctls-used-to-mani.patch
-Patch5: 0005-linux-user-Add-support-for-btrfs-ioctls-used-to-get-.patch
-Patch6: 0006-linux-user-Add-support-for-a-group-of-btrfs-inode-io.patch
-Patch7: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
-Patch8: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
-Patch9: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
-Patch10: 0010-virtiofsd-drop-CAP_DAC_READ_SEARCH.patch
-Patch11: 0011-virtiofsd-avoid-proc-self-fd-tempdir.patch
 
 # guest agent service
 Source10: qemu-guest-agent.service
@@ -219,6 +207,26 @@ Source15: qemu-pr-helper.socket
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
+
+# Add btrfs ioctls to linux-user (bz #1872918)
+Patch0001: 0001-linux-user-fix-implicit-conversion-from-enumeration-.patch
+Patch0002: 0002-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
+Patch0003: 0003-linux-user-Add-support-for-a-group-of-btrfs-ioctls-u.patch
+Patch0004: 0004-linux-user-Add-support-for-btrfs-ioctls-used-to-mani.patch
+Patch0005: 0005-linux-user-Add-support-for-btrfs-ioctls-used-to-get-.patch
+Patch0006: 0006-linux-user-Add-support-for-a-group-of-btrfs-inode-io.patch
+Patch0007: 0007-linux-user-Add-support-for-two-btrfs-ioctls-used-for.patch
+Patch0008: 0008-linux-user-Add-support-for-btrfs-ioctls-used-to-mana.patch
+Patch0009: 0009-linux-user-Add-support-for-btrfs-ioctls-used-to-scru.patch
+
+# virtiofsd caps fixes
+Patch0101: 0101-virtiofsd-drop-CAP_DAC_READ_SEARCH.patch
+Patch0102: 0102-virtiofsd-avoid-proc-self-fd-tempdir.patch
+# vhost-vsock-pci regressions (bz #1902057)
+Patch0103: 0103-virtio-skip-legacy-support-check-on-machine-types-le.patch
+Patch0104: 0104-vhost-vsock-pci-force-virtio-version-1.patch
+Patch0105: 0105-vhost-user-vsock-pci-force-virtio-version-1.patch
+Patch0106: 0106-vhost-vsock-ccw-force-virtio-version-1.patch
 
 
 BuildRequires: gcc
@@ -1907,6 +1915,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Dec 03 2020 Cole Robinson <crobinso@redhat.com> - 5.1.0-7
+- vhost-vsock-pci regressions (bz #1902057)
+
 * Mon Nov 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.1.0-6
 - virtiofsd caps fixes
 
@@ -1920,7 +1931,7 @@ getent passwd qemu >/dev/null || \
 - Make QEMU sanity check a build blocker
 
 * Thu Sep  3 2020 Daniel P. Berrangé <berrange@redhat.com> - 5.1.0-4
-- Add btrfs ioctls to linux-user (rhbz #1872918)
+- Add btrfs ioctls to linux-user (bz #1872918)
 
 * Tue Aug 18 2020 Tom Stellard <tstellar@redhat.com> - 5.1.0-3
 - Add BuildRequires: gcc
