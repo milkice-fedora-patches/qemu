@@ -23,6 +23,9 @@
 %ifarch %{mips}
 %global kvm_package   system-mips
 %endif
+%ifarch riscv64
+%global kvm_package   system-riscv
+%endif
 
 %global user_static 1
 
@@ -184,7 +187,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 7%{?rcrel}%{?dist}
+Release: 8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1915,6 +1918,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Dec 03 2020 Richard W.M. Jones <rjones@redhat.com> - 5.2.0-0.9.rc4
+- Enable qemu-kvm-core package on riscv64.
+
 * Thu Dec 03 2020 Cole Robinson <crobinso@redhat.com> - 5.1.0-7
 - vhost-vsock-pci regressions (bz #1902057)
 
