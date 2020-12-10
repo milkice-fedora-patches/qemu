@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -568,21 +568,21 @@ This package provides the additional curses UI for QEMU.
 %package  ui-gtk
 Summary: QEMU GTK UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-opengl{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-opengl%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-gtk
 This package provides the additional GTK UI for QEMU.
 
 %package  ui-sdl
 Summary: QEMU SDL UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-opengl{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-opengl%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-sdl
 This package provides the additional SDL UI for QEMU.
 
 %package  ui-egl-headless
 Summary: QEMU EGL headless driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-opengl{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-opengl%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-egl-headless
 This package provides the additional egl-headless UI for QEMU.
 
@@ -633,36 +633,36 @@ This package provides the USB smartcard device for QEMU.
 %package  ui-spice-core
 Summary: QEMU spice-core UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-opengl{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-opengl%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-spice-core
 This package provides the additional spice-core UI for QEMU.
 
 %package  ui-spice-app
 Summary: QEMU spice-app UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-spice-core{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-chardev-spice{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-spice-core%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-chardev-spice%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-spice-app
 This package provides the additional spice-app UI for QEMU.
 
 %package device-display-qxl
 Summary: QEMU QXL display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-spice-core{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-spice-core%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-qxl
 This package provides the QXL display device for QEMU.
 
 %package  char-spice
 Summary: QEMU spice chardev driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-spice-core{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-spice-core%{?_isa} = %{epoch}:%{version}-%{release}
 %description char-spice
 This package provides the spice chardev driver for QEMU.
 
 %package  audio-spice
 Summary: QEMU spice audio driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-ui-spice-core{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-ui-spice-core%{?_isa} = %{epoch}:%{version}-%{release}
 %description audio-spice
 This package provides the spice audio driver for QEMU.
 %endif
@@ -1916,6 +1916,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Thu Dec 10 2020 Mohan Boddu <mboddu@bhujji.com> - 5.2.0-2
+- Fixing the ISA Dependencies
+
 * Wed Dec 09 2020 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-1
 - Rebase to qemu-5.2.0 GA
 - Fix spice and GL UI module deps (bz 1904603)
