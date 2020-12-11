@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -641,7 +641,7 @@ This package provides the additional spice-core UI for QEMU.
 Summary: QEMU spice-app UI driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 Requires: %{name}-ui-spice-core%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-chardev-spice%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-char-spice%{?_isa} = %{epoch}:%{version}-%{release}
 %description ui-spice-app
 This package provides the additional spice-app UI for QEMU.
 
@@ -1916,6 +1916,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Fri Dec 11 2020 Richard W.M. Jones <rjones@redhat.com> - 2:5.2.0-3
+- qemu-char-spice not qemu-chardev-spice.
+
 * Thu Dec 10 2020 Mohan Boddu <mboddu@bhujji.com> - 5.2.0-2
 - Fixing the ISA Dependencies
 
