@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1916,7 +1916,7 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
-* Fri Dec 11 2020 Richard W.M. Jones <rjones@redhat.com> - 2:5.2.0-3
+* Fri Dec 11 2020 Richard W.M. Jones <rjones@redhat.com> - 2:5.2.0-4
 - qemu-char-spice not qemu-chardev-spice.
 
 * Thu Dec 10 2020 Mohan Boddu <mboddu@bhujji.com> - 5.2.0-2
