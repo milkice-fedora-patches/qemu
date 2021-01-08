@@ -241,6 +241,7 @@ Source20: kvm-x86.modprobe.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
 
+BuildRequires: make
 BuildRequires: meson
 BuildRequires: gcc
 # documentation deps
