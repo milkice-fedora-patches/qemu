@@ -238,6 +238,7 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
+Patch: 0001-iotests-Fix-_send_qemu_cmd-with-bash-5.1.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1917,6 +1918,7 @@ getent passwd qemu >/dev/null || \
 %changelog
 * Mon Jan 11 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:5.2.0-5
 - Use symlink for qemu-kvm.
+- Fix make check on bash 5.1.
 
 * Fri Dec 11 2020 Richard W.M. Jones <rjones@redhat.com> - 2:5.2.0-4
 - qemu-char-spice not qemu-chardev-spice.
