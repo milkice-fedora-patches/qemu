@@ -187,7 +187,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.1.0
-Release: 8%{?rcrel}%{?dist}
+Release: 9%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -201,8 +201,6 @@ Source17: qemu-ga.sysconfig
 Source11: 99-qemu-guest-agent.rules
 # /etc/qemu/bridge.conf
 Source12: bridge.conf
-# qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
-Source13: qemu-kvm.sh
 # PR manager service
 Source14: qemu-pr-helper.service
 Source15: qemu-pr-helper.socket
@@ -1313,7 +1311,7 @@ done
 # Install kvm specific source bits, and qemu-kvm manpage
 %if 0%{?need_qemu_kvm}
 ln -sf qemu.1.gz %{buildroot}%{_mandir}/man1/qemu-kvm.1.gz
-install -m 0755 %{_sourcedir}/qemu-kvm.sh %{buildroot}%{_bindir}/qemu-kvm
+ln -sf qemu-system-x86_64 %{buildroot}%{_bindir}/qemu-kvm
 install -D -p -m 0644 %{_sourcedir}/kvm-x86.modprobe.conf %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
 %endif
 
@@ -1918,7 +1916,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
-* Thu Dec 03 2020 Richard W.M. Jones <rjones@redhat.com> - 5.2.0-0.9.rc4
+* Mon Jan 11 2021 Paolo Bonzini <pbonzini@redhat.com> - 5.1.0-9
+- Use symlink for qemu-kvm.
+
+* Thu Dec 03 2020 Richard W.M. Jones <rjones@redhat.com> - 5.1.0-8
 - Enable qemu-kvm-core package on riscv64.
 
 * Thu Dec 03 2020 Cole Robinson <crobinso@redhat.com> - 5.1.0-7
