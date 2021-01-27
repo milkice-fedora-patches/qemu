@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 5%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}.1
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1916,6 +1916,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2:5.2.0-5.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Mon Jan 11 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:5.2.0-5
 - Use symlink for qemu-kvm.
 - Fix make check on bash 5.1.
