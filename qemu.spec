@@ -96,9 +96,11 @@
 %endif
 
 %global qemu_sanity_check 0
+%if 0%{?fedora}
 %ifarch x %{?kernel_arches}
 %if 0%{?hostqemu:1}
 %global qemu_sanity_check 1
+%endif
 %endif
 %endif
 
@@ -116,6 +118,11 @@
 %define with_block_rbd 1
 %endif
 %global with_block_gluster 1
+
+%define with_block_nfs 0
+%if 0%{?fedora}
+%define with_block_nfs 1
+%endif
 
 %ifarch %{arm}
 %define with_rdma 0
@@ -135,7 +142,13 @@
 %define obsoletes_block_gluster Obsoletes: %{name}-block-gluster < %{evr}
 %endif
 %define requires_block_iscsi Requires: %{name}-block-iscsi = %{evr}
+%if %{with_block_nfs}
 %define requires_block_nfs Requires: %{name}-block-nfs = %{evr}
+%define obsoletes_block_nfs %{nil}
+%else
+%define requires_block_nfs %{nil}
+%define obsoletes_block_nfs Obsoletes: %{name}-block-nfs < %{evr}
+%endif
 %if %{with_block_rbd}
 %define requires_block_rbd Requires: %{name}-block-rbd = %{evr}
 %define obsoletes_block_rbd %{nil}
@@ -206,6 +219,7 @@
 # Modules which can be conditionally built
 %global obsoletes_some_modules \
 %{obsoletes_block_gluster} \
+%{obsoletes_block_rbd} \
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
@@ -219,7 +233,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 5%{?rcrel}%{?dist}.1
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -271,8 +285,10 @@ BuildRequires: device-mapper-multipath-devel
 BuildRequires: systemd-devel
 # iscsi drive support
 BuildRequires: libiscsi-devel
+%if 0%{?fedora}
 # NFS drive support
 BuildRequires: libnfs-devel
+%endif
 # snappy compression for memory dump
 BuildRequires: snappy-devel
 # lzo compression for memory dump
@@ -350,8 +366,10 @@ BuildRequires: virglrenderer-devel
 %endif
 # gtk GL support, vhost-user-gpu
 BuildRequires: mesa-libgbm-devel
+%if 0%{?fedora}
 # preferred disassembler for TCG
 BuildRequires: capstone-devel
+%endif
 # parallels disk images require libxml2
 BuildRequires: libxml2-devel
 %if %{have_pmem}
@@ -503,6 +521,7 @@ This package provides the additional iSCSI block driver for QEMU.
 Install this package if you want to access iSCSI volumes.
 
 
+%if %{with_block_nfs}
 %package  block-nfs
 Summary: QEMU NFS block driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
@@ -511,6 +530,7 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 This package provides the additional NFS block driver for QEMU.
 
 Install this package if you want to access remote NFS storage.
+%endif
 
 
 %if %{with_block_rbd}
@@ -1583,14 +1603,16 @@ getent passwd qemu >/dev/null || \
 %endif
 %files block-iscsi
 %{_libdir}/qemu/block-iscsi.so
-%files block-nfs
-%{_libdir}/qemu/block-nfs.so
 %if %{with_block_rbd}
 %files block-rbd
 %{_libdir}/qemu/block-rbd.so
 %endif
 %files block-ssh
 %{_libdir}/qemu/block-ssh.so
+%if %{with_block_nfs}
+%files block-nfs
+%{_libdir}/qemu/block-nfs.so
+%endif
 
 
 %files audio-alsa
@@ -1916,6 +1938,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Mar 01 2021 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-6
+- Fix building on centos stream in copr
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2:5.2.0-5.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
