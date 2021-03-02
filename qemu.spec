@@ -233,7 +233,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 6%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}.1
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1938,6 +1938,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Mar 02 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2:5.2.0-6.1
+- Rebuilt for updated systemd-rpm-macros
+  See https://pagure.io/fesco/issue/2583.
+
 * Mon Mar 01 2021 Cole Robinson <aintdiscole@gmail.com> - 5.2.0-6
 - Fix building on centos stream in copr
 
