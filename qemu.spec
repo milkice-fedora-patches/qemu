@@ -161,6 +161,7 @@
 %define requires_audio_oss Requires: %{name}-audio-oss = %{evr}
 %define requires_audio_pa Requires: %{name}-audio-pa = %{evr}
 %define requires_audio_sdl Requires: %{name}-audio-sdl = %{evr}
+%define requires_audio_jack Requires: %{name}-audio-jack = %{evr}
 %define requires_char_baum Requires: %{name}-char-baum = %{evr}
 %define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
 %define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
@@ -171,6 +172,7 @@
 %define requires_ui_opengl Requires: %{name}-ui-opengl = %{evr}
 %define requires_device_display_virtio_gpu Requires: %{name}-device-display-virtio-gpu = %{evr}
 %define requires_device_display_virtio_gpu_pci Requires: %{name}-device-display-virtio-gpu-pci = %{evr}
+%define requires_device_display_virtio_gpu_ccw Requires: %{name}-device-display-virtio-gpu-ccw = %{evr}
 %define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
 
 %if %{have_spice}
@@ -199,6 +201,7 @@
 %{requires_audio_oss} \
 %{requires_audio_pa} \
 %{requires_audio_sdl} \
+%{requires_audio_jack} \
 %{requires_audio_spice} \
 %{requires_ui_curses} \
 %{requires_ui_gtk} \
@@ -223,7 +226,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-#global rcver rc4
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -232,8 +235,8 @@
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 5.2.0
-Release: 6%{?rcrel}%{?dist}.1
+Version: 6.0.0
+Release: 0.1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -251,8 +254,6 @@ Source12: bridge.conf
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
-
-Patch: 0001-iotests-Fix-_send_qemu_cmd-with-bash-5.1.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -401,6 +402,10 @@ BuildRequires: hostname
 BuildRequires: daxctl-devel
 # used by some linux user impls
 BuildRequires: libdrm-devel
+# fuse block device
+BuildRequires: fuse-devel
+# jack audio driver
+BuildRequires: jack-audio-connection-kit-devel
 
 %if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
@@ -578,6 +583,12 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description audio-sdl
 This package provides the additional SDL audio driver for QEMU.
 
+%package  audio-jack
+Summary: QEMU Jack audio driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description audio-jack
+This package provides the additional Jack audio driver for QEMU.
+
 
 %package  ui-curses
 Summary: QEMU curses UI driver
@@ -630,6 +641,11 @@ Summary: QEMU virtio-gpu-pci display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu-pci
 This package provides the virtio-gpu-pci display device for QEMU.
+%package device-display-virtio-gpu-ccw
+Summary: QEMU virtio-gpu-ccw display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-gpu-ccw
+This package provides the virtio-gpu-ccw display device for QEMU.
 %package device-display-virtio-vga
 Summary: QEMU virtio-vga display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
@@ -1107,111 +1123,123 @@ run_configure_disable_everything() {
     # Disable every qemu feature. Callers can --enable-X the bits they need
     run_configure \
         --audio-drv-list= \
-        --disable-attr \
-        --disable-auth-pam \
-        --disable-avx2 \
-        --disable-avx512f \
-        --disable-blobs \
-        --disable-bochs \
-        --disable-brlapi \
-        --disable-bsd-user \
-        --disable-bzip2 \
-        --disable-cap-ng \
-        --disable-capstone \
-        --disable-cloop \
-        --disable-cocoa \
-        --disable-coroutine-pool \
-        --disable-crypto-afalg \
-        --disable-curl \
-        --disable-curses \
-        --disable-debug-info \
-        --disable-debug-mutex \
-        --disable-debug-tcg \
-        --disable-dmg \
-        --disable-docs \
-        --disable-fdt \
-        --disable-gcrypt \
-        --disable-glusterfs \
-        --disable-gnutls \
-        --disable-gtk \
-        --disable-guest-agent \
-        --disable-guest-agent-msi \
-        --disable-hax \
-        --disable-hvf \
-        --disable-iconv \
-        --disable-jemalloc \
-        --disable-keyring \
-        --disable-kvm \
-        --disable-libdaxctl \
-        --disable-libiscsi \
-        --disable-libnfs \
-        --disable-libpmem \
-        --disable-libssh \
-        --disable-libusb \
-        --disable-libxml2 \
-        --disable-linux-aio \
-        --disable-linux-io-uring \
-        --disable-linux-user \
-        --disable-live-block-migration \
-        --disable-lzfse \
-        --disable-lzo \
-        --disable-membarrier \
-        --disable-modules \
-        --disable-mpath \
-        --disable-netmap \
-        --disable-nettle \
-        --disable-numa \
-        --disable-opengl \
-        --disable-parallels \
-        --disable-pie \
-        --disable-pvrdma \
-        --disable-qcow1 \
-        --disable-qed \
-        --disable-qom-cast-debug \
-        --disable-rbd \
-        --disable-rdma \
-        --disable-replication \
-        --disable-rng-none \
-        --disable-sdl \
-        --disable-sdl-image \
-        --disable-seccomp \
-        --disable-sheepdog \
-        --disable-slirp \
-        --disable-smartcard \
-        --disable-snappy \
-        --disable-sparse \
-        --disable-spice \
+        --without-default-features \
+        --without-default-devices \
         --disable-system \
         --disable-tcg \
-        --disable-tcmalloc \
-        --disable-tools \
-        --disable-tpm \
-        --disable-usb-redir \
         --disable-user \
-        --disable-vde \
-        --disable-vdi \
-        --disable-vhost-crypto \
-        --disable-vhost-kernel \
-        --disable-vhost-net \
-        --disable-vhost-scsi \
-        --disable-vhost-user \
-        --disable-vhost-vdpa \
-        --disable-vhost-vsock \
-        --disable-virglrenderer \
-        --disable-virtfs \
+        --disable-blobs \
+        --disable-capstone \
+        --disable-fdt \
         --disable-vnc \
         --disable-vnc-jpeg \
         --disable-vnc-png \
-        --disable-vnc-sasl \
-        --disable-vte \
-        --disable-vvfat \
-        --disable-whpx \
-        --disable-xen \
-        --disable-xen-pci-passthrough \
-        --disable-xfsctl \
-        --disable-zstd \
-        --without-default-devices \
+        --disable-vhost-kernel \
+        --disable-vhost-vdpa \
         "$@"
+#         --disable-attr \
+#         --disable-auth-pam \
+#         --disable-avx2 \
+#         --disable-avx512f \
+#         --disable-blobs \
+#         --disable-bochs \
+#         --disable-brlapi \
+#         --disable-bsd-user \
+#         --disable-bzip2 \
+#         --disable-cap-ng \
+#         --disable-capstone \
+#         --disable-cloop \
+#         --disable-cocoa \
+#         --disable-coroutine-pool \
+#         --disable-crypto-afalg \
+#         --disable-curl \
+#         --disable-curses \
+#         --disable-debug-info \
+#         --disable-debug-mutex \
+#         --disable-debug-tcg \
+#         --disable-dmg \
+#         --disable-docs \
+#         --disable-fdt \
+#         --disable-gcrypt \
+#         --disable-glusterfs \
+#         --disable-gnutls \
+#         --disable-gtk \
+#         --disable-guest-agent \
+#         --disable-guest-agent-msi \
+#         --disable-hax \
+#         --disable-hvf \
+#         --disable-iconv \
+#         --disable-jemalloc \
+#         --disable-keyring \
+#         --disable-kvm \
+#         --disable-libdaxctl \
+#         --disable-libiscsi \
+#         --disable-libnfs \
+#         --disable-libpmem \
+#         --disable-libssh \
+#         --disable-libusb \
+#         --disable-libxml2 \
+#         --disable-linux-aio \
+#         --disable-linux-io-uring \
+#         --disable-linux-user \
+#         --disable-live-block-migration \
+#         --disable-lzfse \
+#         --disable-lzo \
+#         --disable-membarrier \
+#         --disable-modules \
+#         --disable-mpath \
+#         --disable-netmap \
+#         --disable-nettle \
+#         --disable-numa \
+#         --disable-opengl \
+#         --disable-parallels \
+#         --disable-pie \
+#         --disable-pvrdma \
+#         --disable-qcow1 \
+#         --disable-qed \
+#         --disable-qom-cast-debug \
+#         --disable-rbd \
+#         --disable-rdma \
+#         --disable-replication \
+#         --disable-rng-none \
+#         --disable-sdl \
+#         --disable-sdl-image \
+#         --disable-seccomp \
+#         --disable-sheepdog \
+#         --disable-slirp \
+#         --disable-smartcard \
+#         --disable-snappy \
+#         --disable-sparse \
+#         --disable-spice \
+#         --disable-system \
+#         --disable-tcg \
+#         --disable-tcmalloc \
+#         --disable-tools \
+#         --disable-tpm \
+#         --disable-usb-redir \
+#         --disable-user \
+#         --disable-vde \
+#         --disable-vdi \
+#         --disable-vhost-crypto \
+#         --disable-vhost-kernel \
+#         --disable-vhost-net \
+#         --disable-vhost-scsi \
+#         --disable-vhost-user \
+#         --disable-vhost-vsock \
+#         --disable-virglrenderer \
+#         --disable-virtfs \
+#         --disable-vnc \
+#         --disable-vnc-jpeg \
+#         --disable-vnc-png \
+#         --disable-vnc-sasl \
+#         --disable-vte \
+#         --disable-vvfat \
+#         --disable-whpx \
+#         --disable-xen \
+#         --disable-xen-pci-passthrough \
+#         --disable-xfsctl \
+#         --disable-zstd \
+#         "$@"
 }
 
 
@@ -1240,7 +1268,7 @@ mkdir build-dynamic
 pushd build-dynamic
 
 run_configure \
-    --audio-drv-list=pa,sdl,alsa,oss \
+    --audio-drv-list=pa,sdl,alsa,jack,oss \
     --enable-kvm \
     --enable-system \
     --target-list-exclude=moxie-softmmu \
@@ -1502,17 +1530,10 @@ getent passwd qemu >/dev/null || \
 
 
 %files common -f %{name}.lang
-%dir %{qemudocdir}
-%doc %{qemudocdir}/README.rst
-%doc %{qemudocdir}/index.html
-%doc %{qemudocdir}/interop
-%doc %{qemudocdir}/specs
-%doc %{qemudocdir}/system
-%doc %{qemudocdir}/tools
-%doc %{qemudocdir}/user
 %license %{qemudocdir}/COPYING
 %license %{qemudocdir}/COPYING.LIB
 %license %{qemudocdir}/LICENSE
+%doc %{qemudocdir}
 %dir %{_datadir}/%{name}/
 %{_datadir}/applications/qemu.desktop
 %{_datadir}/icons/hicolor/*/apps/*
@@ -1546,6 +1567,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/efi-vmxnet3.rom
 %{_datadir}/%{name}/vhost-user/50-qemu-virtiofsd.json
 %{_mandir}/man1/qemu.1*
+%{_mandir}/man1/qemu-storage-daemon.1*
 %{_mandir}/man1/qemu-trace-stap.1*
 %{_mandir}/man1/virtfs-proxy-helper.1*
 %{_mandir}/man1/virtiofsd.1*
@@ -1553,6 +1575,7 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-qmp-ref.7*
 %{_mandir}/man7/qemu-ga-ref.7*
+%{_mandir}/man7/qemu-storage-daemon-qmp-ref.7*
 %{_mandir}/man8/qemu-pr-helper.8*
 %{_bindir}/elf2dmp
 %{_bindir}/qemu-edid
@@ -1623,6 +1646,8 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/audio-pa.so
 %files audio-sdl
 %{_libdir}/qemu/audio-sdl.so
+%files audio-jack
+%{_libdir}/qemu/audio-jack.so
 
 
 %files ui-curses
@@ -1644,6 +1669,8 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/hw-display-virtio-gpu.so
 %files device-display-virtio-gpu-pci
 %{_libdir}/qemu/hw-display-virtio-gpu-pci.so
+%files device-display-virtio-gpu-ccw
+%{_libdir}/qemu/hw-s390x-virtio-gpu-ccw.so
 %files device-display-virtio-vga
 %{_libdir}/qemu/hw-display-virtio-vga.so
 %files device-usb-redirect
@@ -1685,6 +1712,7 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-armeb
 %{_bindir}/qemu-cris
 %{_bindir}/qemu-hppa
+%{_bindir}/qemu-hexagon
 %{_bindir}/qemu-m68k
 %{_bindir}/qemu-microblaze
 %{_bindir}/qemu-microblazeel
@@ -1717,6 +1745,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/systemtap/tapset/qemu-arm*.stp
 %{_datadir}/systemtap/tapset/qemu-cris*.stp
 %{_datadir}/systemtap/tapset/qemu-hppa*.stp
+%{_datadir}/systemtap/tapset/qemu-hexagon*.stp
 %{_datadir}/systemtap/tapset/qemu-m68k*.stp
 %{_datadir}/systemtap/tapset/qemu-microblaze*.stp
 %{_datadir}/systemtap/tapset/qemu-mips*.stp
@@ -1938,6 +1967,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Apr 06 2021 Cole Robinson <aintdiscole@gmail.com> - 6.0.0-0.1.rc2
+- Rebase to qemu 6.0.0-rc2
+
 * Tue Mar 02 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2:5.2.0-6.1
 - Rebuilt for updated systemd-rpm-macros
   See https://pagure.io/fesco/issue/2583.
