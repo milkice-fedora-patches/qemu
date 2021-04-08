@@ -74,6 +74,11 @@
 %global have_pmem 1
 %endif
 
+%global have_jack 1
+%if 0%{?rhel}
+%global have_jack 0
+%endif
+
 
 # Matches edk2.spec ExclusiveArch
 %global have_edk2 0
@@ -161,7 +166,6 @@
 %define requires_audio_oss Requires: %{name}-audio-oss = %{evr}
 %define requires_audio_pa Requires: %{name}-audio-pa = %{evr}
 %define requires_audio_sdl Requires: %{name}-audio-sdl = %{evr}
-%define requires_audio_jack Requires: %{name}-audio-jack = %{evr}
 %define requires_char_baum Requires: %{name}-char-baum = %{evr}
 %define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
 %define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
@@ -174,6 +178,12 @@
 %define requires_device_display_virtio_gpu_pci Requires: %{name}-device-display-virtio-gpu-pci = %{evr}
 %define requires_device_display_virtio_gpu_ccw Requires: %{name}-device-display-virtio-gpu-ccw = %{evr}
 %define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
+
+%if %{have_jack}
+%define requires_audio_jack Requires: %{name}-audio-jack = %{evr}
+%else
+%define requires_audio_jack %{nil}
+%endif
 
 %if %{have_spice}
 %define requires_ui_spice_app Requires: %{name}-ui-spice-app = %{evr}
@@ -404,8 +414,10 @@ BuildRequires: daxctl-devel
 BuildRequires: libdrm-devel
 # fuse block device
 BuildRequires: fuse-devel
+%if %{have_jack}
 # jack audio driver
 BuildRequires: jack-audio-connection-kit-devel
+%endif
 
 %if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
@@ -583,11 +595,13 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description audio-sdl
 This package provides the additional SDL audio driver for QEMU.
 
+%if %{have_jack}
 %package  audio-jack
 Summary: QEMU Jack audio driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description audio-jack
 This package provides the additional Jack audio driver for QEMU.
+%endif
 
 
 %package  ui-curses
@@ -1165,7 +1179,7 @@ mkdir build-dynamic
 pushd build-dynamic
 
 run_configure \
-    --audio-drv-list=pa,sdl,alsa,jack,oss \
+    --audio-drv-list=pa,sdl,alsa,try-jack,oss \
     --enable-kvm \
     --enable-system \
     --target-list-exclude=moxie-softmmu \
@@ -1543,8 +1557,10 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/audio-pa.so
 %files audio-sdl
 %{_libdir}/qemu/audio-sdl.so
+%if %{have_jack}
 %files audio-jack
 %{_libdir}/qemu/audio-jack.so
+%endif
 
 
 %files ui-curses
