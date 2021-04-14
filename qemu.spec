@@ -246,7 +246,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1880,6 +1880,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Apr 14 2021 Richard W.M. Jones <rjones@redhat.com> - 2:6.0.0-0.2.rc2
+- Rebuild for updated liburing.
+
 * Tue Apr 06 2021 Cole Robinson <aintdiscole@gmail.com> - 6.0.0-0.1.rc2
 - Rebase to qemu 6.0.0-rc2
 
