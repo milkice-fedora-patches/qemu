@@ -265,6 +265,9 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
+# Upstream patch to make iotests/qsd-jobs test stable on slow machines.
+Patch1: 0001-iotests-qsd-jobs-Filter-events-in-the-first-test.patch
+
 BuildRequires: make
 BuildRequires: meson
 BuildRequires: gcc

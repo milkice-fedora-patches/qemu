@@ -1,0 +1,66 @@
+From 66f18320f751f9649e0f230e814dd556e38bc1fe Mon Sep 17 00:00:00 2001
+From: Max Reitz <mreitz@redhat.com>
+Date: Thu, 1 Apr 2021 15:28:39 +0200
+Subject: [PATCH] iotests/qsd-jobs: Filter events in the first test
+
+The job may or may not be ready before the 'quit' is issued.  Whether it
+is is irrelevant; for the purpose of the test, it only needs to still be
+there.  Filter the job status change and READY events from the output so
+it becomes reliable.
+
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+Signed-off-by: Max Reitz <mreitz@redhat.com>
+Message-Id: <20210401132839.139939-1-mreitz@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ tests/qemu-iotests/tests/qsd-jobs     |  5 ++++-
+ tests/qemu-iotests/tests/qsd-jobs.out | 10 ----------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
+
+diff --git a/tests/qemu-iotests/tests/qsd-jobs b/tests/qemu-iotests/tests/qsd-jobs
+index 972b6b3898..510bf0a9dc 100755
+--- a/tests/qemu-iotests/tests/qsd-jobs
++++ b/tests/qemu-iotests/tests/qsd-jobs
+@@ -52,9 +52,12 @@ echo "=== Job still present at shutdown ==="
+ echo
+ 
+ # Just make sure that this doesn't crash
++# (Filter job status and READY events, because their order may differ
++# between runs, particularly around when 'quit' is issued)
+ $QSD --chardev stdio,id=stdio --monitor chardev=stdio \
+     --blockdev node-name=file0,driver=file,filename="$TEST_IMG" \
+-    --blockdev node-name=fmt0,driver=qcow2,file=file0 <<EOF | _filter_qmp
++    --blockdev node-name=fmt0,driver=qcow2,file=file0 <<EOF \
++    | _filter_qmp | grep -v JOB_STATUS_CHANGE | grep -v BLOCK_JOB_READY
+ {"execute":"qmp_capabilities"}
+ {"execute": "block-commit", "arguments": {"device": "fmt0", "job-id": "job0"}}
+ {"execute": "quit"}
+diff --git a/tests/qemu-iotests/tests/qsd-jobs.out b/tests/qemu-iotests/tests/qsd-jobs.out
+index 05e1165e80..5f41491e05 100644
+--- a/tests/qemu-iotests/tests/qsd-jobs.out
++++ b/tests/qemu-iotests/tests/qsd-jobs.out
+@@ -6,19 +6,9 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728 backing_file=TEST_DIR/
+ 
+ QMP_VERSION
+ {"return": {}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job0"}}
+ {"return": {}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job0", "len": 0, "offset": 0, "speed": 0, "type": "commit"}}
+ {"return": {}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "standby", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job0"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job0", "len": 0, "offset": 0, "speed": 0, "type": "commit"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job0"}}
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job0"}}
+ 
+ === Streaming can't get permission on base node ===
+ 
+-- 
+2.29.2
+
