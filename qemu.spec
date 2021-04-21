@@ -236,7 +236,7 @@
 %{obsoletes_block_rbd}
 
 # Release candidate version tracking
-%global rcver rc2
+%global rcver rc4
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -246,7 +246,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 0.2%{?rcrel}%{?dist}
+Release: 0.3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -265,8 +265,7 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
-# Upstream patch to make iotests/qsd-jobs test stable on slow machines.
-Patch1: 0001-iotests-qsd-jobs-Filter-events-in-the-first-test.patch
+Patch0001: 0001-net-tap-fix-crash-on-hotplug.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1883,6 +1882,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Apr 21 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-0.3.rc4
+- Rebase to qemu 6.0.0-rc4
+
 * Wed Apr 14 2021 Richard W.M. Jones <rjones@redhat.com> - 2:6.0.0-0.2.rc2
 - Rebuild for updated liburing.
 

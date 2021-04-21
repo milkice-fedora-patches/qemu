@@ -1,0 +1,51 @@
+From 3f6be9c84782a0943ea21a8a6f8a5d055b65f2d5 Mon Sep 17 00:00:00 2001
+Message-Id: <3f6be9c84782a0943ea21a8a6f8a5d055b65f2d5.1619018363.git.crobinso@redhat.com>
+From: Cole Robinson <crobinso@redhat.com>
+Date: Wed, 21 Apr 2021 11:12:07 -0400
+Subject: [PATCH-for-6.0] net: tap: fix crash on hotplug
+
+Attempting to hotplug a tap nic with libvirt will crash qemu:
+
+$ sudo virsh attach-interface f32 network default
+error: Failed to attach interface
+error: Unable to read from monitor: Connection reset by peer
+
+0x000055875b7f3a99 in tap_send (opaque=0x55875e39eae0) at ../net/tap.c:206
+206	        if (!s->nc.peer->do_not_pad) {
+gdb$ bt
+
+s->nc.peer may not be set at this point. This seems to be an
+expected case, as qemu_send_packet_* explicitly checks for NULL
+s->nc.peer later.
+
+Fix it by checking for s->nc.peer here too. Padding is applied if
+s->nc.peer is not set.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1949786
+Fixes: 969e50b61a2
+
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+---
+* Or should we skip padding if nc.peer is unset? I didn't dig into it
+* tap-win3.c and slirp.c may need a similar fix, but the slirp case
+  didn't crash in a simple test.
+
+ net/tap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/tap.c b/net/tap.c
+index dd42ac6134..937559dbb8 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -203,7 +203,7 @@ static void tap_send(void *opaque)
+             size -= s->host_vnet_hdr_len;
+         }
+ 
+-        if (!s->nc.peer->do_not_pad) {
++        if (!s->nc.peer || !s->nc.peer->do_not_pad) {
+             if (eth_pad_short_frame(min_pkt, &min_pktsz, buf, size)) {
+                 buf = min_pkt;
+                 size = min_pktsz;
+-- 
+2.31.1
+
