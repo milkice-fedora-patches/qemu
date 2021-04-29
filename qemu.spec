@@ -1118,7 +1118,7 @@ tracebackends="dtrace"
 
 run_configure() {
     # Base configure call with standard shared options
-    ../configure \
+    CC=%{__cc} CXX=%{__cxx} ../configure \
         --prefix=%{_prefix} \
         --libdir=%{_libdir} \
         --sysconfdir=%{_sysconfdir} \
