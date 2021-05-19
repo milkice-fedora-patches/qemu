@@ -246,7 +246,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -264,6 +264,12 @@ Source12: bridge.conf
 Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
+
+Patch0001: 0001-vl-allow-not-specifying-size-in-m-when-using-M-memor.patch
+Patch0002: 0002-qemu-config-load-modules-when-instantiating-option-g.patch
+Patch0003: 0003-qemu-config-parse-configuration-files-to-a-QDict.patch
+Patch0004: 0004-vl-plumb-keyval-based-options-into-readconfig.patch
+Patch0005: 0005-vl-plug-object-back-into-readconfig.patch
 
 
 BuildRequires: make
@@ -1881,6 +1887,11 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed May 19 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-2
+- fix spice option from configuration file
+- fix object option from configuration file
+- allow not specifying size in -m when using -M memory-backend
+
 * Wed May 12 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-1
 - Rebase to qemu 6.0.0 GA
 
