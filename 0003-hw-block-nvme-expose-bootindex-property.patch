@@ -1,0 +1,34 @@
+From: Joelle van Dyne <j@getutm.app>
+Date: Mon, 22 Mar 2021 01:24:44 -0700
+Subject: [PATCH] hw/block/nvme: expose 'bootindex' property
+
+The check for `n->namespace.blkconf.blk` always fails because
+this is in the initialization function.
+
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit 498114b37bc99fddcfc24b92bff7f1323fb32672)
+---
+ hw/block/nvme.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/hw/block/nvme.c b/hw/block/nvme.c
+index 01b657b1c5..59b7749124 100644
+--- a/hw/block/nvme.c
++++ b/hw/block/nvme.c
+@@ -2854,11 +2854,9 @@ static void nvme_instance_init(Object *obj)
+ {
+     NvmeCtrl *s = NVME(obj);
+ 
+-    if (s->namespace.blkconf.blk) {
+-        device_add_bootindex_property(obj, &s->namespace.blkconf.bootindex,
+-                                      "bootindex", "/namespace@1,0",
+-                                      DEVICE(obj));
+-    }
++    device_add_bootindex_property(obj, &s->namespace.blkconf.bootindex,
++                                  "bootindex", "/namespace@1,0",
++                                  DEVICE(obj));
+ }
+ 
+ static const TypeInfo nvme_info = {

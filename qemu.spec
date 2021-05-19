@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -238,8 +238,13 @@ Source20: kvm-x86.modprobe.conf
 # /etc/security/limits.d/95-kvm-ppc64-memlock.conf
 Source21: 95-kvm-ppc64-memlock.conf
 
+# Fix spice in config file with modules
 Patch0001: 0001-iotests-Fix-_send_qemu_cmd-with-bash-5.1.patch
-Patch0002: 0002-qemu-config-load-modules-when-instantiat.patch
+Patch0002: 0002-qemu-config-load-modules-when-instantiating-option-g.patch
+# Fix nvme bootindex property (bz #1956429)
+Patch0003: 0003-hw-block-nvme-expose-bootindex-property.patch
+# Fix invalid llu with systemtap (bz #1960329)
+Patch0004: 0004-tracetool-also-strip-l-and-ll-from-systemtap-format-.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1917,6 +1922,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed May 19 2021 Cole Robinson <crobinso@redhat.com> - 5.2.0-7
+- Fix nvme bootindex property (bz #1956429)
+- Fix invalid llu with systemtap (bz #1960329)
+
 * Wed May 19 2021 Bonzini <pbonzini@redhat.com> - 2:5.2.0-6
 - Fix spice in config file with modules.
 

@@ -1,4 +1,3 @@
-From 0e72078128229bf9efb542e396ab44bf91b91340 Mon Sep 17 00:00:00 2001
 From: Max Reitz <mreitz@redhat.com>
 Date: Thu, 17 Dec 2020 16:38:03 +0100
 Subject: [PATCH] iotests: Fix _send_qemu_cmd with bash 5.1
@@ -52,7 +51,7 @@ Reviewed-by: Kevin Wolf <kwolf@redhat.com>
  tests/qemu-iotests/229.out     |  13 ++-
  tests/qemu-iotests/249.out     |  16 +++-
  tests/qemu-iotests/common.qemu |  11 +--
- 24 files changed, 728 insertions(+), 199 deletions(-)
+ 22 files changed, 632 insertions(+), 182 deletions(-)
 
 diff --git a/tests/qemu-iotests/085.out b/tests/qemu-iotests/085.out
 index 7fc44b1c61..32a193f2c2 100644
@@ -1548,10 +1547,10 @@ index f6eac23f04..bbc85289e3 100644
  {"error": {"class": "GenericError", "desc": "Export 'n2' is not found"}}
  {"execute":"nbd-server-stop"}
 diff --git a/tests/qemu-iotests/229.out b/tests/qemu-iotests/229.out
-index 7eed393013..7d2bfbfbe6 100644
+index 4de6dfaa28..73ccd11155 100644
 --- a/tests/qemu-iotests/229.out
 +++ b/tests/qemu-iotests/229.out
-@@ -8,7 +8,14 @@
+@@ -8,7 +8,14 @@ wrote 2097152/2097152 bytes at offset 0
  
  === Starting drive-mirror, causing error & stop  ===
  
@@ -1567,7 +1566,7 @@ index 7eed393013..7d2bfbfbe6 100644
  {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "testdisk"}}
  {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "testdisk"}}
  {"return": {}}
-@@ -17,7 +24,9 @@
+@@ -17,7 +24,9 @@ wrote 2097152/2097152 bytes at offset 0
  
  === Force cancel job paused in error state  ===
  
@@ -1647,6 +1646,3 @@ index de680cf1c7..ef105dfc39 100644
  
      # Display QMP being sent, but not HMP (since HMP already echoes its
      # input back to output); decide based on leading '{'
--- 
-2.29.2
-
