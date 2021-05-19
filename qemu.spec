@@ -246,7 +246,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -270,7 +270,7 @@ Patch0002: 0002-qemu-config-load-modules-when-instantiating-option-g.patch
 Patch0003: 0003-qemu-config-parse-configuration-files-to-a-QDict.patch
 Patch0004: 0004-vl-plumb-keyval-based-options-into-readconfig.patch
 Patch0005: 0005-vl-plug-object-back-into-readconfig.patch
-
+Patch0006: 0006-qemu-option-support-accept-any-QemuOptsList-in-qemu_.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1887,7 +1887,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
-* Wed May 19 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-2
+* Wed May 19 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:6.0.0-3
+- add another patch to fix configuration files
+
+* Wed May 19 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:6.0.0-2
 - fix spice option from configuration file
 - fix object option from configuration file
 - allow not specifying size in -m when using -M memory-backend
