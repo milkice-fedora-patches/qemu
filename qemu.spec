@@ -179,6 +179,12 @@
 %define requires_device_display_virtio_gpu_ccw Requires: %{name}-device-display-virtio-gpu-ccw = %{evr}
 %define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
 
+%if %{have_virgl}
+%define requires_device_display_vhost_user_gpu Requires: %{name}-device-display-vhost-user-gpu = %{evr}
+%else
+%define requires_device_display_vhost_user_gpu %{nil}
+%endif
+
 %if %{have_jack}
 %define requires_audio_jack Requires: %{name}-audio-jack = %{evr}
 %else
@@ -223,6 +229,7 @@
 %{requires_char_baum} \
 %{requires_char_spice} \
 %{requires_device_display_qxl} \
+%{requires_device_display_vhost_user_gpu} \
 %{requires_device_display_virtio_gpu} \
 %{requires_device_display_virtio_gpu_pci} \
 %{requires_device_display_virtio_vga} \
@@ -246,7 +253,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -685,6 +692,13 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-usb-smartcard
 This package provides the USB smartcard device for QEMU.
 
+%if %{have_virgl}
+%package device-display-vhost-user-gpu
+Summary: QEMU QXL display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-vhost-user-gpu
+This package provides the vhost-user-gpu display device for QEMU.
+%endif
 
 %if %{have_spice}
 %package  ui-spice-core
@@ -1510,10 +1524,6 @@ getent passwd qemu >/dev/null || \
 %dir %{_sysconfdir}/qemu
 %config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 %dir %{_libdir}/qemu
-%if %{have_virgl}
-%{_datadir}/%{name}/vhost-user/50-qemu-gpu.json
-%{_libexecdir}/vhost-user-gpu
-%endif
 
 
 %files guest-agent
@@ -1598,6 +1608,12 @@ getent passwd qemu >/dev/null || \
 %files device-usb-smartcard
 %{_libdir}/qemu/hw-usb-smartcard.so
 
+
+%if %{have_virgl}
+%files device-display-vhost-user-gpu
+%{_datadir}/%{name}/vhost-user/50-qemu-gpu.json
+%{_libexecdir}/vhost-user-gpu
+%endif
 
 %if %{have_spice}
 %files audio-spice
@@ -1887,6 +1903,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Tue Jun 01 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-4
+- Split out qemu-device-display-vhost-user-gpu
+
 * Wed May 19 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:6.0.0-3
 - add another patch to fix configuration files
 
