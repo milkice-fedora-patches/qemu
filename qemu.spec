@@ -495,6 +495,12 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 This package provides the common files needed by all QEMU targets
 
 
+%package docs
+Summary: QEMU documentation
+%description docs
+This package provides QEMU documentation files
+
+
 %package guest-agent
 Summary: QEMU guest agent
 Requires(post): systemd-units
@@ -1292,7 +1298,7 @@ popd
 
 
 # Copy some static data into place
-install -D -p -m 0644 -t %{buildroot}%{qemudocdir} README.rst COPYING COPYING.LIB LICENSE
+install -D -p -m 0644 -t %{buildroot}%{qemudocdir} README.rst
 install -D -p -m 0644 qemu.sasl %{buildroot}%{_sysconfdir}/sasl2/qemu.conf
 
 
@@ -1462,10 +1468,9 @@ getent passwd qemu >/dev/null || \
 
 
 %files common -f %{name}.lang
-%license %{qemudocdir}/COPYING
-%license %{qemudocdir}/COPYING.LIB
-%license %{qemudocdir}/LICENSE
-%doc %{qemudocdir}
+%license COPYING
+%license COPYING.LIB
+%license LICENSE
 %dir %{_datadir}/%{name}/
 %{_datadir}/applications/qemu.desktop
 %{_datadir}/icons/hicolor/*/apps/*
@@ -1524,6 +1529,10 @@ getent passwd qemu >/dev/null || \
 %dir %{_sysconfdir}/qemu
 %config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 %dir %{_libdir}/qemu
+
+
+%files docs
+%doc %{qemudocdir}
 
 
 %files guest-agent
@@ -1904,7 +1913,8 @@ getent passwd qemu >/dev/null || \
 
 %changelog
 * Tue Jun 01 2021 Cole Robinson <crobinso@redhat.com> - 2:6.0.0-4
-- Split out qemu-device-display-vhost-user-gpu
+- Split out qemu-device-display-vhost-user-gpu subpackage
+- Split out qemu-docs subpackage
 
 * Wed May 19 2021 Paolo Bonzini <pbonzini@redhat.com> - 2:6.0.0-3
 - add another patch to fix configuration files
