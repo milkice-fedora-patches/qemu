@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 7%{?rcrel}%{?dist}
+Release: 8%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -245,6 +245,9 @@ Patch0002: 0002-qemu-config-load-modules-when-instantiating-option-g.patch
 Patch0003: 0003-hw-block-nvme-expose-bootindex-property.patch
 # Fix invalid llu with systemtap (bz #1960329)
 Patch0004: 0004-tracetool-also-strip-l-and-ll-from-systemtap-format-.patch
+# Fix kvm_buf_set_msrs assertion breaking fedora composes
+# https://pagure.io/releng/failed-composes/issue/2548
+Patch0005: 0005-Revert-target-i386-define-a-new-MSR-based-feature-wo.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1926,6 +1929,9 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Mon Jun 14 2021 Cole Robinson <crobinso@redhat.com> - 5.2.0-8
+- Fix kvm_buf_set_msrs assertion breaking fedora composes
+
 * Wed May 19 2021 Cole Robinson <crobinso@redhat.com> - 5.2.0-7
 - Fix nvme bootindex property (bz #1956429)
 - Fix invalid llu with systemtap (bz #1960329)
