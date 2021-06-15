@@ -1511,7 +1511,6 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/%{name}/efi-vmxnet3.rom
 %{_datadir}/%{name}/vhost-user/50-qemu-virtiofsd.json
 %{_mandir}/man1/qemu.1*
-%{_mandir}/man1/qemu-storage-daemon.1*
 %{_mandir}/man1/qemu-trace-stap.1*
 %{_mandir}/man1/virtfs-proxy-helper.1*
 %{_mandir}/man1/virtiofsd.1*
@@ -1519,13 +1518,11 @@ getent passwd qemu >/dev/null || \
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-qmp-ref.7*
 %{_mandir}/man7/qemu-ga-ref.7*
-%{_mandir}/man7/qemu-storage-daemon-qmp-ref.7*
 %{_mandir}/man8/qemu-pr-helper.8*
 %{_bindir}/elf2dmp
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
 %{_bindir}/qemu-pr-helper
-%{_bindir}/qemu-storage-daemon
 %{_bindir}/qemu-trace-stap
 %{_unitdir}/qemu-pr-helper.service
 %{_unitdir}/qemu-pr-helper.socket
@@ -1556,8 +1553,11 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-img
 %{_bindir}/qemu-io
 %{_bindir}/qemu-nbd
+%{_bindir}/qemu-storage-daemon
 %{_mandir}/man1/qemu-img.1*
 %{_mandir}/man8/qemu-nbd.8*
+%{_mandir}/man1/qemu-storage-daemon.1*
+%{_mandir}/man7/qemu-storage-daemon-qmp-ref.7*
 
 
 %files block-curl
