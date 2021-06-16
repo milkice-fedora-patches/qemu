@@ -88,6 +88,7 @@
 %global have_fdt 1
 %global have_opengl 1
 %global have_usbredir 1
+%global enable_werror 0
 
 
 # Matches edk2.spec ExclusiveArch
@@ -139,9 +140,22 @@
 %define have_block_nfs 1
 %endif
 
+%define have_capstone 0
+%if 0%{?fedora}
+%define have_capstone 1
+%endif
+
 %define have_librdma 1
 %ifarch %{arm}
 %define have_librdma 0
+%endif
+
+# Disable LTO since it caused lots of strange assert failures.
+%global _lto_cflags %{nil}
+
+# OOM killer breaks builds with parallel make on s390(x)
+%ifarch s390x
+%global _smp_mflags %{nil}
 %endif
 
 
@@ -366,7 +380,7 @@ BuildRequires: SDL2-devel
 BuildRequires: pulseaudio-libs-devel
 # alsa audio output
 BuildRequires: alsa-lib-devel
-%if 0%{?fedora}
+%if %{have_block_nfs}
 # NFS drive support
 BuildRequires: libnfs-devel
 %endif
@@ -404,7 +418,7 @@ BuildRequires: libcacard-devel
 # virgl 3d support
 BuildRequires: virglrenderer-devel
 %endif
-%if 0%{?fedora}
+%if %{have_capstone}
 # preferred disassembler for TCG
 BuildRequires: capstone-devel
 %endif
@@ -1106,6 +1120,11 @@ This package provides the QEMU system emulator for Xtensa boards.
 %setup -q -n qemu-%{version}%{?rcstr}
 %autopatch -p1
 
+%global qemu_kvm_build qemu_kvm_build
+mkdir -p %{qemu_kvm_build}
+%global static_builddir static_builddir
+mkdir -p %{static_builddir}
+
 # https://fedoraproject.org/wiki/Changes/Make_ambiguous_python_shebangs_error
 # Fix all Python shebangs recursively in .
 # -p preserves timestamps
@@ -1118,115 +1137,322 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" scripts/qemu-trace-stap
 
 
 %build
-# Disable LTO since it caused lots of strange assert failures.
-%define _lto_cflags %{nil}
-
-# OOM killer breaks builds with parallel make on s390(x)
-%ifarch s390x
-%global _smp_mflags %{nil}
-%endif
-
 # --build-id option is used for giving info to the debug packages.
-extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
-# As of qemu 2.1, --enable-trace-backends supports multiple backends,
-# but there's a performance impact for non-dtrace so we don't use them
-tracebackends="dtrace"
-
-%if %{have_spice}
-    %global spiceflag --enable-spice
-%else
-    %global spiceflag --disable-spice
-%endif
+%define disable_everything         \\\
+  --audio-drv-list=                \\\
+  --disable-attr                   \\\
+  --disable-auth-pam               \\\
+  --disable-avx2                   \\\
+  --disable-avx512f                \\\
+  --disable-bochs                  \\\
+  --disable-brlapi                 \\\
+  --disable-bsd-user               \\\
+  --disable-bzip2                  \\\
+  --disable-cap-ng                 \\\
+  --disable-capstone               \\\
+  --disable-cfi                    \\\
+  --disable-cfi-debug              \\\
+  --disable-cloop                  \\\
+  --disable-cocoa                  \\\
+  --disable-coroutine-pool         \\\
+  --disable-crypto-afalg           \\\
+  --disable-curl                   \\\
+  --disable-curses                 \\\
+  --disable-debug-info             \\\
+  --disable-debug-mutex            \\\
+  --disable-debug-tcg              \\\
+  --disable-dmg                    \\\
+  --disable-docs                   \\\
+  --disable-fdt                    \\\
+  --disable-fuse                   \\\
+  --disable-fuse-lseek             \\\
+  --disable-gcrypt                 \\\
+  --disable-gio                    \\\
+  --disable-glusterfs              \\\
+  --disable-gnutls                 \\\
+  --disable-gtk                    \\\
+  --disable-guest-agent            \\\
+  --disable-guest-agent-msi        \\\
+  --disable-hax                    \\\
+  --disable-hvf                    \\\
+  --disable-iconv                  \\\
+  --disable-jemalloc               \\\
+  --disable-kvm                    \\\
+  --disable-libdaxctl              \\\
+  --disable-libiscsi               \\\
+  --disable-libnfs                 \\\
+  --disable-libpmem                \\\
+  --disable-libssh                 \\\
+  --disable-libudev                \\\
+  --disable-libusb                 \\\
+  --disable-libxml2                \\\
+  --disable-linux-aio              \\\
+  --disable-linux-io-uring         \\\
+  --disable-linux-user             \\\
+  --disable-live-block-migration   \\\
+  --disable-lto                    \\\
+  --disable-lzfse                  \\\
+  --disable-lzo                    \\\
+  --disable-malloc-trim            \\\
+  --disable-membarrier             \\\
+  --disable-modules                \\\
+  --disable-module-upgrades        \\\
+  --disable-mpath                  \\\
+  --disable-multiprocess           \\\
+  --disable-netmap                 \\\
+  --disable-nettle                 \\\
+  --disable-numa                   \\\
+  --disable-opengl                 \\\
+  --disable-parallels              \\\
+  --disable-pie                    \\\
+  --disable-pvrdma                 \\\
+  --disable-qcow1                  \\\
+  --disable-qed                    \\\
+  --disable-qom-cast-debug         \\\
+  --disable-rbd                    \\\
+  --disable-rdma                   \\\
+  --disable-replication            \\\
+  --disable-rng-none               \\\
+  --disable-safe-stack             \\\
+  --disable-sanitizers             \\\
+  --disable-sdl                    \\\
+  --disable-sdl-image              \\\
+  --disable-seccomp                \\\
+  --disable-sheepdog               \\\
+  --disable-slirp                  \\\
+  --disable-smartcard              \\\
+  --disable-snappy                 \\\
+  --disable-sparse                 \\\
+  --disable-spice                  \\\
+  --disable-strip                  \\\
+  --disable-system                 \\\
+  --disable-tcg                    \\\
+  --disable-tcmalloc               \\\
+  --disable-tools                  \\\
+  --disable-tpm                    \\\
+  --disable-u2f                    \\\
+  --disable-usb-redir              \\\
+  --disable-user                   \\\
+  --disable-vde                    \\\
+  --disable-vdi                    \\\
+  --disable-vhost-crypto           \\\
+  --disable-vhost-kernel           \\\
+  --disable-vhost-net              \\\
+  --disable-vhost-scsi             \\\
+  --disable-vhost-user             \\\
+  --disable-vhost-user-blk-server  \\\
+  --disable-vhost-vdpa             \\\
+  --disable-vhost-vsock            \\\
+  --disable-virglrenderer          \\\
+  --disable-virtfs                 \\\
+  --disable-virtiofsd              \\\
+  --disable-vnc                    \\\
+  --disable-vnc-jpeg               \\\
+  --disable-vnc-png                \\\
+  --disable-vnc-sasl               \\\
+  --disable-vte                    \\\
+  --disable-vvfat                  \\\
+  --disable-werror                 \\\
+  --disable-whpx                   \\\
+  --disable-xen                    \\\
+  --disable-xen-pci-passthrough    \\\
+  --disable-xfsctl                 \\\
+  --disable-xkbcommon              \\\
+  --disable-zstd                   \\\
+  --with-git-submodules=ignore     \\\
+  --without-default-devices
 
 
 run_configure() {
-    # Base configure call with standard shared options
-    CC=%{__cc} CXX=%{__cxx} ../configure \
-        --prefix=%{_prefix} \
-        --libdir=%{_libdir} \
-        --sysconfdir=%{_sysconfdir} \
-        --localstatedir=%{_localstatedir} \
-        --libexecdir=%{_libexecdir} \
-        --interp-prefix=%{_prefix}/qemu-%%M \
-        --with-pkgversion=%{name}-%{version}-%{release} \
-        --extra-ldflags="$extraldflags -Wl,-z,relro -Wl,-z,now" \
+    CC=%{__cc} CXX=%{__cxx} ../configure  \
+        --prefix="%{_prefix}" \
+        --libdir="%{_libdir}" \
+        --datadir="%{_datadir}" \
+        --sysconfdir="%{_sysconfdir}" \
+        --interp-prefix=%{_prefix}/qemu-%M \
+        --localstatedir="%{_localstatedir}" \
+        --docdir="%{_docdir}" \
+        --libexecdir="%{_libexecdir}" \
+        --extra-ldflags="-Wl,--build-id -Wl,-z,relro -Wl,-z,now" \
         --extra-cflags="%{optflags}" \
-        --disable-strip \
-        --disable-werror \
+        --with-pkgversion="%{name}-%{version}-%{release}" \
+        --with-suffix="%{name}" \
+        --firmwarepath=%{_prefix}/share/qemu-firmware \
+        --meson="%{__meson}" \
+        --enable-trace-backend=dtrace \
+        --with-coroutine=ucontext \
+        --with-git=git \
         --tls-priority=@QEMU,SYSTEM \
-        --enable-trace-backend=$tracebackends \
-        "$@" || cat config.log
-}
-
-run_configure_disable_everything() {
-    # Disable every qemu feature. Callers can --enable-X the bits they need
-    run_configure \
-        --audio-drv-list= \
-        --without-default-features \
-        --without-default-devices \
-        --disable-system \
-        --disable-tcg \
-        --disable-user \
-        --disable-blobs \
-        --disable-capstone \
-        --disable-fdt \
-        --disable-vnc \
-        --disable-vnc-jpeg \
-        --disable-vnc-png \
-        --disable-vhost-kernel \
-        --disable-vhost-vdpa \
+        %{disable_everything} \
         "$@"
+
+    echo "config-host.mak contents:"
+    echo "==="
+    cat config-host.mak
+    echo "==="
 }
 
 
+pushd %{qemu_kvm_build}
+run_configure \
+%if %{defined target_list}
+  --target-list="%{target_list}" \
+%endif
+%if %{defined block_drivers_rw_list}
+  --block-drv-rw-whitelist=%{block_drivers_rw_list} \
+%endif
+%if %{defined block_drivers_ro_list}
+  --block-drv-ro-whitelist=%{block_drivers_ro_list} \
+%endif
+  --enable-attr \
+%ifarch %{ix86} x86_64
+  --enable-avx2 \
+%endif
+  --enable-cap-ng \
+%if %{have_capstone}
+  --enable-capstone \
+%endif
+  --enable-coroutine-pool \
+  --enable-curl \
+  --enable-debug-info \
+  --enable-docs \
+%if %{have_fdt}
+  --enable-fdt \
+%endif
+  --enable-gcrypt \
+  --enable-gnutls \
+  --enable-guest-agent \
+  --enable-iconv \
+  --enable-kvm \
+  --enable-libiscsi \
+%if %{have_pmem}
+  --enable-libpmem \
+%endif
+  --enable-libssh \
+  --enable-libusb \
+  --enable-libudev \
+  --enable-linux-aio \
+  --enable-lzo \
+  --enable-malloc-trim \
+  --enable-modules \
+  --enable-mpath \
+%if %{have_numactl}
+  --enable-numa \
+%endif
+%if %{have_opengl}
+  --enable-opengl \
+%endif
+  --enable-pie \
+%if %{have_block_rbd}
+  --enable-rbd \
+%endif
+%if %{have_librdma}
+  --enable-rdma \
+%endif
+  --enable-seccomp \
+  --enable-slirp=system \
+  --enable-snappy \
+  --enable-system \
+  --enable-tcg \
+  --enable-tools \
+  --enable-tpm \
+%if %{have_usbredir}
+  --enable-usb-redir \
+%endif
+  --enable-virtiofsd \
+  --enable-vhost-kernel \
+  --enable-vhost-net \
+  --enable-vhost-user \
+  --enable-vhost-user-blk-server \
+  --enable-vhost-vdpa \
+  --enable-vhost-vsock \
+  --enable-vnc \
+  --enable-vnc-png \
+  --enable-vnc-sasl \
+%if %{enable_werror}
+  --enable-werror \
+%endif
+  --enable-xkbcommon \
+  %dnl Fedora specific flags
+  --audio-drv-list=pa,sdl,alsa,try-jack,oss \
+  --target-list-exclude=moxie-softmmu \
+  --with-default-devices \
+  --enable-auth-pam \
+  --enable-bochs \
+  --enable-brlapi \
+  --enable-bzip2 \
+  --enable-cloop \
+  --enable-curses \
+  --enable-dmg \
+  --enable-gio \
+  --enable-glusterfs \
+  --enable-gtk \
+  --enable-libdaxctl \
+%if %{have_block_nfs}
+  --enable-libnfs \
+%endif
+  --enable-libudev \
+  --enable-libxml2 \
+%if %{have_liburing}
+  --enable-linux-io-uring \
+%endif
+  --enable-linux-user \
+  --enable-live-block-migration \
+  --enable-multiprocess \
+  --enable-vnc-jpeg \
+  --enable-parallels \
+%if %{have_librdma}
+  --enable-pvrdma \
+%endif
+  --enable-qcow1 \
+  --enable-qed \
+  --enable-qom-cast-debug \
+  --enable-replication \
+  --enable-sdl \
+  --enable-smartcard \
+%if %{have_spice}
+  --enable-spice \
+%endif
+  --enable-usb-redir \
+  --enable-vdi \
+  --enable-vhost-crypto \
+  --enable-vhost-scsi \
+%if %{have_virgl}
+  --enable-virglrenderer \
+%endif
+  --enable-virtfs \
+  --enable-vnc-jpeg \
+  --enable-vte \
+  --enable-vvfat \
+%if %{have_xen}
+  --enable-xen \
+  --enable-xen-pci-passthrough \
+%endif
+  --enable-zstd \
 
-# Build for qemu-user-static
+make V=1 %{?_smp_mflags} $buildldflags
+
+popd
+
+
+
+
+# Fedora build for qemu-user-static
 %if %{user_static}
-mkdir build-static
-pushd build-static
+pushd %{static_builddir}
 
-run_configure_disable_everything \
-    --disable-pie \
-    --enable-attr \
-    --enable-linux-user \
-    --enable-tcg \
-    --static
+run_configure \
+  --enable-attr \
+  --enable-linux-user \
+  --enable-tcg \
+  --static
 
 make V=1 %{?_smp_mflags} $buildldflags
 
 popd
 %endif
-
-
-
-# Build for non-static qemu-*
-mkdir build-dynamic
-pushd build-dynamic
-
-run_configure \
-    --audio-drv-list=pa,sdl,alsa,try-jack,oss \
-    --enable-kvm \
-    --enable-system \
-    --target-list-exclude=moxie-softmmu \
-    --enable-tcg \
-    --enable-linux-user \
-    --enable-pie \
-    --enable-modules \
-    --enable-mpath \
-    %{spiceflag} \
-    --enable-slirp=system
-
-echo "config-host.mak contents:"
-echo "==="
-cat config-host.mak
-echo "==="
-
-make V=1 %{?_smp_mflags} $buildldflags
-
-popd
-
 
 
 
@@ -1269,7 +1495,7 @@ install -m 0644 %{_sourcedir}/95-kvm-ppc64-memlock.conf %{buildroot}%{_sysconfdi
 # Install qemu-user-static tree
 mkdir -p %{buildroot}%{_bindir}
 %if %{user_static}
-pushd build-static
+pushd %{static_builddir}
 make DESTDIR=%{buildroot} install
 
 # Rename all QEMU user emulators to have a -static suffix
@@ -1291,7 +1517,7 @@ popd
 
 
 # Install main qemu-system-* tree
-pushd build-dynamic
+pushd %{qemu_kvm_build}
 make DESTDIR=%{buildroot} install
 popd
 %find_lang %{name}
@@ -1417,7 +1643,7 @@ chmod +x %{buildroot}%{_libdir}/qemu/*.so
 perl -i -p -e 's/^(127|267)/# $1/' tests/qemu-iotests/group
 %endif
 
-pushd build-dynamic
+pushd %{qemu_kvm_build}
 
 # 2021-06: s390x tests randomly failing with 'Broken pipe' errors
 # dhorak couldn't reproduce locally on an s390x machine so guessed
