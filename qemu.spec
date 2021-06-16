@@ -1,3 +1,9 @@
+%global libfdt_version 1.6.0
+%global libseccomp_version 2.4.0
+%global libusbx_version 1.0.23
+%global meson_version 0.55.3-3
+%global usbredir_version 0.7.1
+
 %ifarch %{ix86}
 %global kvm_package   system-x86
 # need_qemu_kvm should only ever be used by x86
@@ -79,6 +85,10 @@
 %global have_jack 0
 %endif
 
+%global have_fdt 1
+%global have_opengl 1
+%global have_usbredir 1
+
 
 # Matches edk2.spec ExclusiveArch
 %global have_edk2 0
@@ -117,29 +127,29 @@
 %endif
 
 # All modules should be listed here.
+%define have_block_rbd 1
 %ifarch %{ix86} %{arm}
-%define with_block_rbd 0
-%else
-%define with_block_rbd 1
+%define have_block_rbd 0
 %endif
-%global with_block_gluster 1
 
-%define with_block_nfs 0
+%global have_block_gluster 1
+
+%define have_block_nfs 0
 %if 0%{?fedora}
-%define with_block_nfs 1
+%define have_block_nfs 1
 %endif
 
+%define have_librdma 1
 %ifarch %{arm}
-%define with_rdma 0
-%else
-%define with_rdma 1
+%define have_librdma 0
 %endif
+
 
 %define evr %{epoch}:%{version}-%{release}
 
 %define requires_block_curl Requires: %{name}-block-curl = %{evr}
 %define requires_block_dmg Requires: %{name}-block-dmg = %{evr}
-%if %{with_block_gluster}
+%if %{have_block_gluster}
 %define requires_block_gluster Requires: %{name}-block-gluster = %{evr}
 %define obsoletes_block_gluster %{nil}
 %else
@@ -147,14 +157,14 @@
 %define obsoletes_block_gluster Obsoletes: %{name}-block-gluster < %{evr}
 %endif
 %define requires_block_iscsi Requires: %{name}-block-iscsi = %{evr}
-%if %{with_block_nfs}
+%if %{have_block_nfs}
 %define requires_block_nfs Requires: %{name}-block-nfs = %{evr}
 %define obsoletes_block_nfs %{nil}
 %else
 %define requires_block_nfs %{nil}
 %define obsoletes_block_nfs Obsoletes: %{name}-block-nfs < %{evr}
 %endif
-%if %{with_block_rbd}
+%if %{have_block_rbd}
 %define requires_block_rbd Requires: %{name}-block-rbd = %{evr}
 %define obsoletes_block_rbd %{nil}
 %else
@@ -279,108 +289,113 @@ Patch0004: 0004-vl-plumb-keyval-based-options-into-readconfig.patch
 Patch0005: 0005-vl-plug-object-back-into-readconfig.patch
 Patch0006: 0006-qemu-option-support-accept-any-QemuOptsList-in-qemu_.patch
 
-BuildRequires: make
-BuildRequires: meson
-BuildRequires: gcc
-# documentation deps
+BuildRequires: meson >= %{meson_version}
+BuildRequires: zlib-devel
+BuildRequires: glib2-devel
+BuildRequires: gnutls-devel
+BuildRequires: cyrus-sasl-devel
+BuildRequires: libaio-devel
+BuildRequires: python3-devel
+BuildRequires: libiscsi-devel
+BuildRequires: libattr-devel
+BuildRequires: libusbx-devel >= %{libusbx_version}
+%if %{have_usbredir}
+BuildRequires: usbredir-devel >= %{usbredir_version}
+%endif
 BuildRequires: texinfo
+BuildRequires: python3-sphinx
+BuildRequires: libseccomp-devel >= %{libseccomp_version}
+# For network block driver
+BuildRequires: libcurl-devel
+BuildRequires: libssh-devel
+%if %{have_block_rbd}
+BuildRequires: librbd-devel
+%endif
+# We need both because the 'stap' binary is probed for by configure
+BuildRequires: systemtap
+BuildRequires: systemtap-sdt-devel
+# For VNC PNG support
+BuildRequires: libpng-devel
+# For virtiofs
+BuildRequires: libcap-ng-devel
+# Hard requirement for version >= 1.3
+BuildRequires: pixman-devel
+# For rdma
+%if %{have_librdma}
+BuildRequires: rdma-core-devel
+%endif
+%if %{have_fdt}
+BuildRequires: libfdt-devel >= %{libfdt_version}
+%endif
+# For compressed guest memory dumps
+BuildRequires: lzo-devel snappy-devel
+# For NUMA memory binding
+%if %{have_numactl}
+BuildRequires: numactl-devel
+%endif
+BuildRequires: libgcrypt-devel
+# qemu-pr-helper multipath support (requires libudev too)
+BuildRequires: device-mapper-multipath-devel
+BuildRequires: systemd-devel
+%if %{have_pmem}
+BuildRequires: libpmem-devel
+%endif
+# qemu-keymap
+BuildRequires: pkgconfig(xkbcommon)
+%if %{have_opengl}
+BuildRequires: pkgconfig(epoxy)
+BuildRequires: pkgconfig(libdrm)
+BuildRequires: pkgconfig(gbm)
+%endif
+BuildRequires: perl-Test-Harness
+BuildRequires: libslirp-devel
+
+
+# Fedora specific
+BuildRequires: make
+BuildRequires: gcc
 %if %{qemu_sanity_check}
 BuildRequires: qemu-sanity-check-nodeps
 BuildRequires: kernel
 %endif
 # chrpath calls in specfile
 BuildRequires: chrpath
-
 # -display sdl support
 BuildRequires: SDL2-devel
-# used in various places for compression
-BuildRequires: zlib-devel
-# used in various places for crypto
-BuildRequires: gnutls-devel
-# VNC sasl auth support
-BuildRequires: cyrus-sasl-devel
-# aio implementation for block drivers
-BuildRequires: libaio-devel
 # pulseaudio audio output
 BuildRequires: pulseaudio-libs-devel
 # alsa audio output
 BuildRequires: alsa-lib-devel
-# qemu-pr-helper multipath support (requires libudev too)
-BuildRequires: device-mapper-multipath-devel
-BuildRequires: systemd-devel
-# iscsi drive support
-BuildRequires: libiscsi-devel
 %if 0%{?fedora}
 # NFS drive support
 BuildRequires: libnfs-devel
 %endif
-# snappy compression for memory dump
-BuildRequires: snappy-devel
-# lzo compression for memory dump
-BuildRequires: lzo-devel
 # curses display backend
 BuildRequires: ncurses-devel
-# 9pfs filesystem
-BuildRequires: libattr-devel
-# qemu-bridge-helper, qemu-pr-helper and more
-BuildRequires: libcap-ng-devel
-# spice usb redirection support
-BuildRequires: usbredir-devel
 %if %{have_spice}
 # spice graphics support
 BuildRequires: spice-protocol
 BuildRequires: spice-server-devel
 %endif
-# seccomp containment support
-BuildRequires: libseccomp-devel
-# network block driver
-BuildRequires: libcurl-devel
-%if %{with_block_rbd}
-# RBD block driver
-BuildRequires: librbd-devel
-%endif
-# We need both because the 'stap' binary is probed for by configure
-BuildRequires: systemtap
-BuildRequires: systemtap-sdt-devel
 # VNC JPEG support
 BuildRequires: libjpeg-devel
-# VNC PNG support
-BuildRequires: libpng-devel
 # Braille device support
 BuildRequires: brlapi-devel
-# FDT device tree support
-BuildRequires: libfdt-devel
-# QEMU display pixel manipulation
-BuildRequires: pixman-devel
-%if %{with_block_gluster}
+%if %{have_block_gluster}
 # gluster block driver
 BuildRequires: glusterfs-api-devel
 %endif
-# USB passthrough
-BuildRequires: libusbx-devel
-# SSH block driver
-BuildRequires: libssh-devel
 # GTK frontend
 BuildRequires: gtk3-devel
 BuildRequires: vte291-devel
 # GTK translations
 BuildRequires: gettext
-# RDMA migration
-%if %{with_rdma}
-BuildRequires: rdma-core-devel
-%endif
 %if %{have_xen}
 # Xen support
 BuildRequires: xen-devel
 %endif
-%if %{have_numactl}
-# memdev hostmem backend
-BuildRequires: numactl-devel
-%endif
 # reading bzip2 compressed dmg images
 BuildRequires: bzip2-devel
-# opengl bits
-BuildRequires: libepoxy-devel
 # TLS test suite
 BuildRequires: libtasn1-devel
 # smartcard device
@@ -389,31 +404,18 @@ BuildRequires: libcacard-devel
 # virgl 3d support
 BuildRequires: virglrenderer-devel
 %endif
-# gtk GL support, vhost-user-gpu
-BuildRequires: mesa-libgbm-devel
 %if 0%{?fedora}
 # preferred disassembler for TCG
 BuildRequires: capstone-devel
 %endif
 # parallels disk images require libxml2
 BuildRequires: libxml2-devel
-%if %{have_pmem}
-# nvdimm
-BuildRequires: libpmem-devel
-%endif
 # qemu-ga
 BuildRequires: libudev-devel
 # qauth infrastructure
 BuildRequires: pam-devel
-# user-mode networking
-BuildRequires: libslirp-devel
-# Documentation build
-BuildRequires: python3-sphinx
-# Test suite ./scripts/tap-driver.pl
-BuildRequires: perl-Test-Harness
 # For making python shebangs versioned
 BuildRequires: /usr/bin/pathfix.py
-BuildRequires: python3-devel
 %if %{have_liburing}
 # liburing support. Library isn't built for arm
 BuildRequires: liburing-devel
@@ -424,8 +426,6 @@ BuildRequires: libzstd-devel
 BuildRequires: hostname
 # nvdimm dax
 BuildRequires: daxctl-devel
-# used by some linux user impls
-BuildRequires: libdrm-devel
 # fuse block device
 BuildRequires: fuse-devel
 %if %{have_jack}
@@ -538,7 +538,7 @@ This package provides the additional DMG block driver for QEMU.
 Install this package if you want to open '.dmg' files.
 
 
-%if %{with_block_gluster}
+%if %{have_block_gluster}
 %package  block-gluster
 Summary: QEMU Gluster block driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
@@ -558,7 +558,7 @@ This package provides the additional iSCSI block driver for QEMU.
 Install this package if you want to access iSCSI volumes.
 
 
-%if %{with_block_nfs}
+%if %{have_block_nfs}
 %package  block-nfs
 Summary: QEMU NFS block driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
@@ -570,7 +570,7 @@ Install this package if you want to access remote NFS storage.
 %endif
 
 
-%if %{with_block_rbd}
+%if %{have_block_rbd}
 %package  block-rbd
 Summary: QEMU Ceph/RBD block driver
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
@@ -1564,19 +1564,19 @@ getent passwd qemu >/dev/null || \
 %{_libdir}/qemu/block-curl.so
 %files block-dmg
 %{_libdir}/qemu/block-dmg-bz2.so
-%if %{with_block_gluster}
+%if %{have_block_gluster}
 %files block-gluster
 %{_libdir}/qemu/block-gluster.so
 %endif
 %files block-iscsi
 %{_libdir}/qemu/block-iscsi.so
-%if %{with_block_rbd}
+%if %{have_block_rbd}
 %files block-rbd
 %{_libdir}/qemu/block-rbd.so
 %endif
 %files block-ssh
 %{_libdir}/qemu/block-ssh.so
-%if %{with_block_nfs}
+%if %{have_block_nfs}
 %files block-nfs
 %{_libdir}/qemu/block-nfs.so
 %endif
