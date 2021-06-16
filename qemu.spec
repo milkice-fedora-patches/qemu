@@ -277,7 +277,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -446,6 +446,8 @@ BuildRequires: fuse-devel
 # jack audio driver
 BuildRequires: jack-audio-connection-kit-devel
 %endif
+BuildRequires: fuse3-devel
+BuildRequires: SDL2_image-devel
 
 %if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
@@ -1386,6 +1388,7 @@ run_configure \
   --enable-cloop \
   --enable-curses \
   --enable-dmg \
+  --enable-fuse \
   --enable-gio \
   --enable-glusterfs \
   --enable-gtk \
@@ -1411,6 +1414,7 @@ run_configure \
   --enable-qom-cast-debug \
   --enable-replication \
   --enable-sdl \
+  --enable-sdl-image \
   --enable-smartcard \
 %if %{have_spice}
   --enable-spice \
@@ -2145,6 +2149,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Jun 16 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-6
+- Build against fuse3 and SDL2_image
+- Move qemu-storage-daemon to qemu-img subpackage
+
 * Mon Jun 07 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-5
 - Rebuild for xen 4.15
 
