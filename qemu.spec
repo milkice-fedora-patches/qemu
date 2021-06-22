@@ -402,8 +402,6 @@ BuildRequires: libxml2-devel
 BuildRequires: libudev-devel
 # qauth infrastructure
 BuildRequires: pam-devel
-# For making python shebangs versioned
-BuildRequires: /usr/bin/pathfix.py
 %if %{have_liburing}
 # liburing support. Library isn't built for arm
 BuildRequires: liburing-devel
@@ -1114,14 +1112,6 @@ This package provides the QEMU system emulator for Xtensa boards.
 mkdir -p %{qemu_kvm_build}
 %global static_builddir static_builddir
 mkdir -p %{static_builddir}
-
-# https://fedoraproject.org/wiki/Changes/Make_ambiguous_python_shebangs_error
-# Fix all Python shebangs recursively in .
-# -p preserves timestamps
-# -n prevents creating ~backup files
-# -i specifies the interpreter for the shebang
-# Need to list files that do not match ^[a-zA-Z0-9_]+\.py$ explicitly!
-pathfix.py -pni "%{__python3} %{py3_shbang_opts}" scripts/qemu-trace-stap
 
 
 
