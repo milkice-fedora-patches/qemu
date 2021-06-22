@@ -97,36 +97,6 @@
 %global have_edk2 1
 %endif
 
-# If we can run qemu-sanity-check, hostqemu gets defined.
-%ifarch %{arm}
-%global hostqemu arm-softmmu/qemu-system-arm
-%endif
-%ifarch aarch64
-%global hostqemu aarch64-softmmu/qemu-system-aarch64
-%endif
-%ifarch %{ix86}
-%global hostqemu i386-softmmu/qemu-system-i386
-%endif
-%ifarch x86_64
-%global hostqemu x86_64-softmmu/qemu-system-x86_64
-%endif
-
-%global qemu_sanity_check 0
-%if 0%{?fedora}
-%ifarch x %{?kernel_arches}
-%if 0%{?hostqemu:1}
-%global qemu_sanity_check 1
-%endif
-%endif
-%endif
-
-# QEMU sanity check doesn't know how to pick machine type
-# which is needed on ARM as there is no defualt
-# https://bugzilla.redhat.com/show_bug.cgi?id=1875763
-%ifarch %{arm} aarch64
-%global qemu_sanity_check 0
-%endif
-
 # All modules should be listed here.
 %define have_block_rbd 1
 %ifarch %{ix86} %{arm}
@@ -368,10 +338,6 @@ BuildRequires: libslirp-devel
 # Fedora specific
 BuildRequires: make
 BuildRequires: gcc
-%if %{qemu_sanity_check}
-BuildRequires: qemu-sanity-check-nodeps
-BuildRequires: kernel
-%endif
 # chrpath calls in specfile
 BuildRequires: chrpath
 # -display sdl support
@@ -1655,17 +1621,6 @@ pushd %{qemu_kvm_build}
 # 2021-06: ppc64le test suite hanging
 %ifnarch s390x %{power64}
 make check V=1
-%endif
-
-# Check the binary runs (see eg RHBZ#998722).
-b="./x86_64-softmmu/qemu-system-x86_64"
-if [ -x "$b" ]; then "$b" -help; fi
-
-%if %{qemu_sanity_check}
-# Sanity-check current kernel can boot on this qemu.
-KERNEL=`find /lib/modules -name vmlinuz | head -1`
-echo "Trying to boot kernel $KERNEL with %{?hostqemu}"
-qemu-sanity-check --qemu=%{?hostqemu} --kernel=$KERNEL
 %endif
 
 popd
