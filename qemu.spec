@@ -36,6 +36,14 @@
 %global kvm_package   system-riscv
 %endif
 
+%global modprobe_kvm_conf %{_sourcedir}/kvm.conf
+%ifarch s390x
+    %global modprobe_kvm_conf %{_sourcedir}/kvm-s390x.conf
+%endif
+%ifarch %{ix86} x86_64
+    %global modprobe_kvm_conf %{_sourcedir}/kvm-x86.conf
+%endif
+
 %global tools_only 0
 
 %global user_static 1
@@ -271,9 +279,11 @@ Source10: qemu-guest-agent.service
 Source11: 99-qemu-guest-agent.rules
 Source12: bridge.conf
 Source17: qemu-ga.sysconfig
-Source20: kvm-x86.modprobe.conf
 Source21: 95-kvm-memlock.conf
 Source26: vhost.conf
+Source27: kvm.conf
+Source30: kvm-s390x.conf
+Source31: kvm-x86.conf
 Source36: README.tests
 
 Patch0001: 0001-vl-allow-not-specifying-size-in-m-when-using-M-memor.patch
@@ -1505,9 +1515,6 @@ install -D -p -m 644 %{_sourcedir}/95-kvm-memlock.conf %{buildroot}%{_sysconfdir
 
 %if %{have_kvm}
 install -D -p -m 0644 %{_sourcedir}/vhost.conf %{buildroot}%{_sysconfdir}/modprobe.d/vhost.conf
-%endif
-
-%if %{defined modprobe_kvm_conf}
 install -D -p -m 0644 %{modprobe_kvm_conf} %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
 %endif
 
@@ -1640,7 +1647,6 @@ for emu in %{buildroot}%{_bindir}/qemu-system-*; do
 %if %{need_qemu_kvm}
 ln -sf qemu.1.gz %{buildroot}%{_mandir}/man1/qemu-kvm.1.gz
 ln -sf qemu-system-x86_64 %{buildroot}%{_bindir}/qemu-kvm
-install -D -p -m 0644 %{_sourcedir}/kvm-x86.modprobe.conf %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
    %endif
 
 
@@ -1804,6 +1810,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/bridge.conf
 %if %{have_kvm}
+%config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/vhost.conf
 %endif
 %config(noreplace) %{_sysconfdir}/sasl2/%{name}.conf
@@ -2173,7 +2180,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %if %{need_qemu_kvm}
 %{_bindir}/qemu-kvm
 %{_mandir}/man1/qemu-kvm.1*
-%config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
 %endif
 
 
