@@ -268,7 +268,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 6%{?rcrel}%{?dist}
+Release: 7%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2195,6 +2195,13 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Jun 23 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-7
+- Add qemu-tests package
+- Move qemu-sanity-check test to fedora CI
+- Add s390x and generic kvm modprobe file from RHEL
+- Add vhost modprobe file from RHEL
+- Distribute tracetool, simpletrace, dump-guest-memory tools
+
 * Wed Jun 16 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-6
 - Build against fuse3 and SDL2_image
 - Move qemu-storage-daemon to qemu-img subpackage
