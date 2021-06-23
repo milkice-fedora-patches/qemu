@@ -1,7 +1,7 @@
 %global libfdt_version 1.6.0
 %global libseccomp_version 2.4.0
 %global libusbx_version 1.0.23
-%global meson_version 0.55.3-3
+%global meson_version 0.55.3
 %global usbredir_version 0.7.1
 
 %global have_memlock_limits 0
