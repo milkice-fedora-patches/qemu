@@ -182,6 +182,7 @@
 %define requires_audio_pa Requires: %{name}-audio-pa = %{evr}
 %define requires_audio_sdl Requires: %{name}-audio-sdl = %{evr}
 %define requires_char_baum Requires: %{name}-char-baum = %{evr}
+%define requires_device_usb_host Requires: %{name}-device-usb-host = %{evr}
 %define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
 %define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
@@ -190,9 +191,12 @@
 %define requires_ui_egl_headless Requires: %{name}-ui-egl-headless = %{evr}
 %define requires_ui_opengl Requires: %{name}-ui-opengl = %{evr}
 %define requires_device_display_virtio_gpu Requires: %{name}-device-display-virtio-gpu = %{evr}
+%define requires_device_display_virtio_gpu_gl Requires: %{name}-device-display-virtio-gpu-gl = %{evr}
 %define requires_device_display_virtio_gpu_pci Requires: %{name}-device-display-virtio-gpu-pci = %{evr}
+%define requires_device_display_virtio_gpu_pci_gl Requires: %{name}-device-display-virtio-gpu-pci_gl = %{evr}
 %define requires_device_display_virtio_gpu_ccw Requires: %{name}-device-display-virtio-gpu-ccw = %{evr}
 %define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
+%define requires_device_display_virtio_vga_gl Requires: %{name}-device-display-virtio-vga_gl = %{evr}
 
 %if %{have_virgl}
 %define requires_device_display_vhost_user_gpu Requires: %{name}-device-display-vhost-user-gpu = %{evr}
@@ -246,8 +250,12 @@
 %{requires_device_display_qxl} \
 %{requires_device_display_vhost_user_gpu} \
 %{requires_device_display_virtio_gpu} \
+%{requires_device_display_virtio_gpu_gl} \
 %{requires_device_display_virtio_gpu_pci} \
+%{requires_device_display_virtio_gpu_pci_gl} \
 %{requires_device_display_virtio_vga} \
+%{requires_device_display_virtio_vga_gl} \
+%{requires_device_usb_host} \
 %{requires_device_usb_redirect} \
 %{requires_device_usb_smartcard} \
 
@@ -264,7 +272,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-# global rcver rc4
+%global rcver rc2
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -273,8 +281,8 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 6.0.0
-Release: 12%{?rcrel}%{?dist}
+Version: 6.1.0
+Release: 0.1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -292,13 +300,6 @@ Source30: kvm-s390x.conf
 Source31: kvm-x86.conf
 Source36: README.tests
 
-Patch0001: 0001-vl-allow-not-specifying-size-in-m-when-using-M-memor.patch
-Patch0002: 0002-qemu-config-load-modules-when-instantiating-option-g.patch
-Patch0003: 0003-qemu-config-parse-configuration-files-to-a-QDict.patch
-Patch0004: 0004-vl-plumb-keyval-based-options-into-readconfig.patch
-Patch0005: 0005-vl-plug-object-back-into-readconfig.patch
-Patch0006: 0006-qemu-option-support-accept-any-QemuOptsList-in-qemu_.patch
-
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
 BuildRequires: glib2-devel
@@ -314,6 +315,7 @@ BuildRequires: usbredir-devel >= %{usbredir_version}
 %endif
 BuildRequires: texinfo
 BuildRequires: python3-sphinx
+BuildRequires: python3-sphinx_rtd_theme
 BuildRequires: libseccomp-devel >= %{libseccomp_version}
 # For network block driver
 BuildRequires: libcurl-devel
@@ -359,6 +361,7 @@ BuildRequires: pkgconfig(gbm)
 %endif
 BuildRequires: perl-Test-Harness
 BuildRequires: libslirp-devel
+BuildRequires: libbpf-devel
 
 
 # Fedora specific
@@ -708,21 +711,48 @@ Summary: QEMU virtio-gpu display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu
 This package provides the virtio-gpu display device for QEMU.
+
+%package device-display-virtio-gpu-gl
+Summary: QEMU virtio-gpu-gl display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-gpu-gl
+This package provides the virtio-gpu-gl display device for QEMU.
+
 %package device-display-virtio-gpu-pci
 Summary: QEMU virtio-gpu-pci display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu-pci
 This package provides the virtio-gpu-pci display device for QEMU.
+
+%package device-display-virtio-gpu-pci-gl
+Summary: QEMU virtio-gpu-pci-gl display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-gpu-pci-gl
+This package provides the virtio-gpu-pci-gl display device for QEMU.
+
 %package device-display-virtio-gpu-ccw
 Summary: QEMU virtio-gpu-ccw display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu-ccw
 This package provides the virtio-gpu-ccw display device for QEMU.
+
 %package device-display-virtio-vga
 Summary: QEMU virtio-vga display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-vga
 This package provides the virtio-vga display device for QEMU.
+
+%package device-display-virtio-vga-gl
+Summary: QEMU virtio-vga-gl display device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-display-virtio-vga-gl
+This package provides the virtio-vga-gl display device for QEMU.
+
+%package device-usb-host
+Summary: QEMU usb host device
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description device-usb-host
+This package provides the USB pass through driver for QEMU.
 
 %package device-usb-redirect
 Summary: QEMU usbredir device
@@ -1158,6 +1188,8 @@ mkdir -p %{static_builddir}
   --disable-auth-pam               \\\
   --disable-avx2                   \\\
   --disable-avx512f                \\\
+  --disable-block-drv-whitelist-in-tools \\\
+  --disable-bpf                    \\\
   --disable-bochs                  \\\
   --disable-brlapi                 \\\
   --disable-bsd-user               \\\
@@ -1232,12 +1264,13 @@ mkdir -p %{static_builddir}
   --disable-sdl                    \\\
   --disable-sdl-image              \\\
   --disable-seccomp                \\\
-  --disable-sheepdog               \\\
   --disable-slirp                  \\\
+  --disable-slirp-smbd             \\\
   --disable-smartcard              \\\
   --disable-snappy                 \\\
   --disable-sparse                 \\\
   --disable-spice                  \\\
+  --disable-spice-protocol         \\\
   --disable-strip                  \\\
   --disable-system                 \\\
   --disable-tcg                    \\\
@@ -1323,6 +1356,8 @@ run_configure \
 %ifarch %{ix86} x86_64
   --enable-avx2 \
 %endif
+  --enable-block-drv-whitelist-in-tools \
+  --enable-bpf \
   --enable-cap-ng \
   --enable-capstone \
   --enable-coroutine-pool \
@@ -1367,6 +1402,7 @@ run_configure \
 %endif
   --enable-seccomp \
   --enable-slirp=system \
+  --enable-slirp-smbd \
   --enable-snappy \
   --enable-system \
   --enable-tcg \
@@ -1433,6 +1469,7 @@ run_configure \
   --enable-smartcard \
 %if %{have_spice}
   --enable-spice \
+  --enable-spice-protocol \
 %endif
   --enable-usb-redir \
   --enable-vdi \
@@ -1823,6 +1860,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %files tests
 %{testsdir}
+%{_libdir}/%{name}/accel-qtest*.so
 
 %files block-curl
 %{_libdir}/%{name}/block-curl.so
@@ -1881,12 +1919,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %files device-display-virtio-gpu
 %{_libdir}/%{name}/hw-display-virtio-gpu.so
+%files device-display-virtio-gpu-gl
+%{_libdir}/%{name}/hw-display-virtio-gpu-gl.so
 %files device-display-virtio-gpu-pci
 %{_libdir}/%{name}/hw-display-virtio-gpu-pci.so
+%files device-display-virtio-gpu-pci-gl
+%{_libdir}/%{name}/hw-display-virtio-gpu-pci-gl.so
 %files device-display-virtio-gpu-ccw
 %{_libdir}/%{name}/hw-s390x-virtio-gpu-ccw.so
 %files device-display-virtio-vga
 %{_libdir}/%{name}/hw-display-virtio-vga.so
+%files device-display-virtio-vga-gl
+%{_libdir}/%{name}/hw-display-virtio-vga-gl.so
+%files device-usb-host
+%{_libdir}/%{name}/hw-usb-host.so
 %files device-usb-redirect
 %{_libdir}/%{name}/hw-usb-redirect.so
 %files device-usb-smartcard
@@ -2156,6 +2202,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %files system-x86-core
 %{_bindir}/qemu-system-i386
 %{_bindir}/qemu-system-x86_64
+%{_libdir}/%{name}/accel-tcg-i386.so
+%{_libdir}/%{name}/accel-tcg-x86_64.so
 %{_datadir}/systemtap/tapset/qemu-system-i386*.stp
 %{_datadir}/systemtap/tapset/qemu-system-x86_64*.stp
 %{_mandir}/man1/qemu-system-i386.1*
@@ -2183,6 +2231,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Aug 9 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-0.1-rc2
+- Rebase to qemu 6.1.0-rc2
+
 * Thu Jul 29 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-12
 - Drop python3 shebang fixup for tests rpm
 - Parallelize make check
