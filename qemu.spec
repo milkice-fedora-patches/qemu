@@ -124,9 +124,11 @@
 %define have_block_nfs 1
 %endif
 
-%define have_capstone 0
+%define have_capstone_devel 0
 %if 0%{?fedora}
-%define have_capstone 1
+# capstone-devel is only on Fedora. Use it if it's available, but
+# if not, use the internal qemu submodule copy
+%define have_capstone_devel 1
 %endif
 
 %define have_librdma 1
@@ -402,7 +404,7 @@ BuildRequires: libcacard-devel
 # virgl 3d support
 BuildRequires: virglrenderer-devel
 %endif
-%if %{have_capstone}
+%if %{have_capstone_devel}
 # preferred disassembler for TCG
 BuildRequires: capstone-devel
 %endif
@@ -1300,9 +1302,7 @@ run_configure \
   --enable-avx2 \
 %endif
   --enable-cap-ng \
-%if %{have_capstone}
   --enable-capstone \
-%endif
   --enable-coroutine-pool \
   --enable-curl \
   --enable-debug-info \
