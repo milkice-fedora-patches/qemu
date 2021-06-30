@@ -1701,8 +1701,7 @@ echo "Testing %{name}-build"
 # 2021-06: s390x tests randomly failing with 'Broken pipe' errors
 # dhorak couldn't reproduce locally on an s390x machine so guessed
 # it's a resource issue
-# 2021-06: ppc64le test suite hanging
-%ifnarch s390x %{power64}
+%ifnarch s390x
 make check V=1
 %endif
 
