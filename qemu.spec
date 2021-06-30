@@ -780,8 +780,6 @@ x86 system, this will install qemu-system-x86-core
 %package user
 Summary: QEMU user mode emulation of qemu targets
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-# On upgrade, make qemu-user get replaced with qemu-user + qemu-user-binfmt
-Obsoletes: %{name}-user < 2:2.6.0-5%{?dist}
 %description user
 This package provides the user mode emulation of qemu targets
 
@@ -793,8 +791,6 @@ Requires(post): systemd-units
 Requires(postun): systemd-units
 # qemu-user-binfmt + qemu-user-static both provide binfmt rules
 Conflicts: %{name}-user-static
-# On upgrade, make qemu-user get replaced with qemu-user + qemu-user-binfmt
-Obsoletes: %{name}-user < 2:2.6.0-5%{?dist}
 %description user-binfmt
 This package provides the user mode emulation of qemu targets
 
@@ -959,7 +955,6 @@ This package provides the QEMU system emulator for NIOS2.
 %package system-or1k
 Summary: QEMU system emulator for OpenRisc32
 Requires: %{name}-system-or1k-core = %{epoch}:%{version}-%{release}
-Obsoletes: %{name}-system-or32 < 2:2.9.0
 %{requires_all_modules}
 %description system-or1k
 This package provides the QEMU system emulator for OpenRisc32 boards.
@@ -967,7 +962,6 @@ This package provides the QEMU system emulator for OpenRisc32 boards.
 %package system-or1k-core
 Summary: QEMU system emulator for OpenRisc32
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-Obsoletes: %{name}-system-or32-core < 2:2.9.0
 %description system-or1k-core
 This package provides the QEMU system emulator for OpenRisc32 boards.
 
