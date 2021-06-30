@@ -790,7 +790,10 @@ Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires(post): systemd-units
 Requires(postun): systemd-units
 # qemu-user-binfmt + qemu-user-static both provide binfmt rules
-Conflicts: %{name}-user-static
+# Temporarily disable to get fedora CI working. Re-enable
+# once this CI issue let's us deal with subpackage conflicts:
+# https://pagure.io/fedora-ci/general/issue/184
+#Conflicts: qemu-user-static
 %description user-binfmt
 This package provides the user mode emulation of qemu targets
 
@@ -801,8 +804,11 @@ Requires: %{name}-common = %{epoch}:%{version}-%{release}
 Requires(post): systemd-units
 Requires(postun): systemd-units
 # qemu-user-binfmt + qemu-user-static both provide binfmt rules
-Conflicts: %{name}-user-binfmt
-Provides: %{name}-user-binfmt
+# Temporarily disable to get fedora CI working. Re-enable
+# once this CI issue let's us deal with subpackage conflicts:
+# https://pagure.io/fedora-ci/general/issue/184
+#Conflicts: qemu-user-binfmt
+#Provides: qemu-user-binfmt
 %description user-static
 This package provides the user mode emulation of qemu targets built as
 static binaries
