@@ -1255,9 +1255,11 @@ mkdir -p %{static_builddir}
   --with-git-submodules=ignore     \\\
   --without-default-devices
 
+# Export CFLAGS, LDFLAGS, CC, CXX, etc.
+%set_build_flags
 
 run_configure() {
-    CC=%{__cc} CXX=%{__cxx} ../configure  \
+    ../configure  \
         --prefix="%{_prefix}" \
         --libdir="%{_libdir}" \
         --datadir="%{_datadir}" \
@@ -1266,8 +1268,8 @@ run_configure() {
         --localstatedir="%{_localstatedir}" \
         --docdir="%{_docdir}" \
         --libexecdir="%{_libexecdir}" \
-        --extra-ldflags="-Wl,--build-id -Wl,-z,relro -Wl,-z,now" \
-        --extra-cflags="%{optflags}" \
+        --extra-ldflags="-Wl,--build-id $LDFLAGS" \
+        --extra-cflags="$CFLAGS" \
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
         --firmwarepath=%{_prefix}/share/qemu-firmware \
