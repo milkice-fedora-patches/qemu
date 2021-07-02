@@ -1566,10 +1566,7 @@ install -p -m 0644 %{_sourcedir}/README.tests %{buildroot}%{testsdir}/README
 
 # Do the actual qemu tree install
 pushd %{qemu_kvm_build}
-make DESTDIR=%{buildroot} \
-    sharedir="%{_datadir}/%{name}" \
-    datadir="%{_datadir}/%{name}" \
-    install
+make DESTDIR=%{buildroot} install
 popd
 
 
