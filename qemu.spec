@@ -359,8 +359,12 @@ BuildRequires: libslirp-devel
 
 
 # Fedora specific
-BuildRequires: make
+%if "%{toolchain}" == "clang"
+BuildRequires: clang
+%else
 BuildRequires: gcc
+%endif
+BuildRequires: make
 # -display sdl support
 BuildRequires: SDL2-devel
 # pulseaudio audio output
