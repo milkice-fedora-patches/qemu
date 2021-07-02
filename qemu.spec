@@ -1427,24 +1427,24 @@ run_configure \
 
 
 %if %{tools_only}
-make V=1 %{?_smp_mflags} qemu-img
-make V=1 %{?_smp_mflags} qemu-io
-make V=1 %{?_smp_mflags} qemu-nbd
-make V=1 %{?_smp_mflags} storage-daemon/qemu-storage-daemon
+%make_build qemu-img
+%make_build qemu-io
+%make_build qemu-nbd
+%make_build storage-daemon/qemu-storage-daemon
 
-make V=1 %{?_smp_mflags} docs/qemu-img.1
-make V=1 %{?_smp_mflags} docs/qemu-nbd.8
-make V=1 %{?_smp_mflags} docs/qemu-storage-daemon.1
-make V=1 %{?_smp_mflags} docs/qemu-storage-daemon-qmp-ref.7
+%make_build docs/qemu-img.1
+%make_build docs/qemu-nbd.8
+%make_build docs/qemu-storage-daemon.1
+%make_build docs/qemu-storage-daemon-qmp-ref.7
 
-make V=1 %{?_smp_mflags} qga/qemu-ga
-make V=1 %{?_smp_mflags} docs/qemu-ga.8
+%make_build qga/qemu-ga
+%make_build docs/qemu-ga.8
 # endif tools_only
 %endif
 
 
 %if !%{tools_only}
-make V=1 %{?_smp_mflags}
+%make_build
 popd
 
 # Fedora build for qemu-user-static
@@ -1458,7 +1458,7 @@ run_configure \
   --disable-blobs \
   --static
 
-make V=1 %{?_smp_mflags}
+%make_build
 popd  # static
 %endif
 # endif !tools_only
