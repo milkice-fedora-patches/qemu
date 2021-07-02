@@ -1366,7 +1366,8 @@ run_configure \
   --enable-werror \
 %endif
   --enable-xkbcommon \
-  %dnl Fedora specific flags
+  \
+  \
   --audio-drv-list=pa,sdl,alsa,try-jack,oss \
   --target-list-exclude=moxie-softmmu \
   --with-default-devices \
