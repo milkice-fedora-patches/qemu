@@ -99,6 +99,7 @@
 %global have_jack 0
 %endif
 
+%global have_sdl_image %{defined fedora}
 %global have_fdt 1
 %global have_opengl 1
 %global have_usbredir 1
@@ -431,7 +432,9 @@ BuildRequires: fuse-devel
 BuildRequires: jack-audio-connection-kit-devel
 %endif
 BuildRequires: fuse3-devel
+%if %{have_sdl_image}
 BuildRequires: SDL2_image-devel
+%endif
 
 %if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
@@ -1401,7 +1404,9 @@ run_configure \
   --enable-qom-cast-debug \
   --enable-replication \
   --enable-sdl \
+%if %{have_sdl_image}
   --enable-sdl-image \
+%endif
   --enable-smartcard \
 %if %{have_spice}
   --enable-spice \
