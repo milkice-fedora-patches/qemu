@@ -1131,9 +1131,6 @@ mkdir -p %{static_builddir}
 
 
 %build
-# --build-id option is used for giving info to the debug packages.
-buildldflags="VL_LDFLAGS=-Wl,--build-id"
-
 %define disable_everything         \\\
   --audio-drv-list=                \\\
   --disable-attr                   \\\
@@ -1430,24 +1427,24 @@ run_configure \
 
 
 %if %{tools_only}
-make V=1 %{?_smp_mflags} $buildldflags qemu-img
-make V=1 %{?_smp_mflags} $buildldflags qemu-io
-make V=1 %{?_smp_mflags} $buildldflags qemu-nbd
-make V=1 %{?_smp_mflags} $buildldflags storage-daemon/qemu-storage-daemon
+make V=1 %{?_smp_mflags} qemu-img
+make V=1 %{?_smp_mflags} qemu-io
+make V=1 %{?_smp_mflags} qemu-nbd
+make V=1 %{?_smp_mflags} storage-daemon/qemu-storage-daemon
 
-make V=1 %{?_smp_mflags} $buildldflags docs/qemu-img.1
-make V=1 %{?_smp_mflags} $buildldflags docs/qemu-nbd.8
-make V=1 %{?_smp_mflags} $buildldflags docs/qemu-storage-daemon.1
-make V=1 %{?_smp_mflags} $buildldflags docs/qemu-storage-daemon-qmp-ref.7
+make V=1 %{?_smp_mflags} docs/qemu-img.1
+make V=1 %{?_smp_mflags} docs/qemu-nbd.8
+make V=1 %{?_smp_mflags} docs/qemu-storage-daemon.1
+make V=1 %{?_smp_mflags} docs/qemu-storage-daemon-qmp-ref.7
 
-make V=1 %{?_smp_mflags} $buildldflags qga/qemu-ga
-make V=1 %{?_smp_mflags} $buildldflags docs/qemu-ga.8
+make V=1 %{?_smp_mflags} qga/qemu-ga
+make V=1 %{?_smp_mflags} docs/qemu-ga.8
 # endif tools_only
 %endif
 
 
 %if !%{tools_only}
-make V=1 %{?_smp_mflags} $buildldflags
+make V=1 %{?_smp_mflags}
 popd
 
 # Fedora build for qemu-user-static
@@ -1461,7 +1458,7 @@ run_configure \
   --disable-blobs \
   --static
 
-make V=1 %{?_smp_mflags} $buildldflags
+make V=1 %{?_smp_mflags}
 popd  # static
 %endif
 # endif !tools_only
