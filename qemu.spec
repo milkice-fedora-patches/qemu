@@ -3,6 +3,7 @@
 %global libusbx_version 1.0.23
 %global meson_version 0.55.3
 %global usbredir_version 0.7.1
+%global ipxe_version 20200823-5.git4bd064de
 
 %global have_memlock_limits 0
 %global need_qemu_kvm 0
@@ -145,6 +146,7 @@
 %global _smp_mflags %{nil}
 %endif
 
+%global firmwaredirs "%{_datarootdir}/qemu-firmware:%{_datarootdir}/ipxe/qemu:%{_datarootdir}/seavgabios:%{_datarootdir}/seabios:%{_datarootdir}/sgabios"
 
 %global qemudocdir %{_docdir}/%{name}
 %define evr %{epoch}:%{version}-%{release}
@@ -483,7 +485,7 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
 %{obsoletes_some_modules}
-Requires: ipxe-roms-qemu
+Requires: ipxe-roms-qemu >= %{ipxe_version}
 %description common
 %{name} is an open source virtualizer that provides hardware emulation for
 the KVM hypervisor.
@@ -1276,7 +1278,7 @@ run_configure() {
         --extra-cflags="$CFLAGS" \
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
-        --firmwarepath=%{_prefix}/share/qemu-firmware \
+        --firmwarepath=%firmwaredirs \
         --meson="%{__meson}" \
         --enable-trace-backend=dtrace \
         --with-coroutine=ucontext \
@@ -1606,40 +1608,6 @@ rm -rf %{buildroot}%{_datadir}/%{name}/edk2*
 rm -rf %{buildroot}%{_datadir}/%{name}/firmware
 
 
-pxe_link() {
-    ln -s ../ipxe/$2.rom %{buildroot}%{_datadir}/%{name}/pxe-$1.rom
-    ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{name}/efi-$1.rom
-}
-
-pxe_link e1000 8086100e
-pxe_link ne2k_pci 10ec8029
-pxe_link pcnet 10222000
-pxe_link rtl8139 10ec8139
-pxe_link virtio 1af41000
-pxe_link eepro100 80861209
-pxe_link e1000e 808610d3
-pxe_link vmxnet3 15ad07b0
-
-rom_link() {
-    ln -s $1 %{buildroot}%{_datadir}/%{name}/$2
-}
-
-rom_link ../seavgabios/vgabios-isavga.bin vgabios.bin
-rom_link ../seavgabios/vgabios-cirrus.bin vgabios-cirrus.bin
-rom_link ../seavgabios/vgabios-qxl.bin vgabios-qxl.bin
-rom_link ../seavgabios/vgabios-stdvga.bin vgabios-stdvga.bin
-rom_link ../seavgabios/vgabios-vmware.bin vgabios-vmware.bin
-rom_link ../seavgabios/vgabios-virtio.bin vgabios-virtio.bin
-rom_link ../seavgabios/vgabios-ramfb.bin vgabios-ramfb.bin
-rom_link ../seavgabios/vgabios-bochs-display.bin vgabios-bochs-display.bin
-rom_link ../seavgabios/vgabios-isavga.bin vgabios-isavga.bin
-rom_link ../seavgabios/vgabios-ati.bin vgabios-ati.bin
-rom_link ../seabios/bios.bin bios.bin
-rom_link ../seabios/bios-256k.bin bios-256k.bin
-rom_link ../seabios/bios-microvm.bin bios-microvm.bin
-rom_link ../sgabios/sgabios.bin sgabios.bin
-
-
 # Fedora specific stuff below
 %find_lang %{name}
 
@@ -1830,9 +1798,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %exclude %{_datadir}/%{name}/qemu-nsis.bmp
 %{_libexecdir}/virtfs-proxy-helper
 %{_mandir}/man1/virtfs-proxy-helper.1*
-%{_datadir}/%{name}/vgabios*.bin
-%{_datadir}/%{name}/pxe*.rom
-%{_datadir}/%{name}/efi*.rom
 
 
 %files tests
@@ -2174,15 +2139,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/systemtap/tapset/qemu-system-x86_64*.stp
 %{_mandir}/man1/qemu-system-i386.1*
 %{_mandir}/man1/qemu-system-x86_64.1*
-%{_datadir}/%{name}/bios.bin
-%{_datadir}/%{name}/bios-256k.bin
-%{_datadir}/%{name}/bios-microvm.bin
 %{_datadir}/%{name}/kvmvapic.bin
 %{_datadir}/%{name}/linuxboot.bin
 %{_datadir}/%{name}/multiboot.bin
 %{_datadir}/%{name}/pvh.bin
 %{_datadir}/%{name}/qboot.rom
-%{_datadir}/%{name}/sgabios.bin
 %if %{need_qemu_kvm}
 %{_bindir}/qemu-kvm
 %{_mandir}/man1/qemu-kvm.1*
