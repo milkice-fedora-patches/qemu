@@ -146,7 +146,7 @@
 %global _smp_mflags %{nil}
 %endif
 
-%global firmwaredirs "%{_datarootdir}/qemu-firmware:%{_datarootdir}/ipxe/qemu:%{_datarootdir}/seavgabios:%{_datarootdir}/seabios:%{_datarootdir}/sgabios"
+%global firmwaredirs "%{_datadir}/qemu-firmware:%{_datadir}/ipxe/qemu:%{_datadir}/seavgabios:%{_datadir}/seabios:%{_datadir}/sgabios"
 
 %global qemudocdir %{_docdir}/%{name}
 %define evr %{epoch}:%{version}-%{release}
