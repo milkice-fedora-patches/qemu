@@ -474,6 +474,7 @@ Requires: %{name}-system-tricore = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-x86 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-xtensa = %{epoch}:%{version}-%{release}
 Requires: %{name}-img = %{epoch}:%{version}-%{release}
+Requires: qemu-pr-helper = %{epoch}:%{version}-%{release}
 
 
 %package common
@@ -518,6 +519,13 @@ This package provides an agent to run inside guests, which communicates
 with the host over a virtio-serial channel named "org.qemu.guest_agent.0"
 
 This package does not need to be installed on the host OS.
+
+
+%package -n qemu-pr-helper
+Summary: qemu-pr-helper utility for %{name}
+%description -n qemu-pr-helper
+This package provides the qemu-pr-helper utility that is required for certain
+SCSI features.
 
 
 %package tests
@@ -1750,6 +1758,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %files
 # Deliberately empty
 
+
+%files -n qemu-pr-helper
+%{_bindir}/qemu-pr-helper
+%{_unitdir}/qemu-pr-helper.service
+%{_unitdir}/qemu-pr-helper.socket
+%{_mandir}/man8/qemu-pr-helper.8*
+
+
 %files docs
 %doc %{qemudocdir}
 
@@ -1758,7 +1774,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %license COPYING COPYING.LIB LICENSE
 %{_bindir}/qemu-edid
 %{_bindir}/qemu-keymap
-%{_bindir}/qemu-pr-helper
 %{_bindir}/qemu-trace-stap
 %dir %{_datadir}/%{name}/
 %{_datadir}/icons/*
@@ -1780,7 +1795,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-ga-ref.7*
 %{_mandir}/man7/qemu-qmp-ref.7*
-%{_mandir}/man8/qemu-pr-helper.8*
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/bridge.conf
 %if %{have_kvm}
@@ -1788,8 +1802,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %config(noreplace) %{_sysconfdir}/modprobe.d/vhost.conf
 %endif
 %config(noreplace) %{_sysconfdir}/sasl2/%{name}.conf
-%{_unitdir}/qemu-pr-helper.service
-%{_unitdir}/qemu-pr-helper.socket
 
 
 # Fedora specific
