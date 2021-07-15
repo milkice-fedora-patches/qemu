@@ -474,6 +474,7 @@ Requires: %{name}-system-tricore = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-x86 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-xtensa = %{epoch}:%{version}-%{release}
 Requires: %{name}-img = %{epoch}:%{version}-%{release}
+Requires: %{name}-tools = %{epoch}:%{version}-%{release}
 Requires: qemu-pr-helper = %{epoch}:%{version}-%{release}
 
 
@@ -519,6 +520,12 @@ This package provides an agent to run inside guests, which communicates
 with the host over a virtio-serial channel named "org.qemu.guest_agent.0"
 
 This package does not need to be installed on the host OS.
+
+
+%package tools
+Summary: %{name} support tools
+%description tools
+%{name}-tools provides various tools related to %{name} usage.
 
 
 %package -n qemu-pr-helper
@@ -1766,30 +1773,35 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_mandir}/man8/qemu-pr-helper.8*
 
 
+%files tools
+%{_bindir}/qemu-keymap
+%{_bindir}/qemu-edid
+%{_bindir}/qemu-trace-stap
+%{_datadir}/%{name}/simpletrace.py*
+%{_datadir}/%{name}/tracetool/*.py*
+%{_datadir}/%{name}/tracetool/backend/*.py*
+%{_datadir}/%{name}/tracetool/format/*.py*
+%{_datadir}/%{name}/dump-guest-memory.py*
+%{_datadir}/%{name}/trace-events-all
+%{_mandir}/man1/qemu-trace-stap.1*
+# Fedora specific
+%{_bindir}/elf2dmp
+
+
 %files docs
 %doc %{qemudocdir}
 
 
 %files common -f %{name}.lang
 %license COPYING COPYING.LIB LICENSE
-%{_bindir}/qemu-edid
-%{_bindir}/qemu-keymap
-%{_bindir}/qemu-trace-stap
 %dir %{_datadir}/%{name}/
 %{_datadir}/icons/*
-%{_datadir}/%{name}/dump-guest-memory.py*
 %{_datadir}/%{name}/keymaps/
 %{_datadir}/%{name}/linuxboot_dma.bin
-%{_datadir}/%{name}/simpletrace.py*
-%{_datadir}/%{name}/trace-events-all
-%{_datadir}/%{name}/tracetool/*.py*
-%{_datadir}/%{name}/tracetool/backend/*.py*
-%{_datadir}/%{name}/tracetool/format/*.py*
 %{_datadir}/%{name}/vhost-user/50-qemu-virtiofsd.json
 %attr(4755, -, -) %{_libexecdir}/qemu-bridge-helper
 %{_libexecdir}/virtiofsd
 %{_mandir}/man1/%{name}.1*
-%{_mandir}/man1/qemu-trace-stap.1*
 %{_mandir}/man1/virtiofsd.1*
 %{_mandir}/man7/qemu-block-drivers.7*
 %{_mandir}/man7/qemu-cpu-models.7*
@@ -1805,7 +1817,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 # Fedora specific
-%{_bindir}/elf2dmp
 %{_datadir}/applications/qemu.desktop
 %exclude %{_datadir}/%{name}/qemu-nsis.bmp
 %{_libexecdir}/virtfs-proxy-helper
