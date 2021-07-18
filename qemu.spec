@@ -273,7 +273,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 9%{?rcrel}%{?dist}
+Release: 10%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2185,6 +2185,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Sun Jul 18 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-10
+- Split out qemu-pr-helper and qemu-tools subpackages
+
 * Wed Jul 07 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-9
 - Use standard fedora build macros
 - Access roms directly in ipxe, seabios, seavgabios directories
