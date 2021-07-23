@@ -1288,7 +1288,7 @@ run_configure() {
         --localstatedir="%{_localstatedir}" \
         --docdir="%{_docdir}" \
         --libexecdir="%{_libexecdir}" \
-        --extra-ldflags="-Wl,--build-id $LDFLAGS" \
+        --extra-ldflags="$LDFLAGS" \
         --extra-cflags="$CFLAGS" \
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
