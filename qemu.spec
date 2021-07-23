@@ -1688,7 +1688,7 @@ echo "Testing %{name}-build"
 # it's a resource issue
 # 2021-07: ppc64le intermittently hanging
 %ifnarch s390x %{power64}
-make check V=1
+%make_build check
 %endif
 
 popd
