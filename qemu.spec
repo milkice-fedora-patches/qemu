@@ -1280,6 +1280,7 @@ mkdir -p %{static_builddir}
 
 run_configure() {
     ../configure  \
+        --cxx=/bin/false \
         --prefix="%{_prefix}" \
         --libdir="%{_libdir}" \
         --datadir="%{_datadir}" \
