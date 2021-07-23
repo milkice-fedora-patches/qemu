@@ -1578,10 +1578,6 @@ install -p -m 0755 tests/Makefile.include %{buildroot}%{testsdir}/tests/
 # Install qemu-iotests
 cp -R tests/qemu-iotests/* %{buildroot}%{testsdir}/tests/qemu-iotests/
 cp -ur %{qemu_kvm_build}/tests/qemu-iotests/* %{buildroot}%{testsdir}/tests/qemu-iotests/
-# Avoid ambiguous 'python' interpreter name
-find %{buildroot}%{testsdir}/tests/qemu-iotests/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/env \(python\|python3\)+%{__python3}+' {} \;
-find %{buildroot}%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/env \(python\|python3\)+%{__python3}+' {} \;
-find %{buildroot}%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/\(python\|python3\)+%{__python3}+' {} \;
 
 # Install our custom tests README
 install -p -m 0644 %{_sourcedir}/README.tests %{buildroot}%{testsdir}/README
