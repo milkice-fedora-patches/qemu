@@ -446,13 +446,6 @@ BuildRequires: SDL2_image-devel
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
 %endif
 
-
-%description
-%{name} is an open source virtualizer that provides hardware
-emulation for the KVM hypervisor. %{name} acts as a virtual
-machine monitor together with the KVM kernel modules, and emulates the
-hardware for a full system such as a PC and its associated peripherals.
-
 # Requires for the Fedora 'qemu' metapackage
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
@@ -478,6 +471,11 @@ Requires: %{name}-img = %{epoch}:%{version}-%{release}
 Requires: %{name}-tools = %{epoch}:%{version}-%{release}
 Requires: qemu-pr-helper = %{epoch}:%{version}-%{release}
 
+%description
+%{name} is an open source virtualizer that provides hardware
+emulation for the KVM hypervisor. %{name} acts as a virtual
+machine monitor together with the KVM kernel modules, and emulates the
+hardware for a full system such as a PC and its associated peripherals.
 
 %package common
 Summary: QEMU common files needed by all QEMU targets
