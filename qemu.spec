@@ -1275,11 +1275,9 @@ mkdir -p %{static_builddir}
   --with-git-submodules=ignore     \\\
   --without-default-devices
 
-# Export CFLAGS, LDFLAGS, CC, CXX, etc.
-%set_build_flags
-
 run_configure() {
     ../configure  \
+        --cc=%{__cc} \
         --cxx=/bin/false \
         --prefix="%{_prefix}" \
         --libdir="%{_libdir}" \
@@ -1289,8 +1287,8 @@ run_configure() {
         --localstatedir="%{_localstatedir}" \
         --docdir="%{_docdir}" \
         --libexecdir="%{_libexecdir}" \
-        --extra-ldflags="$LDFLAGS" \
-        --extra-cflags="$CFLAGS" \
+        --extra-ldflags="%{build_ldflags}" \
+        --extra-cflags="%{optflags}" \
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
         --firmwarepath=%firmwaredirs \
