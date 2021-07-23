@@ -273,7 +273,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 10%{?rcrel}%{?dist}.1
+Release: 11%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -452,6 +452,7 @@ BuildRequires: glibc-static pcre-static glib2-static zlib-static
 emulation for the KVM hypervisor. %{name} acts as a virtual
 machine monitor together with the KVM kernel modules, and emulates the
 hardware for a full system such as a PC and its associated peripherals.
+
 # Requires for the Fedora 'qemu' metapackage
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
@@ -2185,6 +2186,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Jul 23 2021 Richard W.M. Jones <rjones@redhat.com> - 6.0.0-11
+- Fix dependencies of qemu metapackage.
+
 * Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2:6.0.0-10.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
