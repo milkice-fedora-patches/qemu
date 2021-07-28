@@ -1345,6 +1345,9 @@ run_configure \
   --enable-libusb \
   --enable-libudev \
   --enable-linux-aio \
+%if "%{_lto_cflags}" != "%{nil}"
+  --enable-lto \
+%endif
   --enable-lzo \
   --enable-malloc-trim \
   --enable-modules \
