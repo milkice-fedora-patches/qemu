@@ -138,7 +138,8 @@
 %define have_librdma 0
 %endif
 
-# Disable LTO since it caused lots of strange assert failures.
+# LTO still has issues with qemu on armv7hl and aarch64
+# https://bugzilla.redhat.com/show_bug.cgi?id=1952483
 %global _lto_cflags %{nil}
 
 # OOM killer breaks builds with parallel make on s390(x)
