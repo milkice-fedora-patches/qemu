@@ -1292,7 +1292,7 @@ run_configure() {
         --extra-cflags="%{optflags}" \
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
-        --firmwarepath=%firmwaredirs \
+        --firmwarepath="%firmwaredirs" \
         --meson="%{__meson}" \
         --enable-trace-backend=dtrace \
         --with-coroutine=ucontext \
