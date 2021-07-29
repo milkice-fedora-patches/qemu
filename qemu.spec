@@ -274,7 +274,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.0.0
-Release: 11%{?rcrel}%{?dist}
+Release: 12%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2183,6 +2183,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Jul 29 2021 Cole Robinson <crobinso@redhat.com> - 6.0.0-12
+- Drop python3 shebang fixup for tests rpm
+- Parallelize make check
+- Explicitly disable c++ build
+
 * Fri Jul 23 2021 Richard W.M. Jones <rjones@redhat.com> - 6.0.0-11
 - Fix dependencies of qemu metapackage.
 
