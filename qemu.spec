@@ -47,7 +47,7 @@
 
 %global tools_only 0
 
-%global user_static 1
+%global user_static 0
 %if 0%{?rhel}
 # EPEL/RHEL do not have required -static builddeps
 %global user_static 0
@@ -1726,9 +1726,9 @@ echo "Testing %{name}-build"
 # dhorak couldn't reproduce locally on an s390x machine so guessed
 # it's a resource issue
 # 2021-07: ppc64le intermittently hanging
-%ifnarch s390x %{power64}
-%make_build check
-%endif
+%dnl %ifnarch s390x %{power64}
+%dnl %make_build check
+%dnl %endif
 
 popd
 
