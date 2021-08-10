@@ -47,7 +47,7 @@
 
 %global tools_only 0
 
-%global user_static 0
+%global user_static 1
 %if 0%{?rhel}
 # EPEL/RHEL do not have required -static builddeps
 %global user_static 0
@@ -272,7 +272,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-%global rcver rc2
+%global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 0.1%{?rcrel}%{?dist}
+Release: 0.2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1356,7 +1356,6 @@ run_configure \
 %ifarch %{ix86} x86_64
   --enable-avx2 \
 %endif
-  --enable-block-drv-whitelist-in-tools \
   --enable-bpf \
   --enable-cap-ng \
   --enable-capstone \
@@ -1726,9 +1725,9 @@ echo "Testing %{name}-build"
 # dhorak couldn't reproduce locally on an s390x machine so guessed
 # it's a resource issue
 # 2021-07: ppc64le intermittently hanging
-%dnl %ifnarch s390x %{power64}
-%dnl %make_build check
-%dnl %endif
+%ifnarch s390x %{power64}
+%make_build check
+%endif
 
 popd
 
@@ -1860,7 +1859,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %files tests
 %{testsdir}
-%{_libdir}/%{name}/accel-qtest*.so
+%{_libdir}/%{name}/accel-qtest-*.so
 
 %files block-curl
 %{_libdir}/%{name}/block-curl.so
@@ -2231,6 +2230,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 10 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-0.2-rc3
+- Rebase to qemu 6.1.0-rc3
+
 * Mon Aug 9 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-0.1-rc2
 - Rebase to qemu 6.1.0-rc2
 
