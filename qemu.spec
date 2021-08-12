@@ -303,7 +303,6 @@ Source36: README.tests
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
 BuildRequires: glib2-devel
-BuildRequires: gnutls-devel
 BuildRequires: cyrus-sasl-devel
 BuildRequires: libaio-devel
 BuildRequires: python3-devel
@@ -1367,7 +1366,6 @@ run_configure \
   --enable-fdt \
 %endif
   --enable-gcrypt \
-  --enable-gnutls \
   --enable-guest-agent \
   --enable-iconv \
   --enable-kvm \
