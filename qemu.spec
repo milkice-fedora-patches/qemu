@@ -272,7 +272,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-%global rcver rc3
+%global rcver rc4
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 0.2%{?rcrel}%{?dist}
+Release: 0.3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2228,6 +2228,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 10 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-0.3-rc4
+- Rebase to qemu 6.1.0-rc4
+
 * Tue Aug 10 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-0.2-rc3
 - Rebase to qemu 6.1.0-rc3
 
