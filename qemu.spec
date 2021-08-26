@@ -193,10 +193,10 @@
 %define requires_device_display_virtio_gpu Requires: %{name}-device-display-virtio-gpu = %{evr}
 %define requires_device_display_virtio_gpu_gl Requires: %{name}-device-display-virtio-gpu-gl = %{evr}
 %define requires_device_display_virtio_gpu_pci Requires: %{name}-device-display-virtio-gpu-pci = %{evr}
-%define requires_device_display_virtio_gpu_pci_gl Requires: %{name}-device-display-virtio-gpu-pci_gl = %{evr}
+%define requires_device_display_virtio_gpu_pci_gl Requires: %{name}-device-display-virtio-gpu-pci-gl = %{evr}
 %define requires_device_display_virtio_gpu_ccw Requires: %{name}-device-display-virtio-gpu-ccw = %{evr}
 %define requires_device_display_virtio_vga Requires: %{name}-device-display-virtio-vga = %{evr}
-%define requires_device_display_virtio_vga_gl Requires: %{name}-device-display-virtio-vga_gl = %{evr}
+%define requires_device_display_virtio_vga_gl Requires: %{name}-device-display-virtio-vga-gl = %{evr}
 
 %if %{have_virgl}
 %define requires_device_display_vhost_user_gpu Requires: %{name}-device-display-vhost-user-gpu = %{evr}
@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 1%{?rcrel}%{?dist}
+Release: 2%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -2228,6 +2228,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Aug 26 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-2
+- Fix dependency pci_gl -> pci-gl and vga_gl -> vga-gl (RHBZ#1997855)
+
 * Tue Aug 24 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-1
 - Rebase to qemu 6.1.0
 
