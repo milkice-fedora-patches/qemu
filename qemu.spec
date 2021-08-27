@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 3%{?rcrel}%{?dist}
+Release: 4%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -345,7 +345,6 @@ BuildRequires: lzo-devel snappy-devel
 %if %{have_numactl}
 BuildRequires: numactl-devel
 %endif
-BuildRequires: libgcrypt-devel
 # qemu-pr-helper multipath support (requires libudev too)
 BuildRequires: device-mapper-multipath-devel
 BuildRequires: systemd-devel
@@ -1366,7 +1365,6 @@ run_configure \
 %if %{have_fdt}
   --enable-fdt \
 %endif
-  --enable-gcrypt \
   --enable-gnutls \
   --enable-guest-agent \
   --enable-iconv \
@@ -2230,6 +2228,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Aug 27 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-4
+- Disable gcrypt (for real this time).
+
 * Fri Aug 27 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-3
 - Revert "Disable gcrypt" which seems to disable gnutls (RHBZ#1998452)
 
