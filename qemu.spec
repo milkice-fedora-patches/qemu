@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 2%{?rcrel}%{?dist}
+Release: 3%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -303,6 +303,7 @@ Source36: README.tests
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
 BuildRequires: glib2-devel
+BuildRequires: gnutls-devel
 BuildRequires: cyrus-sasl-devel
 BuildRequires: libaio-devel
 BuildRequires: python3-devel
@@ -1366,6 +1367,7 @@ run_configure \
   --enable-fdt \
 %endif
   --enable-gcrypt \
+  --enable-gnutls \
   --enable-guest-agent \
   --enable-iconv \
   --enable-kvm \
@@ -2228,6 +2230,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Aug 27 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-3
+- Revert "Disable gcrypt" which seems to disable gnutls (RHBZ#1998452)
+
 * Thu Aug 26 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-2
 - Fix dependency pci_gl -> pci-gl and vga_gl -> vga-gl (RHBZ#1997855)
 
