@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 4%{?rcrel}%{?dist}
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -299,6 +299,10 @@ Source27: kvm.conf
 Source30: kvm-s390x.conf
 Source31: kvm-x86.conf
 Source36: README.tests
+
+# Fix -cpu max
+# https://bugzilla.redhat.com/show_bug.cgi?id=1999700
+Patch1: 0001-target-i386-add-missing-bits-to-CR4_RESERVED_MASK.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2228,6 +2232,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 31 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-5
+- Fix -cpu max (RHBZ#1999700)
+
 * Fri Aug 27 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-4
 - Disable gcrypt (for real this time).
 
