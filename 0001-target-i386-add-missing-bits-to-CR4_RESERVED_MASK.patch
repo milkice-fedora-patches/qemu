@@ -1,7 +1,7 @@
-From f6ea43966cc3b739ba8cd9be20b141a1bad32a8e Mon Sep 17 00:00:00 2001
+From 45adec566b073b39f4edfc1307843d12fe8105c8 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Date: Tue, 31 Aug 2021 18:50:33 +0100
-Subject: [PATCH] target/i386: add missing bits to CR4_RESERVED_MASK
+Subject: [PATCH 1/2] target/i386: add missing bits to CR4_RESERVED_MASK
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit

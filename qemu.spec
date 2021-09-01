@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -303,6 +303,10 @@ Source36: README.tests
 # Fix -cpu max
 # https://bugzilla.redhat.com/show_bug.cgi?id=1999700
 Patch1: 0001-target-i386-add-missing-bits-to-CR4_RESERVED_MASK.patch
+
+# Fix assertion on armv7hl
+# https://bugzilla.redhat.com/show_bug.cgi?id=1999878
+Patch2: 0002-tcg-arm-Increase-stack-alignment-for-function-genera.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2232,6 +2236,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Sep 01 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-6
+- Fix assertion on armv7hl (RHBZ#1999878)
+
 * Tue Aug 31 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-5
 - Fix -cpu max (RHBZ#1999700)
 
