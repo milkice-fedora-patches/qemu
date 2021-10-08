@@ -282,7 +282,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 8%{?rcrel}%{?dist}
+Release: 9%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -310,6 +310,8 @@ Patch2: 0001-tcg-arm-Reduce-vector-alignment-requirement-for-NEON.patch
 
 # Fix qemu crash with vnc + libvirt virDomainOpenConsole
 Patch3: 0001-qemu-sockets-fix-unix-socket-path-copy-again.patch
+# Fix tcg PVH test with binutils 2.36+
+Patch4: 0001-tests-tcg-Fix-PVH-test-with-binutils-2.36.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2239,6 +2241,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Oct 08 2021 Cole Robinson <crobinso@redhat.com> - 6.1.0-9
+- Fix tcg PVH test with binutils 2.36+
+
 * Wed Oct 06 2021 Cole Robinson <crobinso@redhat.com> - 6.1.0-8
 - Fix qemu crash with vnc + libvirt virDomainOpenConsole
 
