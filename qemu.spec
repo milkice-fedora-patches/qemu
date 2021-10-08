@@ -1732,10 +1732,10 @@ rm -rf %{static_buildroot}
 
 pushd %{qemu_kvm_build}
 echo "Testing %{name}-build"
-# 2021-06: s390x tests randomly failing with 'Broken pipe' errors
+# 2021-09: s390x tests randomly failing with 'Broken pipe' errors
 # dhorak couldn't reproduce locally on an s390x machine so guessed
 # it's a resource issue
-# 2021-07: ppc64le intermittently hanging
+# 2021-09: ppc64le intermittently hanging with no discernable pattern
 %ifnarch s390x %{power64}
 %make_build check
 %endif
