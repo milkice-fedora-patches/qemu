@@ -1,3 +1,8 @@
+# Provide a way to skip tests via rpmbuild `--without`
+# This makes it easier to skip tests in copr repos, where
+# the qemu test suite is historically flakey
+%bcond_without check
+
 %global libfdt_version 1.6.0
 %global libseccomp_version 2.4.0
 %global libusbx_version 1.0.23
@@ -1728,6 +1733,7 @@ rm -rf %{static_buildroot}
 
 
 %check
+%if %{with check}
 %if !%{tools_only}
 
 pushd %{qemu_kvm_build}
@@ -1743,6 +1749,8 @@ echo "Testing %{name}-build"
 popd
 
 # endif !tools_only
+%endif
+# endif with check
 %endif
 
 
