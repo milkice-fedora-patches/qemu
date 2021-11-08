@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 9%{?rcrel}%{?dist}
+Release: 10%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -317,6 +317,10 @@ Patch2: 0001-tcg-arm-Reduce-vector-alignment-requirement-for-NEON.patch
 Patch3: 0001-qemu-sockets-fix-unix-socket-path-copy-again.patch
 # Fix tcg PVH test with binutils 2.36+
 Patch4: 0001-tests-tcg-Fix-PVH-test-with-binutils-2.36.patch
+# Fix snapshot creation with qxl graphics
+# https://gitlab.com/qemu-project/qemu/-/issues/610
+# https://gitlab.com/qemu-project/qemu/-/commit/eb94846
+Patch5: 0001-qxl-fix-pre-save-logic.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2249,6 +2253,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Nov 08 2021 Adam Williamson <awilliam@redhat.com> - 6.1.0-10
+- Fix snapshot creation with qxl graphics
+
 * Fri Oct 08 2021 Cole Robinson <crobinso@redhat.com> - 6.1.0-9
 - Fix tcg PVH test with binutils 2.36+
 
