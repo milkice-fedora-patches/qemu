@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 10%{?rcrel}%{?dist}
+Release: 11%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -322,10 +322,16 @@ Patch4: 0001-tests-tcg-Fix-PVH-test-with-binutils-2.36.patch
 # https://gitlab.com/qemu-project/qemu/-/commit/eb94846
 Patch5: 0001-qxl-fix-pre-save-logic.patch
 
+# Add support for qemu-nbd --selinux-relabel option
+# https://bugzilla.redhat.com/show_bug.cgi?id=1984938
+# Upstream in 6.2.
+Patch6: 0001-nbd-server-Add-selinux-label-option.patch
+
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
 BuildRequires: glib2-devel
 BuildRequires: gnutls-devel
+BuildRequires: libselinux-devel
 BuildRequires: cyrus-sasl-devel
 BuildRequires: libaio-devel
 BuildRequires: python3-devel
@@ -1420,6 +1426,9 @@ run_configure \
   --enable-rdma \
 %endif
   --enable-seccomp \
+%if 0%{?must_remember_to_add_this_in_qemu_6_2}
+  --enable-selinux \
+%endif
   --enable-slirp=system \
   --enable-slirp-smbd \
   --enable-snappy \
@@ -2253,6 +2262,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Nov 22 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-11
+- Add support for qemu-nbd --selinux-relabel option (RHBZ#1984938)
+
 * Mon Nov 08 2021 Adam Williamson <awilliam@redhat.com> - 6.1.0-10
 - Fix snapshot creation with qxl graphics
 
