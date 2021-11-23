@@ -3,18 +3,6 @@
 # the qemu test suite is historically flakey
 %bcond_without check
 
-# RWMJ:
-# Currently fails to build on armv7 because of this GCC error:
-#   during RTL pass: mach
-#   ../util/vfio-helpers.c: In function 'qemu_vfio_open_pci':
-#   ../util/vfio-helpers.c:523:1: internal compiler error: in create_fix_barrier, at config/arm/arm.c:17891
-#     523 | }
-#         | ^
-# (gcc-11.2.1-6.fc36.armv7hl)
-# I am still trying to reproduce this locally and will file a
-# bug if I manage to do that.
-ExcludeArch: %{arm}
-
 %global libfdt_version 1.6.0
 %global libseccomp_version 2.4.0
 %global libusbx_version 1.0.23
