@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 11%{?rcrel}%{?dist}
+Release: 12%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -1349,7 +1349,11 @@ run_configure() {
         --docdir="%{_docdir}" \
         --libexecdir="%{_libexecdir}" \
         --extra-ldflags="%{build_ldflags}" \
+%ifnarch %{arm}
         --extra-cflags="%{optflags}" \
+%else
+        --extra-cflags="%{optflags} -DSTAP_SDT_ARG_CONSTRAINT=g" \
+%endif
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
         --firmwarepath="%firmwaredirs" \
@@ -2262,8 +2266,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
-* Mon Nov 22 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-11
+* Wed Nov 24 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-12
 - Add support for qemu-nbd --selinux-relabel option (RHBZ#1984938)
+- Define STAP_SDT_ARG_CONSTRAINT=g on %%{arm}, workaround for:
+  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103395
 
 * Mon Nov 08 2021 Adam Williamson <awilliam@redhat.com> - 6.1.0-10
 - Fix snapshot creation with qxl graphics
