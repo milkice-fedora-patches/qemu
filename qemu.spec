@@ -1347,7 +1347,11 @@ run_configure() {
         --docdir="%{_docdir}" \
         --libexecdir="%{_libexecdir}" \
         --extra-ldflags="%{build_ldflags}" \
+%ifnarch %{arm}
         --extra-cflags="%{optflags}" \
+%else
+        --extra-cflags="%{optflags} -DSTAP_SDT_ARG_CONSTRAINT=g" \
+%endif
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
         --firmwarepath="%firmwaredirs" \
@@ -2259,6 +2263,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %changelog
 * Thu Nov 25 2021 Daniel P. Berrangé <berrange@redhat.com> - 6.1.0-13
 - Fix iovec limits with scsi-generic
+- Define STAP_SDT_ARG_CONSTRAINT=g on %%{arm}, workaround for:
+  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103395
 
 * Mon Nov 08 2021 Adam Williamson <awilliam@redhat.com> - 6.1.0-10
 - Fix snapshot creation with qxl graphics
