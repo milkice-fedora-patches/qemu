@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 12%{?rcrel}%{?dist}
+Release: 13%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -326,6 +326,10 @@ Patch5: 0001-qxl-fix-pre-save-logic.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1984938
 # Upstream in 6.2.
 Patch6: 0001-nbd-server-Add-selinux-label-option.patch
+
+# Fix iov length limits for scsi-generic
+# https://bugzilla.redhat.com/show_bug.cgi?id=2026747
+Patch7: 0001-block-introduce-max_hw_iov-for-use-in-scsi-generic.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2266,6 +2270,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Nov 25 2021 Daniel P. Berrangé <berrange@redhat.com> - 6.1.0-13
+- Fix iovec limits with scsi-generic
+
 * Wed Nov 24 2021 Richard W.M. Jones <rjones@redhat.com> - 6.1.0-12
 - Add support for qemu-nbd --selinux-relabel option (RHBZ#1984938)
 - Define STAP_SDT_ARG_CONSTRAINT=g on %%{arm}, workaround for:
