@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 10%{?rcrel}%{?dist}
+Release: 13%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -321,6 +321,10 @@ Patch4: 0001-tests-tcg-Fix-PVH-test-with-binutils-2.36.patch
 # https://gitlab.com/qemu-project/qemu/-/issues/610
 # https://gitlab.com/qemu-project/qemu/-/commit/eb94846
 Patch5: 0001-qxl-fix-pre-save-logic.patch
+
+# Fix iov length limits for scsi-generic
+# https://bugzilla.redhat.com/show_bug.cgi?id=2026747
+Patch7: 0001-block-introduce-max_hw_iov-for-use-in-scsi-generic.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2253,6 +2257,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Nov 25 2021 Daniel P. Berrangé <berrange@redhat.com> - 6.1.0-13
+- Fix iovec limits with scsi-generic
+
 * Mon Nov 08 2021 Adam Williamson <awilliam@redhat.com> - 6.1.0-10
 - Fix snapshot creation with qxl graphics
 
