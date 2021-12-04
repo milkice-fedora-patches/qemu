@@ -6,7 +6,7 @@
 %global libfdt_version 1.6.0
 %global libseccomp_version 2.4.0
 %global libusbx_version 1.0.23
-%global meson_version 0.55.3
+%global meson_version 0.58.2
 %global usbredir_version 0.7.1
 %global ipxe_version 20200823-5.git4bd064de
 
@@ -277,7 +277,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-%dnl %global rcver rc4
+%global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -286,8 +286,8 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 6.1.0
-Release: 13%{?rcrel}%{?dist}
+Version: 6.2.0
+Release: 0.1%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -305,31 +305,9 @@ Source30: kvm-s390x.conf
 Source31: kvm-x86.conf
 Source36: README.tests
 
-# Fix -cpu max
-# https://bugzilla.redhat.com/show_bug.cgi?id=1999700
-Patch1: 0001-target-i386-add-missing-bits-to-CR4_RESERVED_MASK.patch
-
 # Fix assertion on armv7hl
 # https://bugzilla.redhat.com/show_bug.cgi?id=1999878
-Patch2: 0001-tcg-arm-Reduce-vector-alignment-requirement-for-NEON.patch
-
-# Fix qemu crash with vnc + libvirt virDomainOpenConsole
-Patch3: 0001-qemu-sockets-fix-unix-socket-path-copy-again.patch
-# Fix tcg PVH test with binutils 2.36+
-Patch4: 0001-tests-tcg-Fix-PVH-test-with-binutils-2.36.patch
-# Fix snapshot creation with qxl graphics
-# https://gitlab.com/qemu-project/qemu/-/issues/610
-# https://gitlab.com/qemu-project/qemu/-/commit/eb94846
-Patch5: 0001-qxl-fix-pre-save-logic.patch
-
-# Add support for qemu-nbd --selinux-relabel option
-# https://bugzilla.redhat.com/show_bug.cgi?id=1984938
-# Upstream in 6.2.
-Patch6: 0001-nbd-server-Add-selinux-label-option.patch
-
-# Fix iov length limits for scsi-generic
-# https://bugzilla.redhat.com/show_bug.cgi?id=2026747
-Patch7: 0001-block-introduce-max_hw_iov-for-use-in-scsi-generic.patch
+Patch1: 0001-tcg-arm-Reduce-vector-alignment-requirement-for-NEON.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -1253,7 +1231,6 @@ mkdir -p %{static_builddir}
   --disable-hax                    \\\
   --disable-hvf                    \\\
   --disable-iconv                  \\\
-  --disable-jemalloc               \\\
   --disable-kvm                    \\\
   --disable-libdaxctl              \\\
   --disable-libiscsi               \\\
@@ -1305,7 +1282,6 @@ mkdir -p %{static_builddir}
   --disable-strip                  \\\
   --disable-system                 \\\
   --disable-tcg                    \\\
-  --disable-tcmalloc               \\\
   --disable-tools                  \\\
   --disable-tpm                    \\\
   --disable-u2f                    \\\
@@ -1362,7 +1338,7 @@ run_configure() {
         --with-suffix="%{name}" \
         --firmwarepath="%firmwaredirs" \
         --meson="%{__meson}" \
-        --enable-trace-backend=dtrace \
+        --enable-trace-backends=dtrace \
         --with-coroutine=ucontext \
         --with-git=git \
         --tls-priority=@QEMU,SYSTEM \
@@ -1393,13 +1369,13 @@ run_configure \
 %endif
   --enable-bpf \
   --enable-cap-ng \
-  --enable-capstone \
+  --enable-capstone=system \
   --enable-coroutine-pool \
   --enable-curl \
   --enable-debug-info \
   --enable-docs \
 %if %{have_fdt}
-  --enable-fdt \
+  --enable-fdt=system \
 %endif
   --enable-gnutls \
   --enable-guest-agent \
@@ -1463,7 +1439,7 @@ run_configure \
   --enable-xkbcommon \
   \
   \
-  --audio-drv-list=pa,sdl,alsa,try-jack,oss \
+  --audio-drv-list=pa,sdl,alsa,jack,oss \
   --target-list-exclude=moxie-softmmu \
   --with-default-devices \
   --enable-auth-pam \
@@ -1554,7 +1530,7 @@ run_configure \
   --enable-attr \
   --enable-linux-user \
   --enable-tcg \
-  --disable-blobs \
+  --disable-install-blobs \
   --static
 
 %make_build
@@ -1639,12 +1615,12 @@ install -m 0644 -t %{buildroot}%{_datadir}/%{name}/tracetool/format scripts/trac
 # Create new directories and put them all under tests-src
 mkdir -p %{buildroot}%{testsdir}/python
 mkdir -p %{buildroot}%{testsdir}/tests
-mkdir -p %{buildroot}%{testsdir}/tests/acceptance
+mkdir -p %{buildroot}%{testsdir}/tests/avocado
 mkdir -p %{buildroot}%{testsdir}/tests/qemu-iotests
 mkdir -p %{buildroot}%{testsdir}/scripts/qmp
 
 # Install avocado_qemu tests
-cp -R %{qemu_kvm_build}/tests/acceptance/* %{buildroot}%{testsdir}/tests/acceptance/
+cp -R %{qemu_kvm_build}/tests/avocado/* %{buildroot}%{testsdir}/tests/avocado/
 
 # Install qemu.py and qmp/ scripts required to run avocado_qemu tests
 cp -R %{qemu_kvm_build}/python/qemu %{buildroot}%{testsdir}/python
@@ -2250,6 +2226,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/%{name}/kvmvapic.bin
 %{_datadir}/%{name}/linuxboot.bin
 %{_datadir}/%{name}/multiboot.bin
+%{_datadir}/%{name}/multiboot_dma.bin
 %{_datadir}/%{name}/pvh.bin
 %{_datadir}/%{name}/qboot.rom
 %if %{need_qemu_kvm}
@@ -2270,6 +2247,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Dec 03 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.2.0-0.1-rc3
+- Rebase to qemu 6.2.0-rc3
+
 * Thu Nov 25 2021 Daniel P. Berrangé <berrange@redhat.com> - 6.1.0-13
 - Fix iovec limits with scsi-generic
 
