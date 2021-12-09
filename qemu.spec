@@ -277,7 +277,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-%global rcver rc3
+%global rcver rc4
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -304,10 +304,6 @@ Source27: kvm.conf
 Source30: kvm-s390x.conf
 Source31: kvm-x86.conf
 Source36: README.tests
-
-# Fix assertion on armv7hl
-# https://bugzilla.redhat.com/show_bug.cgi?id=1999878
-Patch1: 0001-tcg-arm-Reduce-vector-alignment-requirement-for-NEON.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2247,6 +2243,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Dec 09 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.2.0-0.1-rc4
+- Rebase to qemu 6.2.0-rc4
+
 * Fri Dec 03 2021 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.2.0-0.1-rc3
 - Rebase to qemu 6.2.0-rc3
 
