@@ -210,6 +210,7 @@
 %endif
 
 %if %{have_jack}
+%define jack_drv jack,
 %define requires_audio_jack Requires: %{name}-audio-jack = %{evr}
 %else
 %define requires_audio_jack %{nil}
@@ -277,7 +278,7 @@ Obsoletes: %{name}-system-unicore32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 
 # Release candidate version tracking
-%dnl %global rcver rc4
+# global rcver rc4
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
@@ -1365,7 +1366,7 @@ run_configure \
 %endif
   --enable-bpf \
   --enable-cap-ng \
-  --enable-capstone=system \
+  --enable-capstone=auto \
   --enable-coroutine-pool \
   --enable-curl \
   --enable-debug-info \
@@ -1435,7 +1436,7 @@ run_configure \
   --enable-xkbcommon \
   \
   \
-  --audio-drv-list=pa,sdl,alsa,jack,oss \
+  --audio-drv-list=pa,sdl,alsa,%{?jack_drv}oss \
   --target-list-exclude=moxie-softmmu \
   --with-default-devices \
   --enable-auth-pam \
