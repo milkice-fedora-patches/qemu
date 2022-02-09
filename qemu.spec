@@ -288,7 +288,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.2.0
-Release: 3%{?rcrel}%{?dist}.1
+Release: 4%{?rcrel}%{?dist}.1
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -307,6 +307,10 @@ Source31: kvm-x86.conf
 Source36: README.tests
 
 Patch0001: 0001-sgx-stub-fix.patch
+
+# CVE-2022-0358
+# https://bugzilla.redhat.com/show_bug.cgi?id=2046202
+Patch0002: 0001-virtiofsd-Drop-membership-of-all-supplementary-groups.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2246,6 +2250,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Feb 09 2022 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 2:6.2.0-4
+- virtiofsd: Drop membership of all supplementary groups (CVE-2022-0358)
+  Resolves: rhbz#2044863
+
 * Wed Feb 2 2022 Paolo Bonzini <pbonzini@redhat.com> - 2:6.2.0-3
 - Fix non-SGX builds
 
