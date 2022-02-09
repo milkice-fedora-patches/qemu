@@ -308,6 +308,10 @@ Source36: README.tests
 
 Patch0001: 0001-sgx-stub-fix.patch
 
+# CVE-2022-0358
+# https://bugzilla.redhat.com/show_bug.cgi?id=2046202
+Patch0002: 0001-virtiofsd-Drop-membership-of-all-supplementary-groups.patch
+
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
 BuildRequires: glib2-devel
@@ -2261,6 +2265,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %changelog
 * Thu Feb 10 2022 Cole Robinson <crobinso@redhat.com> - 6.2.0-4
+- virtiofsd: Drop membership of all supplementary groups (CVE-2022-0358)
+  Resolves: rhbz#2044863
 - Split out qemu-virtiofsd subpackage
 
 * Wed Feb 2 2022 Paolo Bonzini <pbonzini@redhat.com> - 2:6.2.0-3
