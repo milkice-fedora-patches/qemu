@@ -287,7 +287,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.1.0
-Release: 13%{?rcrel}%{?dist}
+Release: 14%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -325,6 +325,10 @@ Patch5: 0001-qxl-fix-pre-save-logic.patch
 # Fix iov length limits for scsi-generic
 # https://bugzilla.redhat.com/show_bug.cgi?id=2026747
 Patch7: 0001-block-introduce-max_hw_iov-for-use-in-scsi-generic.patch
+
+# CVE-2022-0358
+# https://bugzilla.redhat.com/show_bug.cgi?id=2046202
+Patch8: 0001-virtiofsd-Drop-membership-of-all-supplementary-groups.patch
 
 BuildRequires: meson >= %{meson_version}
 BuildRequires: zlib-devel
@@ -2261,6 +2265,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Feb 09 2022 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 6.1.0-14
+- virtiofsd: Drop membership of all supplementary groups (CVE-2022-0358)
+  Resolves: rhbz#2044863
+
 * Thu Nov 25 2021 Daniel P. Berrangé <berrange@redhat.com> - 6.1.0-13
 - Fix iovec limits with scsi-generic
 - Define STAP_SDT_ARG_CONSTRAINT=g on %%{arm}, workaround for:
