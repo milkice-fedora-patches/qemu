@@ -219,7 +219,7 @@
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 5.2.0
-Release: 8%{?rcrel}%{?dist}
+Release: 9%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -248,6 +248,10 @@ Patch0004: 0004-tracetool-also-strip-l-and-ll-from-systemtap-format-.patch
 # Fix kvm_buf_set_msrs assertion breaking fedora composes
 # https://pagure.io/releng/failed-composes/issue/2548
 Patch0005: 0005-Revert-target-i386-define-a-new-MSR-based-feature-wo.patch
+
+# CVE-2022-0358
+# https://bugzilla.redhat.com/show_bug.cgi?id=2046202
+Patch0006: 0001-virtiofsd-Drop-membership-of-all-supplementary-groups.patch
 
 BuildRequires: make
 BuildRequires: meson
@@ -1929,6 +1933,10 @@ getent passwd qemu >/dev/null || \
 
 
 %changelog
+* Wed Feb 09 2022 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 5.2.0-9
+- virtiofsd: Drop membership of all supplementary groups (CVE-2022-0358)
+  Resolves: rhbz#2044863
+
 * Mon Jun 14 2021 Cole Robinson <crobinso@redhat.com> - 5.2.0-8
 - Fix kvm_buf_set_msrs assertion breaking fedora composes
 
