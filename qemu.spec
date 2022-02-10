@@ -288,7 +288,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.2.0
-Release: 4%{?rcrel}%{?dist}.1
+Release: 5%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -486,6 +486,8 @@ Requires: %{name}-system-xtensa = %{epoch}:%{version}-%{release}
 Requires: %{name}-img = %{epoch}:%{version}-%{release}
 Requires: %{name}-tools = %{epoch}:%{version}-%{release}
 Requires: qemu-pr-helper = %{epoch}:%{version}-%{release}
+Requires: vhostuser-backend(fs)
+
 
 %description
 %{name} is an open source virtualizer that provides hardware
@@ -548,6 +550,15 @@ Summary: qemu-pr-helper utility for %{name}
 %description -n qemu-pr-helper
 This package provides the qemu-pr-helper utility that is required for certain
 SCSI features.
+
+
+%package -n qemu-virtiofsd
+Summary: QEMU virtio-fs shared file system daemon
+Provides: vhostuser-backend(fs)
+%description -n qemu-virtiofsd
+This package provides virtiofsd daemon. This program is a vhost-user backend
+that implements the virtio-fs device that is used for sharing a host directory
+tree with a guest.
 
 
 %package tests
@@ -1826,6 +1837,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_mandir}/man8/qemu-pr-helper.8*
 
 
+%files -n qemu-virtiofsd
+%{_mandir}/man1/virtiofsd.1*
+%{_libexecdir}/virtiofsd
+%{_datadir}/qemu/vhost-user/50-qemu-virtiofsd.json
+
+
 %files tools
 %{_bindir}/qemu-keymap
 %{_bindir}/qemu-edid
@@ -1851,11 +1868,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/icons/*
 %{_datadir}/%{name}/keymaps/
 %{_datadir}/%{name}/linuxboot_dma.bin
-%{_datadir}/%{name}/vhost-user/50-qemu-virtiofsd.json
 %attr(4755, -, -) %{_libexecdir}/qemu-bridge-helper
-%{_libexecdir}/virtiofsd
 %{_mandir}/man1/%{name}.1*
-%{_mandir}/man1/virtiofsd.1*
 %{_mandir}/man7/qemu-block-drivers.7*
 %{_mandir}/man7/qemu-cpu-models.7*
 %{_mandir}/man7/qemu-ga-ref.7*
@@ -2250,6 +2264,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Feb 10 2022 Cole Robinson <crobinso@redhat.com> - 6.2.0-5
+- Split out qemu-virtiofsd subpackage
+
 * Wed Feb 09 2022 Eduardo Lima (Etrunko) <etrunko@redhat.com> - 2:6.2.0-4
 - virtiofsd: Drop membership of all supplementary groups (CVE-2022-0358)
   Resolves: rhbz#2044863
