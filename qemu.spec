@@ -956,6 +956,9 @@ This package provides the QEMU system emulator for ARM systems.
 %package system-arm-core
 Summary: QEMU system emulator for ARM
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
+%if %{have_edk2}
+Requires: edk2-arm
+%endif
 %description system-arm-core
 This package provides the QEMU system emulator for ARM boards.
 
