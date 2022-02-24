@@ -70,9 +70,12 @@
 %endif
 
 # Matches spice ExclusiveArch
-%global have_spice 0
-%ifarch %{ix86} x86_64 %{arm} aarch64
 %global have_spice 1
+%ifnarch %{ix86} x86_64 %{arm} aarch64
+%global have_spice 0
+%endif
+%if 0%{?rhel} >= 9
+%global have_spice 0
 %endif
 
 # Matches xen ExclusiveArch
@@ -124,7 +127,11 @@
 %define have_block_rbd 0
 %endif
 
+
 %global have_block_gluster 1
+%if 0%{?rhel} >= 9
+%global have_block_gluster 0
+%endif
 
 %define have_block_nfs 0
 %if 0%{?fedora}
@@ -141,6 +148,11 @@
 %define have_librdma 1
 %ifarch %{arm}
 %define have_librdma 0
+%endif
+
+%define have_libcacard 1
+%if 0%{?rhel} >= 9
+%define have_libcacard 0
 %endif
 
 # LTO still has issues with qemu on armv7hl and aarch64
@@ -189,7 +201,6 @@
 %define requires_char_baum Requires: %{name}-char-baum = %{evr}
 %define requires_device_usb_host Requires: %{name}-device-usb-host = %{evr}
 %define requires_device_usb_redirect Requires: %{name}-device-usb-redirect = %{evr}
-%define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
 %define requires_ui_curses Requires: %{name}-ui-curses = %{evr}
 %define requires_ui_gtk Requires: %{name}-ui-gtk = %{evr}
 %define requires_ui_sdl Requires: %{name}-ui-sdl = %{evr}
@@ -228,6 +239,12 @@
 %define requires_device_display_qxl %{nil}
 %define requires_audio_spice %{nil}
 %define requires_char_spice %{nil}
+%endif
+
+%if %{have_libcacard}
+%define requires_device_usb_smartcard Requires: %{name}-device-usb-smartcard = %{evr}
+%else
+%define requires_device_usb_smartcard %{nil}
 %endif
 
 %global requires_all_modules \
@@ -421,8 +438,10 @@ BuildRequires: xen-devel
 BuildRequires: bzip2-devel
 # TLS test suite
 BuildRequires: libtasn1-devel
+%if %{have_libcacard}
 # smartcard device
 BuildRequires: libcacard-devel
+%endif
 %if %{have_virgl}
 # virgl 3d support
 BuildRequires: virglrenderer-devel
@@ -783,11 +802,13 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-usb-redirect
 This package provides the usbredir device for QEMU.
 
+%if %{have_libcacard}
 %package device-usb-smartcard
 Summary: QEMU USB smartcard device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-usb-smartcard
 This package provides the USB smartcard device for QEMU.
+%endif
 
 %if %{have_virgl}
 %package device-display-vhost-user-gpu
@@ -1465,7 +1486,9 @@ run_configure \
   --enable-dmg \
   --enable-fuse \
   --enable-gio \
+%if %{have_block_gluster}
   --enable-glusterfs \
+%endif
   --enable-gtk \
   --enable-libdaxctl \
 %if %{have_block_nfs}
@@ -1492,7 +1515,9 @@ run_configure \
 %if %{have_sdl_image}
   --enable-sdl-image \
 %endif
+%if %{have_libcacard}
   --enable-smartcard \
+%endif
 %if %{have_spice}
   --enable-spice \
   --enable-spice-protocol \
@@ -1967,8 +1992,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_libdir}/%{name}/hw-usb-host.so
 %files device-usb-redirect
 %{_libdir}/%{name}/hw-usb-redirect.so
+%if %{have_libcacard}
 %files device-usb-smartcard
 %{_libdir}/%{name}/hw-usb-smartcard.so
+%endif
 
 
 %if %{have_virgl}
