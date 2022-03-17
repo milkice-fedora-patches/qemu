@@ -65,7 +65,7 @@
 
 # Matches numactl ExcludeArch
 %global have_numactl 1
-%ifarch %{arm}
+%ifarch %{arm} riscv64
 %global have_numactl 0
 %endif
 
@@ -305,7 +305,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 6.2.0
-Release: 5%{?rcrel}%{?dist}
+Release: 6%{?rcrel}%{?dist}
 Epoch: 2
 License: GPLv2 and BSD and MIT and CC-BY
 URL: http://www.qemu.org/
@@ -448,7 +448,9 @@ BuildRequires: virglrenderer-devel
 %endif
 %if %{have_capstone_devel}
 # preferred disassembler for TCG
+$ifnarch riscv64
 BuildRequires: capstone-devel
+%endif
 %endif
 # parallels disk images require libxml2
 BuildRequires: libxml2-devel
@@ -479,6 +481,11 @@ BuildRequires: SDL2_image-devel
 
 %if %{user_static}
 BuildRequires: glibc-static pcre-static glib2-static zlib-static
+%endif
+
+# if -pthread is used GCC SPEC will add --as-needed -latomic --no-as-needed for linker
+%ifarch riscv64
+BuildRequires: libatomic-static
 %endif
 
 # Requires for the Fedora 'qemu' metapackage
@@ -2294,6 +2301,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Mar 17 2022 Milkice Qiu <milkice@milkice.me> - 6.2.0-6
+- Enable riscv64
+- Patch from David Abdurachmanov <david.abdurachmanov@gmail.com>
+
 * Thu Feb 10 2022 Cole Robinson <crobinso@redhat.com> - 6.2.0-5
 - Split out qemu-virtiofsd subpackage
 
